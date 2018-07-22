@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<info>
+	<id>brute_force_protection</id>
+	<name>Brute Force Protection</name>
+	<description>ownCloud brute force protection app. It hardens ownCloud security by implementing brute force protection.</description>
+	<summary>ownCloud brute force protection app</summary>
+	<licence>AGPL</licence>
+	<author>Semih Serhat Karakaya</author>
+	<version>1.0.0</version>
+	<namespace>BruteForceProtection</namespace>
+	<dependencies>
+		<owncloud min-version="10.0.3" max-version="10.1" />
+	</dependencies>
+	<types>
+		<prelogin/>
+	</types>
+	<category>security</category>
+	<screenshot></screenshot>
+	<settings>
+		<admin>OCA\BruteForceProtection\Panels\AdminPanel</admin>
+	</settings>
+	<website>https://github.com/owncloud/brute_force_protection</website>
+	<bugs>https://github.com/owncloud/brute_force_protection/issues</bugs>
+	<repository type="git">https://github.com/owncloud/brute_force_protection.git</repository>
+</info>
