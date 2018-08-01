@@ -1,0 +1,46 @@
+language: php
+sudo: required
+php:
+  - 7.1
+
+env:
+  global:
+    - CORE_BRANCH=master
+    - APP_NAME=brute_force_protection
+  matrix:
+    - DB=sqlite
+
+branches:
+  only:
+    - master
+
+before_install:
+  - which php
+  - more $(which pecl)
+  - which phpize
+  - bash tests/.travis/before_install.sh $APP_NAME $CORE_BRANCH $DB
+  - make
+  - make appstore
+  - cd ../core
+  - php occ app:enable $APP_NAME
+
+script:
+  # execute unit tests
+  - cd apps/$APP_NAME/tests
+  - ../../../lib/composer/phpunit/phpunit/phpunit --configuration phpunit.xml
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
+after_failure:
+  - cat ../../data/owncloud.log
+
+matrix:
+  include:
+    - php: 7.1
+      env: DB=mysql
+    - php: 7.1
+      env: DB=pgsql
+    - php: 7.1
+      env: DB=oracle
+  fast_finish: true
