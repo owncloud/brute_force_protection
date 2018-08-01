@@ -15,7 +15,7 @@
 		<prelogin/>
 	</types>
 	<category>security</category>
-	<screenshot></screenshot>
+	<screenshot>https://raw.githubusercontent.com/owncloud/brute_force_protection/7258b38283af4e3fd8a0f03084694b6ff6339505/screenshots/brute-force-protection.jpg</screenshot>
 	<settings>
 		<admin>OCA\BruteForceProtection\Panels\AdminPanel</admin>
 	</settings>
