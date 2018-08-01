@@ -108,10 +108,4 @@ class ThrottleTest extends TestCase {
 			[0, 3, 300, 2, 250]
 		];
 	}
-	public function testClearSuspiciousAttemptsForIp() {
-		$this->dbServiceMock->expects($this->once())->method('deleteSuspiciousAttemptsForIp')
-			->with('192.168.1.1');
-
-		$this->throttle->clearSuspiciousAttemptsForIp('192.168.1.1');
-	}
 }

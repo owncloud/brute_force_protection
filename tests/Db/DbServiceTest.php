@@ -81,24 +81,6 @@ class DbServiceTest extends TestCase {
 		$this->assertSame($uid, $result[0]['uid']);
 	}
 
-	public function testGetSuspiciousActivityCountForUid() {
-		$this->configMock->expects($this->once())
-			->method('getBruteForceProtectionTimeThreshold')
-			->willReturn('300');
-		$this->dbService->addFailedLoginAttempt("test1", "192.168.1.1");
-		$this->dbService->addFailedLoginAttempt("test1", "192.168.1.1");
-		$this->assertEquals(2, $this->dbService->getSuspiciousActivityCountForUid('test1'));
-	}
-
-	public function testGetSuspiciousActivityCountForIp() {
-		$this->configMock->expects($this->once())
-			->method('getBruteForceProtectionTimeThreshold')
-			->willReturn('300');
-		$this->dbService->addFailedLoginAttempt("test1", "192.168.1.1");
-		$this->dbService->addFailedLoginAttempt("test1", "192.168.1.1");
-		$this->assertEquals(2, $this->dbService->getSuspiciousActivityCountForIp('192.168.1.1'));
-	}
-
 	public function testGetSuspiciousActivityCountForUidIpCombination() {
 		$this->configMock->expects($this->once())
 			->method('getBruteForceProtectionTimeThreshold')
@@ -120,25 +102,6 @@ class DbServiceTest extends TestCase {
 		$this->assertEquals($this->dbService->getLastFailedLoginAttemptTimeForIp('192.168.1.1'), $result[1]['attempted_at']);
 	}
 
-	public function testDeleteSuspiciousAttemptsForIp() {
-		$this->dbService->addFailedLoginAttempt("test1", "192.168.1.1");
-		$this->dbService->addFailedLoginAttempt("test2", "192.168.1.2");
-
-		$query = $this->connection->getQueryBuilder()->select('*')->from($this->dbTable);
-		$result = $query->execute()->fetchAll();
-		$this->assertSame(2, count($result));
-		$this->assertSame('test1', $result[0]['uid']);
-		$this->assertSame('test2', $result[1]['uid']);
-		$this->assertSame("192.168.1.1", $result[0]['ip']);
-		$this->assertSame("192.168.1.2", $result[1]['ip']);
-
-		$this->dbService->deleteSuspiciousAttemptsForIp("192.168.1.1");
-		$query = $this->connection->getQueryBuilder()->select('*')->from($this->dbTable);
-		$result = $query->execute()->fetchAll();
-		$this->assertSame(1, count($result));
-		$this->assertSame('test2', $result[0]['uid']);
-		$this->assertSame("192.168.1.2", $result[0]['ip']);
-	}
 	public function testDeleteSuspiciousAttemptsForUidIpCombination() {
 		$this->dbService->addFailedLoginAttempt("test1", "192.168.1.1");
 		$this->dbService->addFailedLoginAttempt("test2", "192.168.1.1");

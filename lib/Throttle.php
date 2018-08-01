@@ -96,14 +96,6 @@ class Throttle {
 	 * @param string $ip
 	 * @return void
 	 */
-	public function clearSuspiciousAttemptsForIp($ip) {
-		$this->dbConnection->deleteSuspiciousAttemptsForIp($ip);
-	}
-
-	/**
-	 * @param string $ip
-	 * @return void
-	 */
 	public function clearSuspiciousAttemptsForUidIpCombination($uid, $ip) {
 		$this->dbConnection->deleteSuspiciousAttemptsForUidIpCombination($uid, $ip);
 	}
