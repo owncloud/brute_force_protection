@@ -99,7 +99,7 @@ class BruteForceProtectionConfig {
 		return intval($banPeriod);
 	}
 
-	/*
+	/**
 	 * @param int $attempts
 	 */
 	public function setBruteForceProtectionFailTolerance($attempts) {

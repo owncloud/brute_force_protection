@@ -21,5 +21,7 @@
 
 namespace OCA\BruteForceProtection\AppInfo;
 
+use OCA\BruteForceProtection\Hooks;
+
 $app = new Application();
-$app->getContainer()->query('Hooks')->register();
+$app->getContainer()->query(Hooks::class)->register();

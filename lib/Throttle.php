@@ -23,7 +23,8 @@
 namespace OCA\BruteForceProtection;
 
 use OC\User\LoginException;
-use OCA\BruteForceProtection\Db\DbService;
+use OCA\BruteForceProtection\Db\FailedLoginAttempt;
+use OCA\BruteForceProtection\Db\FailedLoginAttemptMapper;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IL10N;
 
@@ -34,9 +35,9 @@ use OCP\IL10N;
 class Throttle {
 
 	/**
-	 * @var \OCA\BruteForceProtection\Db\DbService $connection
+	 * @var FailedLoginAttemptMapper $attemptMapper
 	 */
-	protected $dbConnection;
+	protected $attemptMapper;
 
 	/**
 	 * @var BruteForceProtectionConfig $config
@@ -54,13 +55,18 @@ class Throttle {
 	protected $timeFactory;
 
 	/**
-	 * @param DbService $dbConnection
+	 * @param FailedLoginAttemptMapper $attemptMapper
 	 * @param BruteForceProtectionConfig $config
 	 * @param IL10N $l
 	 * @param ITimeFactory $timeFactory
 	 */
-	public function __construct(DbService $dbConnection, BruteForceProtectionConfig $config, IL10N $l, ITimeFactory $timeFactory) {
-		$this->dbConnection = $dbConnection;
+	public function __construct(
+		FailedLoginAttemptMapper $attemptMapper,
+		BruteForceProtectionConfig $config,
+		IL10N $l,
+		ITimeFactory $timeFactory
+	) {
+		$this->attemptMapper = $attemptMapper;
 		$this->config = $config;
 		$this->l = $l;
 		$this->timeFactory = $timeFactory;
@@ -72,7 +78,11 @@ class Throttle {
 	 * @return void
 	 */
 	public function addFailedLoginAttempt($uid, $ip) {
-		$this->dbConnection->addFailedLoginAttempt($uid, $ip);
+		$attempt = new FailedLoginAttempt();
+		$attempt->setUid($uid);
+		$attempt->setIp($ip);
+		$attempt->setAttemptedAt($this->timeFactory->getTime());
+		$this->attemptMapper->insert($attempt);
 	}
 
 	/**
@@ -82,8 +92,8 @@ class Throttle {
 	 */
 	public function applyBruteForcePolicy($uid ,$ip) {
 		$banPeriod = $this->config->getBruteForceProtectionBanPeriod();
-		$banUntil = $this->dbConnection->getLastFailedLoginAttemptTimeForIp($ip)+$banPeriod;
-		if($this->dbConnection->getSuspiciousActivityCountForUidIpCombination($uid, $ip) >=
+		$banUntil = $this->attemptMapper->getLastFailedLoginAttemptTimeForIp($ip)+$banPeriod;
+		if($this->attemptMapper->getSuspiciousActivityCountForUidIpCombination($uid, $ip) >=
 			$this->config->getBruteForceProtectionFailTolerance() &&
 			$banUntil > $this->timeFactory->getTime()) {
 			throw new LoginException($this->l->t("Too many failed login attempts. Try again in %s minutes.",
@@ -93,10 +103,11 @@ class Throttle {
 	}
 
 	/**
+	 * @param string $uid
 	 * @param string $ip
 	 * @return void
 	 */
 	public function clearSuspiciousAttemptsForUidIpCombination($uid, $ip) {
-		$this->dbConnection->deleteSuspiciousAttemptsForUidIpCombination($uid, $ip);
+		$this->attemptMapper->deleteSuspiciousAttemptsForUidIpCombination($uid, $ip);
 	}
 }

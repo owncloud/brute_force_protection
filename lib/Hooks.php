@@ -47,7 +47,11 @@ class Hooks {
 	 * @param Throttle $throttle
 	 * @param IRequest $request
 	 */
-	public function __construct($userManager, $throttle, $request) {
+	public function __construct(
+		IUserManager $userManager,
+		Throttle $throttle,
+		IRequest $request
+	) {
 		$this->userManager = $userManager;
 		$this->throttle = $throttle;
 		$this->request = $request;
@@ -63,7 +67,7 @@ class Hooks {
 		});
 		
 		$this->userManager->listen('\OC\User', 'postLogin', function($user) {
-			/** @var $user \OC\User\User */
+			/** @var $user \OCP\IUser */
 			$this->postLoginCallback($user->getUID());
 		});
 	}

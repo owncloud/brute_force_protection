@@ -24,7 +24,8 @@
 namespace OCA\BruteForceProtection\Tests;
 
 
-use OCA\BruteForceProtection\Db\DbService;
+use OC\User\LoginException;
+use OCA\BruteForceProtection\Db\FailedLoginAttemptMapper;
 use OCA\BruteForceProtection\Throttle;
 use OCA\BruteForceProtection\BruteForceProtectionConfig;
 use OCP\AppFramework\Utility\ITimeFactory;
@@ -36,9 +37,9 @@ class ThrottleTest extends TestCase {
 	/** @var Throttle */
 	private $throttle;
 	/**
-	 * @var \PHPUnit_Framework_MockObject_MockObject | DbService
+	 * @var \PHPUnit_Framework_MockObject_MockObject | FailedLoginAttemptMapper
 	 */
-	private $dbServiceMock;
+	private $attemptMapper;
 	/**
 	 * @var \PHPUnit_Framework_MockObject_MockObject | BruteForceProtectionConfig
 	 */
@@ -55,38 +56,51 @@ class ThrottleTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->dbServiceMock = $this->getMockBuilder('OCA\BruteForceProtection\Db\DbService')
+		$this->attemptMapper = $this->getMockBuilder(FailedLoginAttemptMapper::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->lMock = $this->getMockBuilder('OCP\IL10N')
+		$this->lMock = $this->getMockBuilder(IL10N::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->timeFactoryMock = $this->getMockBuilder('OCP\AppFramework\Utility\ITimeFactory')
+		$this->timeFactoryMock = $this->getMockBuilder(ITimeFactory::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->configMock = $this->getMockBuilder('OCA\BruteForceProtection\BruteForceProtectionConfig')
+		$this->timeFactoryMock
+			->method('getTime')
+			->willReturn(\time());
+		$this->configMock = $this->getMockBuilder(BruteForceProtectionConfig::class)
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->throttle = new Throttle($this->dbServiceMock, $this->configMock, $this->lMock, $this->timeFactoryMock);
+		$this->throttle = new Throttle(
+			$this->attemptMapper,
+			$this->configMock,
+			$this->lMock,
+			$this->timeFactoryMock
+		);
 	}
 
 	public function testAddFailedLoginAttempt() {
-		$this->dbServiceMock->expects($this->once())->method('addFailedLoginAttempt')
-			->with('test', '192.168.1.1');
+		$this->attemptMapper->expects($this->once())->method('insert');
 
 		$this->throttle->addFailedLoginAttempt('test', '192.168.1.1');
 	}
 
 	/**
 	 * @dataProvider bruteForceTestData
+	 * @param int $lastAttempt
+	 * @param int $attemptCount
+	 * @param int $banPeriod
+	 * @param int $failTolerance
+	 * @param int $time
+	 * @throws LoginException
 	 */
 	public function testApplyBruteForcePolicy($lastAttempt, $attemptCount, $banPeriod, $failTolerance, $time) {
-		$this->dbServiceMock->expects($this->once())
+		$this->attemptMapper->expects($this->once())
 			->method('getLastFailedLoginAttemptTimeForIp')
 			->with('192.168.1.1')
 			->will($this->returnValue($lastAttempt));
-		$this->dbServiceMock->expects($this->once())
+		$this->attemptMapper->expects($this->once())
 			->method('getSuspiciousActivityCountForUidIpCombination')
 			->with('test','192.168.1.1')
 			->will($this->returnValue($attemptCount));
@@ -99,7 +113,6 @@ class ThrottleTest extends TestCase {
 		$this->timeFactoryMock->expects($this->once())
 			->method('getTime')
 			->will($this->returnValue($time));
-		$this->expectException('OC\User\LoginException');
 		$this->throttle->applyBruteForcePolicy('test','192.168.1.1');
 	}
 	public function bruteForceTestData() {

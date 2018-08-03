@@ -8,6 +8,7 @@
 	<author>Semih Serhat Karakaya</author>
 	<version>1.0.0</version>
 	<namespace>BruteForceProtection</namespace>
+	<use-migrations>true</use-migrations>
 	<dependencies>
 		<owncloud min-version="10.0.3" max-version="10.1" />
 	</dependencies>
