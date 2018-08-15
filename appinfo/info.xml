@@ -4,7 +4,7 @@
 	<name>Brute Force Protection</name>
 	<description>ownCloud brute force protection app. It hardens ownCloud security by implementing brute force protection.</description>
 	<summary>ownCloud brute force protection app</summary>
-	<licence>AGPL</licence>
+	<licence>GPLv2</licence>
 	<author>Semih Serhat Karakaya</author>
 	<version>1.0.0</version>
 	<namespace>BruteForceProtection</namespace>
