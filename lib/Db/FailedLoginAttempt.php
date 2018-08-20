@@ -24,6 +24,7 @@
 namespace OCA\BruteForceProtection\Db;
 
 use OCP\AppFramework\Db\Entity;
+
 /**
  * @method int getId()
  * @method void setId(\int $id)

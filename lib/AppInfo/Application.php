@@ -26,8 +26,7 @@ namespace OCA\BruteForceProtection\AppInfo;
 use \OCP\AppFramework\App;
 
 class Application extends App {
-
-	public function __construct(array $urlParams=array()){
+	public function __construct(array $urlParams=[]) {
 		parent::__construct('brute_force_protection', $urlParams);
 	}
 }

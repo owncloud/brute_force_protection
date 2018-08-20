@@ -43,7 +43,6 @@ class Hooks {
 	/** @var IRequest*/
 	private $request;
 
-
 	/**
 	 * @param IUserManager $userManager
 	 * @param Throttle $throttle
@@ -60,15 +59,15 @@ class Hooks {
 	}
 
 	public function register() {
-		$this->userManager->listen('\OC\User', 'preLogin', function($uid) {
+		$this->userManager->listen('\OC\User', 'preLogin', function ($uid) {
 			$this->preLoginCallback($uid);
 		});
 
-		$this->userManager->listen('\OC\User', 'failedLogin', function($uid) {
+		$this->userManager->listen('\OC\User', 'failedLogin', function ($uid) {
 			$this->failedLoginCallback($uid);
 		});
 		
-		$this->userManager->listen('\OC\User', 'postLogin', function($user) {
+		$this->userManager->listen('\OC\User', 'postLogin', function ($user) {
 			/** @var $user \OCP\IUser */
 			$this->postLoginCallback($user->getUID());
 		});

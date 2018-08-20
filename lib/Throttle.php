@@ -92,14 +92,14 @@ class Throttle {
 	 * @param string $ip
 	 * @throws LoginException
 	 */
-	public function applyBruteForcePolicy($uid ,$ip) {
+	public function applyBruteForcePolicy($uid, $ip) {
 		$banPeriod = $this->config->getBruteForceProtectionBanPeriod();
 		$banUntil = $this->attemptMapper->getLastFailedLoginAttemptTimeForIp($ip)+$banPeriod;
-		if($this->attemptMapper->getSuspiciousActivityCountForUidIpCombination($uid, $ip) >=
+		if ($this->attemptMapper->getSuspiciousActivityCountForUidIpCombination($uid, $ip) >=
 			$this->config->getBruteForceProtectionFailTolerance() &&
 			$banUntil > $this->timeFactory->getTime()) {
 			throw new LoginException($this->l->t("Too many failed login attempts. Try again in %s minutes.",
-				ceil($banPeriod/60))
+				\ceil($banPeriod/60))
 			);
 		}
 	}

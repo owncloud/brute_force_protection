@@ -154,5 +154,4 @@ class BruteForceProtectionConfigTest extends TestCase {
 			['1000', 1000]
 		];
 	}
-
 }

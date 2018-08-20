@@ -4,7 +4,6 @@ namespace OCA\brute_force_protection\Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use OCP\Migration\ISchemaMigration;
 
-
 class Version20180802194631 implements ISchemaMigration {
 
 	/** @var  string */
@@ -36,5 +35,5 @@ class Version20180802194631 implements ISchemaMigration {
 			$table->addIndex(['ip'], 'bfp_failed_logins_ip');
 			$table->addIndex(['attempted_at'], 'bfp_failed_logins_at');
 		}
-    }
+	}
 }
