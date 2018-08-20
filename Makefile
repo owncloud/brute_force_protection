@@ -106,6 +106,11 @@ else
 endif
 	tar -czf $(appstore_package_name).tar.gz -C $(appstore_package_name)/../ $(app_name)
 
+.PHONY: test-php-style
+test-php-style:
+	composer install
+	vendor/bin/php-cs-fixer fix -v --diff --diff-format udiff --dry-run --allow-risky yes
+
 # Command for running JS and PHP tests. Works for package.json files in the js/
 # and root directory. If phpunit is not installed systemwide, a copy is fetched
 # from the internet
