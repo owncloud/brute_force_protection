@@ -82,7 +82,7 @@ class FailedLoginAttemptMapper extends Mapper {
 			->andWhere($builder->expr()->eq('ip', $builder->createNamedParameter($ip)))
 			->execute()
 			->fetch();
-		return intval($attempts['count']);
+		return \intval($attempts['count']);
 	}
 
 	/**
@@ -96,11 +96,11 @@ class FailedLoginAttemptMapper extends Mapper {
 			->from($this->tableName)
 			->where($builder->expr()->gt('attempted_at', $builder->createNamedParameter($thresholdTime)))
 			->andWhere($builder->expr()->eq('ip', $builder->createNamedParameter($ip)))
-			->orderBy('attempted_at','DESC')
+			->orderBy('attempted_at', 'DESC')
 			->setMaxResults(1)
 			->execute()
 			->fetch();
-		return intval($lastAttempt['attempted_at']);
+		return \intval($lastAttempt['attempted_at']);
 	}
 
 	/**
@@ -110,7 +110,7 @@ class FailedLoginAttemptMapper extends Mapper {
 	public function deleteSuspiciousAttemptsForUidIpCombination($uid, $ip) {
 		$builder = $this->db->getQueryBuilder();
 		$builder->delete($this->tableName)
-			->where($builder->expr()->eq('uid',$builder->createNamedParameter($uid)))
+			->where($builder->expr()->eq('uid', $builder->createNamedParameter($uid)))
 			->andWhere($builder->expr()->eq('ip', $builder->createNamedParameter($ip)))
 			->execute();
 	}

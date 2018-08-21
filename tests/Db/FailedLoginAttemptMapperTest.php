@@ -106,7 +106,6 @@ class FailedLoginAttemptMapperTest extends TestCase {
 		$failedLoginAttempt->setIp("192.168.1.1");
 		$failedLoginAttempt->setAttemptedAt($this->baseTime+100);
 		$this->mapper->insert($failedLoginAttempt);
-
 	}
 
 	public function tearDown() {
@@ -124,9 +123,9 @@ class FailedLoginAttemptMapperTest extends TestCase {
 			->method('getTime')
 			->willReturn($functionCallTime);
 
-		$this->assertEquals(2, $this->mapper->getSuspiciousActivityCountForUidIpCombination('test1','192.168.1.1'));
-		$this->assertEquals(1, $this->mapper->getSuspiciousActivityCountForUidIpCombination('test1','192.168.1.2'));
-		$this->assertEquals(1, $this->mapper->getSuspiciousActivityCountForUidIpCombination('test2','192.168.1.1'));
+		$this->assertEquals(2, $this->mapper->getSuspiciousActivityCountForUidIpCombination('test1', '192.168.1.1'));
+		$this->assertEquals(1, $this->mapper->getSuspiciousActivityCountForUidIpCombination('test1', '192.168.1.2'));
+		$this->assertEquals(1, $this->mapper->getSuspiciousActivityCountForUidIpCombination('test2', '192.168.1.1'));
 	}
 
 	public function testGetLastFailedLoginAttemptTimeForIp() {
@@ -148,14 +147,14 @@ class FailedLoginAttemptMapperTest extends TestCase {
 			->Where($builder->expr()->eq('ip', $builder->createNamedParameter("192.168.1.1")))
 			->andWhere($builder->expr()->eq('uid', $builder->createNamedParameter("test1")));
 		$result = $query->execute()->fetchAll();
-		$this->assertSame(3, count($result));
+		$this->assertSame(3, \count($result));
 
-		$this->mapper->deleteSuspiciousAttemptsForUidIpCombination('test1',"192.168.1.1");
+		$this->mapper->deleteSuspiciousAttemptsForUidIpCombination('test1', "192.168.1.1");
 
 		$query = $builder->select('*')->from($this->dbTable)
 			->Where($builder->expr()->eq('ip', $builder->createNamedParameter("192.168.1.1")))
 			->andWhere($builder->expr()->eq('uid', $builder->createNamedParameter("test1")));
 		$result = $query->execute()->fetchAll();
-		$this->assertSame(0, count($result));
+		$this->assertSame(0, \count($result));
 	}
 }

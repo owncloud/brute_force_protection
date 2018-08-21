@@ -22,9 +22,7 @@
  *
  */
 
-
 namespace OCA\BruteForceProtection\Tests;
-
 
 use OC\User\Manager;
 use OCA\BruteForceProtection\Hooks;

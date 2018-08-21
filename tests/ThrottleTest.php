@@ -22,9 +22,7 @@
  *
  */
 
-
 namespace OCA\BruteForceProtection\Tests;
-
 
 use OC\User\LoginException;
 use OCA\BruteForceProtection\Db\FailedLoginAttemptMapper;
@@ -104,7 +102,7 @@ class ThrottleTest extends TestCase {
 			->will($this->returnValue($lastAttempt));
 		$this->attemptMapper->expects($this->once())
 			->method('getSuspiciousActivityCountForUidIpCombination')
-			->with('test','192.168.1.1')
+			->with('test', '192.168.1.1')
 			->will($this->returnValue($attemptCount));
 		$this->configMock->expects($this->once())
 			->method('getBruteForceProtectionBanPeriod')
@@ -115,7 +113,7 @@ class ThrottleTest extends TestCase {
 		$this->timeFactoryMock->expects($this->once())
 			->method('getTime')
 			->will($this->returnValue($time));
-		$this->throttle->applyBruteForcePolicy('test','192.168.1.1');
+		$this->throttle->applyBruteForcePolicy('test', '192.168.1.1');
 	}
 	public function bruteForceTestData() {
 		return [

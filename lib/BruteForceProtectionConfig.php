@@ -25,6 +25,7 @@
 namespace OCA\BruteForceProtection;
 
 use OCP\IConfig;
+
 /**
  * Class Config
  *
@@ -70,7 +71,7 @@ class BruteForceProtectionConfig {
 			'brute_force_protection_fail_tolerance',
 			'3'
 		);
-		return intval($tolerance);
+		return \intval($tolerance);
 	}
 
 	/**
@@ -84,7 +85,7 @@ class BruteForceProtectionConfig {
 			'brute_force_protection_time_threshold',
 			'600'
 		);
-		return intval($timeThreshold);
+		return \intval($timeThreshold);
 	}
 
 	/**
@@ -98,7 +99,7 @@ class BruteForceProtectionConfig {
 			'brute_force_protection_ban_period',
 			'300'
 		);
-		return intval($banPeriod);
+		return \intval($banPeriod);
 	}
 
 	/**

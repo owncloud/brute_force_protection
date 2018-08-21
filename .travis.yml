@@ -27,8 +27,12 @@ before_install:
   - php occ app:enable $APP_NAME
 
 script:
+  # check PHP code style
+  - cd apps/$APP_NAME
+  - composer install
+  - vendor/bin/php-cs-fixer fix -v --diff --diff-format udiff --dry-run --allow-risky yes
   # execute unit tests
-  - cd apps/$APP_NAME/tests
+  - cd tests
   - ../../../lib/composer/phpunit/phpunit/phpunit --configuration phpunit.xml
 
 after_success:
