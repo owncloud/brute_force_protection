@@ -3,12 +3,21 @@
 	<id>brute_force_protection</id>
 	<name>Brute-Force Protection</name>
 	<description>
-A brute-force attack consists of an attacker trying many user passwords with the hope of eventually guessing correctly and gaining access to a user account. Frequently such attacks are conducted in an automated way which allows attackers to try many different combinations in a short time frame. In addition attackers may use dictionaries to reduce the amount of potential combinations to actual words ("dictionary attack"). Depending on the strength of a password you can estimate the amount of attempts and the respective time it will take to break it and gain access to user data. Administrators should be aware of this potential threat and take appropriate counter-measures.
+A brute-force attack occurs when an attacker uses a range of potential passwords in the hope of using the correct one and gaining access to a user's account. Such attacks frequently operate in an automated manner. Doing so lets attackers try many different password combinations in a small time frame.
 
-The **Brute-Force Protection** extension allows administrators to specify a limit on the amount of unsuccessful login attempts. Once the limit is approached ownCloud will save ("ban") the IP address the unsuccessful login attempts were conducted from and restrict login for the combination of the user account in context and the IP address for a configurable time frame. With this an attacker is forced to either change their IP address or wait for the ban time to run-off in order to continue the attack. This best-practice approach increases the amount of time required to try a certain amount of combinations drastically making attacks unfeasible and mitigating risks to a minimum.
+Additionally, attackers may use password dictionaries to reduce the number of potential combinations to actual words. This kind of attack is called a "dictionary attack". Depending on the strength of a password, attackers can estimate the number of attempts, and the respective time required to break the password and gain access to a user's account. Administrators should be aware of this potential threat and take appropriate counter-measures.
 
-Additionally administrators can take further measures by requiring a high level of password strength using the [Password Policy](https://marketplace.owncloud.com/apps/password_policy) extension.
-Furthermore two- or multi-factor authentication can be used to even theoretically make brute-force attacks impossible by requiring additional factors (e.g., a time-based one-time password) alongside the user password. See the [2-Factor Authentication](https://marketplace.owncloud.com/apps/twofactor_totp) extension, [more sophisticated MFA solutions](https://marketplace.owncloud.com/apps/category/security) or outsourcing user authentication to an Identity Provider via the [SAML/SSO Integration](https://marketplace.owncloud.com/apps/user_shibboleth) for further information.</description>
+That's why the Brute-Force Protection extension was developed. It allows administrators to specify a maximum number of unsuccessful user account login attempts. On reaching the unsuccessful login limit, ownCloud temporarily bans further login attempts to those user accounts from the originating IP address. The time frame of the ban is configurable by ownCloud administrators.
+
+Once a ban is in effect, an attacker is forced to either change their IP address or wait for the ban time to expire before continuing the attack. This best-practice approach increases the amount of time required to conduct an attack, drastically reducing the feasibility of the attack and the possibility of a successful account login.
+
+Also, ownCloud administrators can take further steps to increase user account security. These include:
+
+1. Requiring strong passwords, using the [Password Policy](https://marketplace.owncloud.com/apps/password_policy) extension.
+2. Enabling two- or multi-factor authentication (e.g., a time-based one-time password), which can, theoretically, make brute-force attacks impossible.
+
+See the [2-Factor Authentication](https://marketplace.owncloud.com/apps/twofactor_totp) extension, [more sophisticated MFA solutions](https://marketplace.owncloud.com/apps/category/security) or outsourcing user authentication to an Identity Provider via the [SAML/SSO Integration](https://marketplace.owncloud.com/apps/user_shibboleth) for further information.
+    </description>
 	<summary>Prevent attackers from guessing user passwords</summary>
 	<licence>GPLv2</licence>
 	<author>Semih Serhat Karakaya</author>
