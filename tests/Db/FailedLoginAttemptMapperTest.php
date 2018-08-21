@@ -147,7 +147,7 @@ class FailedLoginAttemptMapperTest extends TestCase {
 			->Where($builder->expr()->eq('ip', $builder->createNamedParameter("192.168.1.1")))
 			->andWhere($builder->expr()->eq('uid', $builder->createNamedParameter("test1")));
 		$result = $query->execute()->fetchAll();
-		$this->assertSame(3, \count($result));
+		$this->assertCount(3, $result);
 
 		$this->mapper->deleteSuspiciousAttemptsForUidIpCombination('test1', "192.168.1.1");
 
@@ -155,6 +155,21 @@ class FailedLoginAttemptMapperTest extends TestCase {
 			->Where($builder->expr()->eq('ip', $builder->createNamedParameter("192.168.1.1")))
 			->andWhere($builder->expr()->eq('uid', $builder->createNamedParameter("test1")));
 		$result = $query->execute()->fetchAll();
-		$this->assertSame(0, \count($result));
+		$this->assertCount(0, $result);
+	}
+
+	public function testDeleteOldFailedLoginAttempts() {
+		$builder = $this->connection->getQueryBuilder();
+		$functionCallTime = $this->baseTime+130;
+		$this->timeFactoryMock->expects($this->exactly(1))
+			->method('getTime')
+			->willReturn($functionCallTime);
+		$query = $builder->select('*')->from($this->dbTable);
+		$result = $query->execute()->fetchAll();
+		$this->assertCount(5, $result);
+		$this->mapper->deleteOldFailedLoginAttempts($this->thresholdConfigVal);
+		$query = $builder->select('*')->from($this->dbTable);
+		$result = $query->execute()->fetchAll();
+		$this->assertCount(1, $result);
 	}
 }
