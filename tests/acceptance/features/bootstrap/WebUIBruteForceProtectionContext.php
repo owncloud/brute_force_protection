@@ -67,7 +67,8 @@ class WebUIBruteForceProtectionContext extends RawMinkContext implements Context
 	 * WebUIBruteForceProtectionContext constructor.
 	 *
 	 * @param OwncloudPage $owncloudPage
-	 * @param BruteForceProtectionPage $loginPage
+	 * @param BruteForceProtectionPage $bruteForceProtectionPage
+	 * @param LoginPage $loginPage
 	 */
 	public function __construct(
 		OwncloudPage $owncloudPage,
