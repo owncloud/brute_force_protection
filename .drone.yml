@@ -14,7 +14,6 @@ pipeline:
     db_host: ${DB_TYPE}
     db_username: autotest
     db_password: owncloud
-    exclude: apps/brute_force_protection
     when:
       matrix:
         NEED_SERVER: true
@@ -59,7 +58,6 @@ pipeline:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     commands:
-      - cd /var/www/owncloud/apps/brute_force_protection
       - make test-php-style
     when:
       matrix:
