@@ -86,6 +86,9 @@ pipeline:
       - PLATFORM=Linux
       - BEHAT_SUITE=${BEHAT_SUITE}
     commands:
+      - cd /var/www/owncloud
+      - su-exec www-data php occ config:system:set trusted_proxies 1 --value=`ip addr show eth0 | awk '$1 == "inet" {gsub(/\\/.*$/, "", $2); print $2}'`
+      - su-exec www-data php occ config:system:set trusted_proxies 2 --value=`ip addr show eth1 | awk '$1 == "inet" {gsub(/\\/.*$/, "", $2); print $2}'`
       - cd /var/www/owncloud/tests/acceptance/
       - ./run.sh --remote --config /var/www/owncloud/apps/brute_force_protection/tests/acceptance/config/behat.yml
     when:
