@@ -114,4 +114,17 @@ class FailedLoginAttemptMapper extends Mapper {
 			->andWhere($builder->expr()->eq('ip', $builder->createNamedParameter($ip)))
 			->execute();
 	}
+
+	/**
+	 * It removes entries that created before the specified threshold seconds.
+	 *
+	 * @param int $threshold the amount of threshold seconds
+	 */
+	public function deleteOldFailedLoginAttempts($threshold) {
+		$builder = $this->db->getQueryBuilder();
+		$thresholdTime = $this->timeFactory->getTime() - $threshold;
+		$builder->delete($this->tableName)
+			->where($builder->expr()->lt('attempted_at', $builder->createNamedParameter($thresholdTime)))
+			->execute();
+	}
 }
