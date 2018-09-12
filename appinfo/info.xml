@@ -31,7 +31,7 @@ See the [2-Factor Authentication](https://marketplace.owncloud.com/apps/twofacto
 		<prelogin/>
 	</types>
 	<category>security</category>
-	<screenshot>https://raw.githubusercontent.com/owncloud/brute_force_protection/7258b38283af4e3fd8a0f03084694b6ff6339505/screenshots/brute-force-protection.jpg</screenshot>
+	<screenshot>https://raw.githubusercontent.com/owncloud/screenshots/master/brute_force_protection/ownCloud-app-bruteforce-protection.jpg</screenshot>
 	<settings>
 		<admin>OCA\BruteForceProtection\Panels\AdminPanel</admin>
 	</settings>
