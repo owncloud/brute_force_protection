@@ -3,7 +3,7 @@ OC.L10N.register(
     {
     "Preferences are saved" : "Настройки сохранены",
     "Inputs must be positive integers" : "Должны вводиться целые положительные числа",
-    "Too many failed login attempts. Try again in %s minutes." : "Слишком много неудачных попыток входа. Попробуйте ещё раз чере %s минут.",
+    "Too many failed login attempts. Try again in %s minutes." : "Слишком много неудачных попыток входа. Попробуйте ещё раз через %s минут.",
     "Brute Force Protection" : "Защита от прямого перебора",
     "Count failed login attempts over how many seconds?" : "За сколько секунд считать неудачные попытки входа?",
     "Ban after how many failed login attempts?" : "Через сколько неудачных попыток входа банить?",
