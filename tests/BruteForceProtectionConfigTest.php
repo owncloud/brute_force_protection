@@ -86,7 +86,7 @@ class BruteForceProtectionConfigTest extends TestCase {
 	 */
 	public function testGetBruteForceProtectionTimeThreshold($appConfigValue, $expected) {
 		$this->config->expects($this->once())->method('getAppValue')
-			->with('brute_force_protection', 'brute_force_protection_time_threshold', '600')
+			->with('brute_force_protection', 'brute_force_protection_time_threshold', '60')
 			->willReturn($appConfigValue);
 		$this->assertSame($expected,
 			$this->bfpConfig->getBruteForceProtectionTimeThreshold()

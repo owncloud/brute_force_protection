@@ -37,8 +37,10 @@ class ExpireOldAttemptsTest extends TestCase {
 	private $mapper;
 	/** @var BruteForceProtectionConfig | \PHPUnit_Framework_MockObject_MockObject $config */
 	private $config;
-	/** @var string $thresholdConfigVal */
-	private $thresholdConfigVal = '60';
+	/** @var int $thresholdConfigVal */
+	private $thresholdConfigVal = 60;
+	/** @var int $thresholdConfigVal */
+	private $banPeriodConfigVal = 300;
 	/** @var ExpireOldAttempts $expireAttempts */
 	private $expireAttempts;
 	public function setUp() {
@@ -56,9 +58,12 @@ class ExpireOldAttemptsTest extends TestCase {
 		$this->config->expects($this->exactly(1))
 			->method('getBruteForceProtectionTimeThreshold')
 			->willReturn($this->thresholdConfigVal);
+		$this->config->expects($this->exactly(1))
+			->method('getBruteForceProtectionBanPeriod')
+			->willReturn($this->banPeriodConfigVal);
 		$this->mapper->expects($this->exactly(1))
 			->method('deleteOldFailedLoginAttempts')
-			->with($this->thresholdConfigVal);
+			->with($this->thresholdConfigVal+$this->banPeriodConfigVal);
 		$this->expireAttempts->run($argument);
 	}
 }

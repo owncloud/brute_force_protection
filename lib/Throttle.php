@@ -94,7 +94,7 @@ class Throttle {
 	 */
 	public function applyBruteForcePolicy($uid, $ip) {
 		$banPeriod = $this->config->getBruteForceProtectionBanPeriod();
-		$banUntil = $this->attemptMapper->getLastFailedLoginAttemptTimeForIp($ip)+$banPeriod;
+		$banUntil = $this->attemptMapper->getLastFailedLoginAttemptTimeForUidIpCombination($uid, $ip) + $banPeriod;
 		if ($this->attemptMapper->getSuspiciousActivityCountForUidIpCombination($uid, $ip) >=
 			$this->config->getBruteForceProtectionFailTolerance() &&
 			$banUntil > $this->timeFactory->getTime()) {

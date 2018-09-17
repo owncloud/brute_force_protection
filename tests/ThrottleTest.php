@@ -97,8 +97,8 @@ class ThrottleTest extends TestCase {
 	 */
 	public function testApplyBruteForcePolicy($lastAttempt, $attemptCount, $banPeriod, $failTolerance, $time) {
 		$this->attemptMapper->expects($this->once())
-			->method('getLastFailedLoginAttemptTimeForIp')
-			->with('192.168.1.1')
+			->method('getLastFailedLoginAttemptTimeForUidIpCombination')
+			->with('test', '192.168.1.1')
 			->will($this->returnValue($lastAttempt));
 		$this->attemptMapper->expects($this->once())
 			->method('getSuspiciousActivityCountForUidIpCombination')
