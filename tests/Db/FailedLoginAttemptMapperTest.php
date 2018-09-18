@@ -54,8 +54,8 @@ class FailedLoginAttemptMapperTest extends TestCase {
 	/** @var string  */
 	private $dbTable = 'bfp_failed_logins';
 
-	/** @var string $thresholdConfigVal */
-	private $thresholdConfigVal = '60';
+	/** @var int $thresholdConfigVal */
+	private $thresholdConfigVal = 60;
 
 	public function setUp() {
 		parent::setUp();
@@ -123,21 +123,21 @@ class FailedLoginAttemptMapperTest extends TestCase {
 			->method('getTime')
 			->willReturn($functionCallTime);
 
-		$this->assertEquals(2, $this->mapper->getSuspiciousActivityCountForUidIpCombination('test1', '192.168.1.1'));
+		$this->assertEquals(3, $this->mapper->getSuspiciousActivityCountForUidIpCombination('test1', '192.168.1.1'));
 		$this->assertEquals(1, $this->mapper->getSuspiciousActivityCountForUidIpCombination('test1', '192.168.1.2'));
 		$this->assertEquals(1, $this->mapper->getSuspiciousActivityCountForUidIpCombination('test2', '192.168.1.1'));
 	}
 
-	public function testGetLastFailedLoginAttemptTimeForIp() {
+	public function testGetLastFailedLoginAttemptTimeForUidIpCombination() {
 		$lastAttemptTime = $this->baseTime+100;
 		$this->configMock->expects($this->once())
-			->method('getBruteForceProtectionTimeThreshold')
-			->willReturn('300');
+			->method('getBruteForceProtectionBanPeriod')
+			->willReturn('250');
 		$this->timeFactoryMock->expects($this->once())
 			->method('getTime')
 			->willReturn($this->baseTime+300);
 
-		$this->assertEquals($this->mapper->getLastFailedLoginAttemptTimeForIp('192.168.1.1'), $lastAttemptTime);
+		$this->assertEquals($this->mapper->getLastFailedLoginAttemptTimeForUidIpCombination('test1', '192.168.1.1'), $lastAttemptTime);
 	}
 
 	public function testDeleteSuspiciousAttemptsForUidIpCombination() {

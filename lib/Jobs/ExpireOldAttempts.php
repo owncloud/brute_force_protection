@@ -39,8 +39,9 @@ class ExpireOldAttempts extends TimedJob {
 		$this->mapper = $mapper;
 		$this->config = $config;
 	}
+
 	public function run($argument) {
-		$threshold = $this->config->getBruteForceProtectionTimeThreshold();
+		$threshold = $this->config->getBruteForceProtectionTimeThreshold() + $this->config->getBruteForceProtectionBanPeriod();
 		$this->mapper->deleteOldFailedLoginAttempts($threshold);
 	}
 }

@@ -83,7 +83,7 @@ class BruteForceProtectionConfig {
 		$timeThreshold = $this->config->getAppValue(
 			'brute_force_protection',
 			'brute_force_protection_time_threshold',
-			'600'
+			'60'
 		);
 		return \intval($timeThreshold);
 	}

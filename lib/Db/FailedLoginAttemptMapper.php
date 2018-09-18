@@ -74,7 +74,7 @@ class FailedLoginAttemptMapper extends Mapper {
 	 */
 	public function getSuspiciousActivityCountForUidIpCombination($uid, $ip) {
 		$builder = $this->db->getQueryBuilder();
-		$thresholdTime = $this->timeFactory->getTime() - $this->config->getBruteForceProtectionTimeThreshold();
+		$thresholdTime = $this->getLastFailedLoginAttemptTimeForUidIpCombination($uid, $ip) - $this->config->getBruteForceProtectionTimeThreshold();
 		$attempts = $builder->selectAlias($builder->createFunction('COUNT(*)'), 'count')
 			->from($this->tableName)
 			->where($builder->expr()->gt('attempted_at', $builder->createNamedParameter($thresholdTime)))
@@ -86,15 +86,17 @@ class FailedLoginAttemptMapper extends Mapper {
 	}
 
 	/**
+	 * @param string $uid
 	 * @param string $ip
 	 * @return int
 	 */
-	public function getLastFailedLoginAttemptTimeForIp($ip) {
+	public function getLastFailedLoginAttemptTimeForUidIpCombination($uid, $ip) {
 		$builder = $this->db->getQueryBuilder();
-		$thresholdTime = $this->timeFactory->getTime() - $this->config->getBruteForceProtectionTimeThreshold();
+		$thresholdTime = $this->timeFactory->getTime() - $this->config->getBruteForceProtectionBanPeriod();
 		$lastAttempt = $builder->select('attempted_at')
 			->from($this->tableName)
 			->where($builder->expr()->gt('attempted_at', $builder->createNamedParameter($thresholdTime)))
+			->andWhere($builder->expr()->eq('uid', $builder->createNamedParameter($uid)))
 			->andWhere($builder->expr()->eq('ip', $builder->createNamedParameter($ip)))
 			->orderBy('attempted_at', 'DESC')
 			->setMaxResults(1)
