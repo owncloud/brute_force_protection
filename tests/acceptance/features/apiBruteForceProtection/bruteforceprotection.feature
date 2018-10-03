@@ -7,8 +7,8 @@ Feature: brute force protection
 
   Background:
     Given these users have been created:
-      | username | password | displayname | email        |
-      | user1    | 1234     | User One    | u1@oc.com.np |
+      | username |
+      | user1    |
     And the administrator has set the bruteforceprotection settings to:
       | threshold-time | 60  |
       | fail-tolerance | 2   |
@@ -17,7 +17,7 @@ Feature: brute force protection
   Scenario Outline: access is blocked after too many invalid requests
     Given user "user1" has sent HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
     And user "user1" has sent HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    When user "user1" sends HTTP method "<method>" to URL "<endpoint>" with password "1234"
+    When user "user1" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
       | method   | endpoint                                | http-code |
@@ -32,7 +32,7 @@ Feature: brute force protection
 
   Scenario Outline: access is still possible if the invalid requests did not reach fail-tolerance
     Given user "user1" has sent HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    When user "user1" sends HTTP method "<method>" to URL "<endpoint>" with password "1234"
+    When user "user1" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
       | method   | endpoint                                | http-code |
@@ -51,7 +51,7 @@ Feature: brute force protection
       | user2    | 1234     | User Two    | u2@oc.com.np |
     And user "user1" has sent HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
     And user "user1" has sent HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    When user "user2" sends HTTP method "<method>" to URL "<endpoint>" with password "1234"
+    When user "user2" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
       | method   | endpoint                                | http-code |
@@ -69,7 +69,7 @@ Feature: brute force protection
     And user "user1" has sent HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
     And user "user1" has sent HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
     When the client accesses the server from IP address "192.168.56.1" using X-Forwarded-For header
-    And user "user1" sends HTTP method "<method>" to URL "<endpoint>" with password "1234"
+    And user "user1" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
       | method   | endpoint                                | http-code |
@@ -85,5 +85,5 @@ Feature: brute force protection
   Scenario: accessing different endpoints with wrong password should block user
     Given user "user1" has sent HTTP method "PROPFIND" to URL "/remote.php/dav/systemtags" with password "notvalid"
     And user "user1" has sent HTTP method "GET" to URL "/remote.php/webdav/welcome.txt" with password "notvalid"
-    When user "user1" sends HTTP method "GET" to URL "/index.php/apps/files" with password "1234"
+    When user "user1" sends HTTP method "GET" to URL "/index.php/apps/files"
     Then the HTTP status code should be "403"
