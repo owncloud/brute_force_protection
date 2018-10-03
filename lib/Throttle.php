@@ -98,11 +98,19 @@ class Throttle {
 		if ($this->attemptMapper->getSuspiciousActivityCountForUidIpCombination($uid, $ip) >=
 			$this->config->getBruteForceProtectionFailTolerance() &&
 			$banUntil > $this->timeFactory->getTime()) {
-			if ($banPeriod >= 59 * 60) {
-				$errorMessage = $this->l->t("Too many failed login attempts. Try again in %s hours.", \ceil($banPeriod / 3600));
+			$banDuration = $banUntil - $this->timeFactory->getTime();
+			$hours = \floor($banDuration / 3600);
+			$minutes = \floor(($banDuration - ($hours * 3600)) / 60);
+			$seconds = \ceil($banDuration - ($minutes * 60) - ($hours * 3600));
+
+			if ($hours == 0 && $minutes == 0) {
+				$errorMessage = $this->l->t("Too many failed login attempts. Try again in %s seconds.", $seconds);
+			} elseif ($hours == 0) {
+				$errorMessage = $this->l->t("Too many failed login attempts. Try again in %s minutes %s seconds.", [$minutes, $seconds]);
 			} else {
-				$errorMessage = $this->l->t("Too many failed login attempts. Try again in %s minutes.", \ceil($banPeriod / 60));
+				$errorMessage = $this->l->t("Too many failed login attempts. Try again in %s hours %s minutes %s seconds.", [$hours, $minutes, $seconds]);
 			}
+
 			throw new LoginException($errorMessage);
 		}
 	}
