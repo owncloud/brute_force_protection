@@ -62,6 +62,11 @@ class BruteForceProtectionContext implements Context {
 	 */
 	public function setBruteforceprotectionSetting($setting, $value) {
 		$settingName = $this->mapSettingName($setting);
+
+		if ($value === '') {
+			$value = "''";
+		}
+
 		$occResult = SetupHelper::runOcc(
 			[
 				'config:app:set',
