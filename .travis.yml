@@ -21,6 +21,7 @@ before_install:
   - which php
   - more $(which pecl)
   - which phpize
+  - sudo apt-get -qq update
   - bash tests/.travis/before_install.sh $APP_NAME $CORE_BRANCH $DB
   - make
   - cd ../core
