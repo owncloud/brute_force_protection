@@ -98,8 +98,8 @@ class Throttle {
 		if ($this->attemptMapper->getSuspiciousActivityCountForUidIpCombination($uid, $ip) >=
 			$this->config->getBruteForceProtectionFailTolerance() &&
 			$banUntil > $this->timeFactory->getTime()) {
-			throw new LoginException($this->l->t("Too many failed login attempts. Try again in %s minutes.",
-				\ceil($banPeriod/60))
+			throw new LoginException($this->l->t("Too many failed login attempts. Try again in %s.",
+				$this->parseBanPeriodForHumans($banPeriod))
 			);
 		}
 	}
@@ -111,5 +111,15 @@ class Throttle {
 	 */
 	public function clearSuspiciousAttemptsForUidIpCombination($uid, $ip) {
 		$this->attemptMapper->deleteSuspiciousAttemptsForUidIpCombination($uid, $ip);
+	}
+
+	/**
+	 * @param int $minutes
+	 * @return string $banPeriodForHumans
+	 */
+	private function parseBanPeriodForHumans($banPeriod) {
+		return ($banPeriod / 60 < 60)
+			? $this->l->n(' %n minute', ' %n minutes', (int)\ceil($banPeriod/60))
+			: $this->l->n(' %n hour', ' %n hours', (int)\ceil(($banPeriod/60)/60));
 	}
 }
