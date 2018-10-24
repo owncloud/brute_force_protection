@@ -24,7 +24,6 @@
 
 namespace OCA\BruteForceProtection\Tests;
 
-use OC\User\LoginException;
 use OCA\BruteForceProtection\Db\FailedLoginAttemptMapper;
 use OCA\BruteForceProtection\Throttle;
 use OCA\BruteForceProtection\BruteForceProtectionConfig;
@@ -65,9 +64,6 @@ class ThrottleTest extends TestCase {
 		$this->timeFactoryMock = $this->getMockBuilder(ITimeFactory::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->timeFactoryMock
-			->method('getTime')
-			->willReturn(\time());
 		$this->configMock = $this->getMockBuilder(BruteForceProtectionConfig::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -93,7 +89,7 @@ class ThrottleTest extends TestCase {
 	 * @param int $banPeriod
 	 * @param int $failTolerance
 	 * @param int $time
-	 * @throws LoginException
+	 * @expectedException \OC\User\LoginException
 	 */
 	public function testApplyBruteForcePolicy($lastAttempt, $attemptCount, $banPeriod, $failTolerance, $time) {
 		$this->attemptMapper->expects($this->once())
