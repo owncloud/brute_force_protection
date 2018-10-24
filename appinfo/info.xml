@@ -25,7 +25,7 @@ See the [2-Factor Authentication](https://marketplace.owncloud.com/apps/twofacto
 	<namespace>BruteForceProtection</namespace>
 	<use-migrations>true</use-migrations>
 	<dependencies>
-		<owncloud min-version="10.0.3" max-version="10.1" />
+		<owncloud min-version="10.0.3" max-version="11.0.0.0" />
 	</dependencies>
 	<types>
 		<prelogin/>
