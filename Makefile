@@ -1,3 +1,19 @@
+SHELL := /bin/bash
+
+COMPOSER_BIN := $(shell command -v composer 2> /dev/null)
+ifndef COMPOSER_BIN
+    $(error composer is not available on your system, please install composer)
+endif
+
+NPM := $(shell command -v npm 2> /dev/null)
+ifndef NPM
+    $(error npm is not available on your system, please install npm)
+endif
+
+NODE_PREFIX=$(shell pwd)
+BOWER=$(NODE_PREFIX)/node_modules/bower/bin/bower
+JSDOC=$(NODE_PREFIX)/node_modules/.bin/jsdoc
+
 app_name=$(notdir $(CURDIR))
 project_directory=$(CURDIR)/../$(app_name)
 build_tools_directory=$(CURDIR)/build/tools
@@ -21,6 +37,10 @@ endif
 endif
 endif
 
+# bin file definitions
+PHPUNIT=php -d zend.enable_gc=0  vendor/bin/phpunit
+PHPUNITDBG=phpdbg -qrr -d memory_limit=4096M -d zend.enable_gc=0 "./vendor/bin/phpunit"
+PHP_CS_FIXER=php -d zend.enable_gc=0 vendor-bin/owncloud-codestyle/vendor/bin/php-cs-fixer
 
 all: build
 
@@ -106,30 +126,20 @@ else
 endif
 	tar -czf $(appstore_package_name).tar.gz -C $(appstore_package_name)/../ $(app_name)
 
+.PHONY: test-php-unit
+test-php-unit:             ## Run php unit tests
+test-php-unit: vendor/bin/phpunit
+	$(PHPUNIT) --configuration ./phpunit.xml --testsuite unit
+
+.PHONY: test-php-unit-dbg
+test-php-unit-dbg:         ## Run php unit tests using phpdbg
+test-php-unit-dbg: vendor/bin/phpunit
+	$(PHPUNITDBG) --configuration ./phpunit.xml --testsuite unit
+
 .PHONY: test-php-style
-test-php-style:
-	composer install
-	vendor/bin/php-cs-fixer fix -v --diff --diff-format udiff --dry-run --allow-risky yes
-
-# Command for running JS and PHP tests. Works for package.json files in the js/
-# and root directory. If phpunit is not installed systemwide, a copy is fetched
-# from the internet
-.PHONY: test
-test:
-ifneq (,$(wildcard $(CURDIR)/js/package.json))
-	cd js && $(npm) run test
-endif
-ifneq (,$(wildcard $(CURDIR)/package.json))
-	$(npm) run test
-endif
-
-ifneq (,$(wildcard $(CURDIR)/../../lib/composer/bin/phpunit))
-	$(CURDIR)/../../lib/composer/bin/phpunit -c phpunit.xml --coverage-clover build/php-unit.clover
-	$(CURDIR)/../../lib/composer/bin/phpunit -c phpunit.integration.xml --coverage-clover build/php-unit.clover
-else
-	phpunit -c phpunit.xml --coverage-clover build/php-unit.clover
-	phpunit -c phpunit.integration.xml --coverage-clover build/php-unit.clover
-endif
+test-php-style:            ## Run php-cs-fixer and check owncloud code-style
+test-php-style: vendor-bin/owncloud-codestyle/vendor
+	$(PHP_CS_FIXER) fix -v --diff --diff-format udiff --allow-risky yes --dry-run
 
 # watch out for changes and rebuild
 .PHONY: watch
@@ -140,3 +150,37 @@ endif
 ifneq (,$(wildcard $(CURDIR)/package.json))
 	$(npm) run watch
 endif
+
+#
+# Dependency management
+#--------------------------------------
+
+composer.lock: composer.json
+	@echo composer.lock is not up to date.
+
+vendor: composer.lock
+	composer install --no-dev
+
+vendor/bin/phpunit: composer.lock
+	composer install
+
+vendor/bamarni/composer-bin-plugin: composer.lock
+	composer install
+
+vendor-bin/owncloud-codestyle/vendor: vendor/bamarni/composer-bin-plugin vendor-bin/owncloud-codestyle/composer.lock
+	composer bin owncloud-codestyle install --no-progress
+
+vendor-bin/owncloud-codestyle/composer.lock: vendor-bin/owncloud-codestyle/composer.json
+	@echo owncloud-codestyle composer.lock is not up to date.
+
+vendor-bin/phan/vendor: vendor/bamarni/composer-bin-plugin vendor-bin/phan/composer.lock
+	composer bin phan install --no-progress
+
+vendor-bin/phan/composer.lock: vendor-bin/phan/composer.json
+	@echo phan composer.lock is not up to date.
+
+vendor-bin/phpstan/vendor: vendor/bamarni/composer-bin-plugin vendor-bin/phpstan/composer.lock
+	composer bin phpstan install --no-progress
+
+vendor-bin/phpstan/composer.lock: vendor-bin/phpstan/composer.json
+	@echo phpstan composer.lock is not up to date.

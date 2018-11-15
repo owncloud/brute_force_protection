@@ -57,7 +57,7 @@ vendor/
 # Tests - auto-generated files
 /tests/coverage*
 /tests/acceptance/output*
-/tests/clover.xml
+/tests/output/clover.xml
 /tests/js/node_modules
 /build/
 
