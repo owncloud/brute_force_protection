@@ -53,6 +53,8 @@ nbproject
 # Composer
 composer.phar
 vendor/
+vendor-bin/**/vendor
+vendor-bin/**/composer.lock
 
 # Tests - auto-generated files
 /tests/coverage*
