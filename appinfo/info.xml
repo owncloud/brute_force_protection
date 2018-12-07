@@ -21,11 +21,11 @@ See the [2-Factor Authentication](https://marketplace.owncloud.com/apps/twofacto
 	<summary>Prevent attackers from guessing user passwords</summary>
 	<licence>GPLv2</licence>
 	<author>Semih Serhat Karakaya</author>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<namespace>BruteForceProtection</namespace>
 	<use-migrations>true</use-migrations>
 	<dependencies>
-		<owncloud min-version="10.0.3" max-version="11.0.0.0" />
+		<owncloud min-version="10.0.3" max-version="10" />
 	</dependencies>
 	<types>
 		<prelogin/>
