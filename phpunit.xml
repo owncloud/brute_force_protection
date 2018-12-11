@@ -4,7 +4,7 @@
 	 verbose="true"
 	 failOnWarning="true">
 	<testsuite name='unit'>
-		<directory>./tests</directory>
+		<directory>./tests/unit</directory>
 	</testsuite>
 	<filter>
 		<whitelist>
