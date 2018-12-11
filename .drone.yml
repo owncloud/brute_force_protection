@@ -28,8 +28,6 @@ pipeline:
       - php occ a:e testing
       - php occ a:l
       - php occ config:system:set trusted_domains 1 --value=owncloud
-      - php occ config:system:set trusted_proxies 1 --value=`ip addr show eth0 | awk '$1 == "inet" {gsub(/\\/.*$/, "", $2); print $2}'`
-      - php occ config:system:set trusted_proxies 2 --value=`ip addr show eth1 | awk '$1 == "inet" {gsub(/\\/.*$/, "", $2); print $2}'`
       - php occ log:manage --level 0
     when:
       matrix:
@@ -86,6 +84,10 @@ pipeline:
       - PLATFORM=Linux
       - BEHAT_SUITE=${BEHAT_SUITE}
     commands:
+      - cd /var/www/owncloud
+      - su-exec www-data php occ config:system:set trusted_proxies 1 --value=`ip addr show eth0 | awk '$1 == "inet" {gsub(/\\/.*$/, "", $2); print $2}'`
+      - su-exec www-data php occ config:system:set trusted_proxies 2 --value=`ip addr show eth1 | awk '$1 == "inet" {gsub(/\\/.*$/, "", $2); print $2}'`
+      - cd /var/www/owncloud/apps/brute_force_protection
       - make test-acceptance-api
     when:
       matrix:
