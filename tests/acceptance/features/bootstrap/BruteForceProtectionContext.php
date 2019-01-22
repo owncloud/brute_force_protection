@@ -42,10 +42,13 @@ class BruteForceProtectionContext implements Context {
 	/**
 	 * @Given the administrator has set the bruteforceprotection settings to:
 	 *
-	 * @param TableNode $table settings to be set
-	 * setting-value table without header
-	 * possible settings: threshold-time, fail-tolerance, ban-period
+	 * @param TableNode $settings settings to be set
+	 *                            table without header and with two columns,
+	 *                            the settings name and the setting value.
+	 *                            possible settings:
+	 *                            threshold-time, fail-tolerance, ban-period
 	 *
+	 * @return void
 	 */
 	public function setTheBruteforceprotectionSettings(TableNode $settings) {
 		foreach ($settings->getRowsHash() as $setting => $value) {
@@ -57,6 +60,7 @@ class BruteForceProtectionContext implements Context {
 	 *
 	 * @param string $setting
 	 * @param string $value
+	 *
 	 * @throws \Exception
 	 * @return void
 	 */
@@ -88,23 +92,27 @@ class BruteForceProtectionContext implements Context {
 	/**
 	 *
 	 * @param string $setting
+	 *
 	 * @return string
 	 */
 	public function getBruteforceprotectionSetting($setting) {
 		$settingName = $this->mapSettingName($setting);
-		return \trim(SetupHelper::runOcc(
-			[
-				'config:app:get',
-				'brute_force_protection',
-				$settingName,
-			]
-		)['stdOut']);
+		return \trim(
+			SetupHelper::runOcc(
+				[
+					'config:app:get',
+					'brute_force_protection',
+					$settingName,
+				]
+			)['stdOut']
+		);
 	}
 
 	/**
 	 * maps the settings threshold-time, fail-tolerance, ban-period to names needed for occ
 	 *
 	 * @param string $setting
+	 *
 	 * @throws \InvalidArgumentException
 	 * @return string
 	 */
@@ -145,12 +153,12 @@ class BruteForceProtectionContext implements Context {
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getOcPath()
 		);
-		$this->savedSettings['threshold-time'] =
-			$this->getBruteforceprotectionSetting('threshold-time');
-		$this->savedSettings['fail-tolerance'] =
-			$this->getBruteforceprotectionSetting('fail-tolerance');
-		$this->savedSettings['ban-period'] =
-			$this->getBruteforceprotectionSetting('ban-period');
+		$this->savedSettings['threshold-time']
+			= $this->getBruteforceprotectionSetting('threshold-time');
+		$this->savedSettings['fail-tolerance']
+			= $this->getBruteforceprotectionSetting('fail-tolerance');
+		$this->savedSettings['ban-period']
+			= $this->getBruteforceprotectionSetting('ban-period');
 	}
 
 	/**
@@ -172,6 +180,8 @@ class BruteForceProtectionContext implements Context {
 
 	/**
 	 * @AfterScenario
+	 *
+	 * @return void
 	 */
 	public function setBackAppSettings() {
 		foreach ($this->savedSettings as $setting => $value) {
