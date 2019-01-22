@@ -85,8 +85,8 @@ class BruteForceProtectionPage extends OwncloudPage {
 	 * saves the settings
 	 *
 	 * @param Session $session
-	 * @throws ElementNotFoundException
 	 *
+	 * @throws ElementNotFoundException
 	 * @return BruteForceProtectionPage
 	 */
 	public function saveSettings($session) {

@@ -83,10 +83,13 @@ class WebUIBruteForceProtectionContext extends RawMinkContext implements Context
 	/**
 	 * @When the administrator sets the bruteforceprotection settings using the webUI to:
 	 *
-	 * @param TableNode $table settings to be set
-	 * setting-value table without header
-	 * possible settings: threshold-time, fail-tolerance, ban-period
+	 * @param TableNode $settings settings to be set
+	 *                            table without header and with two columns,
+	 *                            the settings name and the setting value.
+	 *                            possible settings:
+	 *                            threshold-time, fail-tolerance, ban-period
 	 *
+	 * @return void
 	 */
 	public function setTheBruteforceprotectionSettings(TableNode $settings) {
 		$this->webUIGeneralContext->adminLogsInUsingTheWebUI();
@@ -98,7 +101,6 @@ class WebUIBruteForceProtectionContext extends RawMinkContext implements Context
 	 * @When the blocked user :username tries to login using the password :password from the webUI
 	 *
 	 * @param string $username
-	 *
 	 * @param string $password
 	 *
 	 * @return void
