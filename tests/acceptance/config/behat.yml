@@ -1,11 +1,11 @@
 default:
   autoload:
-     '': %paths.base%/../features/bootstrap
+     '': '%paths.base%/../features/bootstrap'
 
   suites:
     webUIBruteForceProtection:
       paths:
-        - %paths.base%/../features/webUIBruteForceProtection
+        - '%paths.base%/../features/webUIBruteForceProtection'
       contexts:
         - BruteForceProtectionContext:
         - WebUIBruteForceProtectionContext:
@@ -19,7 +19,7 @@ default:
             ocPath: apps/testing/api/v1/occ
     apiBruteForceProtection:
       paths:
-        - %paths.base%/../features/apiBruteForceProtection
+        - '%paths.base%/../features/apiBruteForceProtection'
       contexts:
         - BruteForceProtectionContext:
         - FeatureContext: *common_feature_context_params
@@ -27,4 +27,4 @@ default:
   extensions:
       jarnaiz\JUnitFormatter\JUnitFormatterExtension:
           filename: report.xml
-          outputDir: %paths.base%/../output/
+          outputDir: '%paths.base%/../output/'
