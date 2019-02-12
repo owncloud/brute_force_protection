@@ -22,7 +22,6 @@ source_package_name=$(source_build_directory)/$(app_name)
 appstore_build_directory=$(CURDIR)/build/artifacts/appstore
 appstore_package_name=$(appstore_build_directory)/$(app_name)
 npm=$(shell which npm 2> /dev/null)
-composer=$(shell which composer 2> /dev/null)
 
 acceptance_test_deps=vendor-bin/behat/vendor
 
@@ -70,17 +69,8 @@ endif
 # a copy is fetched from the web
 .PHONY: composer
 composer:
-ifeq (, $(composer))
-	@echo "No composer command available, downloading a copy from the web"
-	mkdir -p $(build_tools_directory)
-	curl -sS https://getcomposer.org/installer | php
-	mv composer.phar $(build_tools_directory)
-	php $(build_tools_directory)/composer.phar install --prefer-dist
-	php $(build_tools_directory)/composer.phar update --prefer-dist
-else
 	composer install --prefer-dist
 	composer update --prefer-dist
-endif
 
 # Installs npm dependencies
 .PHONY: npm
