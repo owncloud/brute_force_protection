@@ -30,9 +30,9 @@ use OCP\IRequest;
 use Test\TestCase;
 
 class SettingsControllerTest extends TestCase {
-	/** @var IRequest|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var IRequest|\PHPUnit\Framework\MockObject\MockObject */
 	private $request;
-	/** @var BruteForceProtectionConfig|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var BruteForceProtectionConfig|\PHPUnit\Framework\MockObject\MockObject */
 	private $config;
 	/** @var SettingsController */
 	private $controller;

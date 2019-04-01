@@ -35,15 +35,15 @@ class HooksTest extends TestCase {
 	/** @var  Hooks */
 	private $hooks;
 	/**
-	 * @var \PHPUnit_Framework_MockObject_MockObject | Manager
+	 * @var \PHPUnit\Framework\MockObject\MockObject | Manager
 	 */
 	private $userManagerMock;
 	/**
-	 * @var \PHPUnit_Framework_MockObject_MockObject | Throttle
+	 * @var \PHPUnit\Framework\MockObject\MockObject | Throttle
 	 */
 	private $throttleMock;
 	/**
-	 * @var \PHPUnit_Framework_MockObject_MockObject | IRequest
+	 * @var \PHPUnit\Framework\MockObject\MockObject | IRequest
 	 */
 	private $requestMock;
 
