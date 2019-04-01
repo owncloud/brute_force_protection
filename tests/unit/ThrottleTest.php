@@ -36,19 +36,19 @@ class ThrottleTest extends TestCase {
 	/** @var Throttle */
 	private $throttle;
 	/**
-	 * @var \PHPUnit_Framework_MockObject_MockObject | FailedLoginAttemptMapper
+	 * @var \PHPUnit\Framework\MockObject\MockObject | FailedLoginAttemptMapper
 	 */
 	private $attemptMapper;
 	/**
-	 * @var \PHPUnit_Framework_MockObject_MockObject | BruteForceProtectionConfig
+	 * @var \PHPUnit\Framework\MockObject\MockObject | BruteForceProtectionConfig
 	 */
 	private $configMock;
 	/**
-	 * @var \PHPUnit_Framework_MockObject_MockObject | IL10N
+	 * @var \PHPUnit\Framework\MockObject\MockObject | IL10N
 	 */
 	private $lMock;
 	/**
-	 * @var \PHPUnit_Framework_MockObject_MockObject | ITimeFactory
+	 * @var \PHPUnit\Framework\MockObject\MockObject | ITimeFactory
 	 */
 	private $timeFactoryMock;
 

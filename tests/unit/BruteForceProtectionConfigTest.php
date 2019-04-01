@@ -29,7 +29,7 @@ use OCP\IConfig;
 use Test\TestCase;
 
 class BruteForceProtectionConfigTest extends TestCase {
-	/** @var  IConfig|\PHPUnit_Framework_MockObject_MockObject */
+	/** @var  IConfig|\PHPUnit\Framework\MockObject\MockObject */
 	private $config;
 	/** @var  BruteForceProtectionConfig */
 	private $bfpConfig;
@@ -42,7 +42,7 @@ class BruteForceProtectionConfigTest extends TestCase {
 
 	/**
 	 * @param array $mockedMethods
-	 * @return BruteForceProtectionConfig | \PHPUnit_Framework_MockObject_MockObject
+	 * @return BruteForceProtectionConfig | \PHPUnit\Framework\MockObject\MockObject
 	 */
 	private function getMockInstance($mockedMethods = []) {
 		$passwordValidator = $this->getMockBuilder('OCA\BruteForceProtection\BruteForceProtectionConfig')

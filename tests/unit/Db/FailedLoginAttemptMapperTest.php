@@ -42,10 +42,10 @@ class FailedLoginAttemptMapperTest extends TestCase {
 	/** @var  IDBConnection $connection*/
 	private $connection;
 
-	/** @var BruteForceProtectionConfig | \PHPUnit_Framework_MockObject_MockObject $configMock */
+	/** @var BruteForceProtectionConfig | \PHPUnit\Framework\MockObject\MockObject $configMock */
 	private $configMock;
 
-	/** @var ITimeFactory | \PHPUnit_Framework_MockObject_MockObject $timeFactory */
+	/** @var ITimeFactory | \PHPUnit\Framework\MockObject\MockObject $timeFactory */
 	private $timeFactoryMock;
 
 	/** @var int $baseTime */

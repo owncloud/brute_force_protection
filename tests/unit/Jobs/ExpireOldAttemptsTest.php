@@ -33,9 +33,9 @@ use Test\TestCase;
  * @package OCA\BruteForceProtection\Tests\Jobs
  */
 class ExpireOldAttemptsTest extends TestCase {
-	/** @var FailedLoginAttemptMapper | \PHPUnit_Framework_MockObject_MockObject $mapper */
+	/** @var FailedLoginAttemptMapper | \PHPUnit\Framework\MockObject\MockObject $mapper */
 	private $mapper;
-	/** @var BruteForceProtectionConfig | \PHPUnit_Framework_MockObject_MockObject $config */
+	/** @var BruteForceProtectionConfig | \PHPUnit\Framework\MockObject\MockObject $config */
 	private $config;
 	/** @var int $thresholdConfigVal */
 	private $thresholdConfigVal = 60;
