@@ -2,7 +2,9 @@
 <phpunit bootstrap="../../tests/bootstrap.php"
 	 strict="true"
 	 verbose="true"
-	 failOnWarning="true">
+	 failOnRisky="true"
+	 failOnWarning="true"
+>
 	<testsuite name='unit'>
 		<directory>./tests/unit</directory>
 	</testsuite>
