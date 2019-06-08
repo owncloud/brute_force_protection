@@ -6,7 +6,7 @@ Feature: brute force protection
   So that the server is protected against brute force password attacks
 
   Background:
-    Given these users have been created:
+    Given these users have been created with skeleton files:
       | username |
       | user1    |
     And the administrator has set the bruteforceprotection settings to:
@@ -46,7 +46,7 @@ Feature: brute force protection
       | MKCOL    | /remote.php/webdav/blocked              | 201       |
 
   Scenario Outline: access is still possible from as an other user after a user was blocked
-    Given these users have been created:
+    Given these users have been created with skeleton files:
       | username | password | displayname | email        |
       | user2    | 1234     | User Two    | u2@oc.com.np |
     And user "user1" has sent HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
