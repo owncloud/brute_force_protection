@@ -4,7 +4,7 @@ OC.L10N.register(
     "Preferences are saved" : "העדפות נשמרו",
     "Inputs must be positive integers" : "הקלט חייב להיות מספרים שלמים וחיוביים",
     "Too many failed login attempts. Try again in %s minutes." : "יותר מדי ניסיונות התחברות. ניתן לנסות שוב עוד %s דקות.",
-    "Brute Force Protection" : "הגנת כוח גס - Brute Force",
+    "Brute Force Protection" : "הגנת כח אלים (Brute Force)",
     "Count failed login attempts over how many seconds?" : "ספירת ניסיונות כושלים לחיבור בתחום של כמה שניות?",
     "Ban after how many failed login attempts?" : "מניעת גישה לאחר כמה ניסיונות כושלים לחיבור?",
     "Ban for how many seconds?" : "מניעת גישה לכמה שניות?",
