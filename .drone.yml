@@ -22,7 +22,7 @@ pipeline:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     commands:
-      - git clone -b stable10 --depth=1 https://github.com/owncloud/core.git /var/www/owncloud/testrunner
+      - git clone -b master --depth=1 https://github.com/owncloud/core.git /var/www/owncloud/testrunner
       - cp -r /var/www/owncloud/apps/brute_force_protection /var/www/owncloud/testrunner/apps/
       - cd /var/www/owncloud/testrunner
       - make install-composer-deps
@@ -208,23 +208,15 @@ matrix:
 
     # Unit Tests
     - PHP_VERSION: 7.0
-      OC_VERSION: daily-stable10-qa
+      OC_VERSION: daily-master-qa
       TEST_SUITE: phpunit
-      DB_TYPE: mysql
+      DB_TYPE: sqlite
       DB_NAME: owncloud
       NEED_CORE: true
       NEED_INSTALL_APP: true
 
-    - PHP_VERSION: 7.1
-      OC_VERSION: daily-stable10-qa
-      TEST_SUITE: phpunit
-      DB_TYPE: mysql
-      DB_NAME: owncloud
-      NEED_CORE: true
-      NEED_INSTALL_APP: true
-
-    - PHP_VERSION: 7.2
-      OC_VERSION: daily-stable10-qa
+    - PHP_VERSION: 7.0
+      OC_VERSION: daily-master-qa
       TEST_SUITE: phpunit
       DB_TYPE: mysql
       DB_NAME: owncloud
@@ -232,15 +224,23 @@ matrix:
       NEED_INSTALL_APP: true
 
     - PHP_VERSION: 7.0
-      OC_VERSION: daily-stable10-qa
+      OC_VERSION: daily-master-qa
       TEST_SUITE: phpunit
-      DB_TYPE: sqlite
+      DB_TYPE: pgsql
       DB_NAME: owncloud
       NEED_CORE: true
       NEED_INSTALL_APP: true
 
+    - PHP_VERSION: 7.0
+      OC_VERSION: daily-master-qa
+      TEST_SUITE: phpunit
+      DB_TYPE: oci
+      DB_NAME: XE
+      NEED_CORE: true
+      NEED_INSTALL_APP: true
+
     - PHP_VERSION: 7.1
-      OC_VERSION: daily-stable10-qa
+      OC_VERSION: daily-master-qa
       TEST_SUITE: phpunit
       DB_TYPE: sqlite
       DB_NAME: owncloud
@@ -248,7 +248,7 @@ matrix:
       NEED_INSTALL_APP: true
       COVERAGE: true
 
-    - PHP_VERSION: 7.2
+    - PHP_VERSION: 7.1
       OC_VERSION: daily-master-qa
       TEST_SUITE: phpunit
       DB_TYPE: mysql
@@ -271,6 +271,15 @@ matrix:
       DB_NAME: XE
       NEED_CORE: true
       NEED_INSTALL_APP: true
+
+    - PHP_VERSION: 7.2
+      OC_VERSION: daily-master-qa
+      TEST_SUITE: phpunit
+      DB_TYPE: sqlite
+      DB_NAME: owncloud
+      NEED_CORE: true
+      NEED_INSTALL_APP: true
+      COVERAGE: true
 
     - PHP_VERSION: 7.2
       OC_VERSION: daily-master-qa
@@ -298,17 +307,7 @@ matrix:
 
      #webUI tests
     - PHP_VERSION: 7.0
-      OC_VERSION: daily-stable10-qa
-      TEST_SUITE: web-acceptance
-      BEHAT_SUITE: webUIBruteForceProtection
-      DB_TYPE: mysql
-      DB_NAME: owncloud
-      NEED_CORE: true
-      NEED_SERVER: true
-      NEED_INSTALL_APP: true
-
-    - PHP_VERSION: 7.1
-      OC_VERSION: daily-stable10-qa
+      OC_VERSION: daily-master-qa
       TEST_SUITE: web-acceptance
       BEHAT_SUITE: webUIBruteForceProtection
       DB_TYPE: mysql
@@ -339,17 +338,7 @@ matrix:
 
      #api tests
     - PHP_VERSION: 7.0
-      OC_VERSION: daily-stable10-qa
-      TEST_SUITE: api-acceptance
-      BEHAT_SUITE: apiBruteForceProtection
-      DB_TYPE: mysql
-      DB_NAME: owncloud
-      NEED_CORE: true
-      NEED_SERVER: true
-      NEED_INSTALL_APP: true
-
-    - PHP_VERSION: 7.1
-      OC_VERSION: daily-stable10-qa
+      OC_VERSION: daily-master-qa
       TEST_SUITE: api-acceptance
       BEHAT_SUITE: apiBruteForceProtection
       DB_TYPE: mysql
