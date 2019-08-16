@@ -15,9 +15,9 @@ Feature: brute force protection
       | ban-period     | 300 |
 
   Scenario Outline: access is blocked after too many invalid requests
-    Given user "user1" has sent HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And user "user1" has sent HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    When user "user1" sends HTTP method "<method>" to URL "<endpoint>"
+    When user "user1" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
+    And user "user1" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
+    And user "user1" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
       | method   | endpoint                                | http-code |
@@ -31,8 +31,8 @@ Feature: brute force protection
       | MKCOL    | /remote.php/webdav/blocked              | 401       |
 
   Scenario Outline: access is still possible if the invalid requests did not reach fail-tolerance
-    Given user "user1" has sent HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    When user "user1" sends HTTP method "<method>" to URL "<endpoint>"
+    When user "user1" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
+    And user "user1" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
       | method   | endpoint                                | http-code |
@@ -49,9 +49,9 @@ Feature: brute force protection
     Given these users have been created with skeleton files:
       | username | password | displayname | email        |
       | user2    | 1234     | User Two    | u2@oc.com.np |
-    And user "user1" has sent HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And user "user1" has sent HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    When user "user2" sends HTTP method "<method>" to URL "<endpoint>"
+    When user "user1" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
+    And user "user1" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
+    And user "user2" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
       | method   | endpoint                                | http-code |
@@ -65,10 +65,10 @@ Feature: brute force protection
       | MKCOL    | /remote.php/webdav/blocked              | 201       |
 
   Scenario Outline: access is still possible from an other IP after user/ip combination was blocked
-    Given the client accesses the server from IP address "10.4.1.248" using X-Forwarded-For header
-    And user "user1" has sent HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And user "user1" has sent HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    When the client accesses the server from IP address "192.168.56.1" using X-Forwarded-For header
+    When the client accesses the server from IP address "10.4.1.248" using X-Forwarded-For header
+    And user "user1" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
+    And user "user1" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
+    And the client accesses the server from IP address "192.168.56.1" using X-Forwarded-For header
     And user "user1" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
@@ -83,7 +83,7 @@ Feature: brute force protection
       | MKCOL    | /remote.php/webdav/blocked              | 201       |
 
   Scenario: accessing different endpoints with wrong password should block user
-    Given user "user1" has sent HTTP method "PROPFIND" to URL "/remote.php/dav/systemtags" with password "notvalid"
-    And user "user1" has sent HTTP method "GET" to URL "/remote.php/webdav/welcome.txt" with password "notvalid"
-    When user "user1" sends HTTP method "GET" to URL "/index.php/apps/files"
+    When user "user1" sends HTTP method "PROPFIND" to URL "/remote.php/dav/systemtags" with password "notvalid"
+    And user "user1" sends HTTP method "GET" to URL "/remote.php/webdav/welcome.txt" with password "notvalid"
+    And user "user1" sends HTTP method "GET" to URL "/index.php/apps/files"
     Then the HTTP status code should be "403"
