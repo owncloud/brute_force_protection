@@ -126,13 +126,13 @@ steps:
     db_password: owncloud
     db_type: sqlite
     db_username: owncloud
+    exclude: apps/brute_force_protection
     version: daily-master-qa
 
 - name: setup-server-brute_force_protection
   pull: always
   image: owncloudci/php:7.0
   commands:
-  - ":"
   - cd /var/www/owncloud/server
   - php occ a:l
   - php occ a:e brute_force_protection
@@ -192,13 +192,13 @@ steps:
     db_password: owncloud
     db_type: mysql
     db_username: owncloud
+    exclude: apps/brute_force_protection
     version: daily-master-qa
 
 - name: setup-server-brute_force_protection
   pull: always
   image: owncloudci/php:7.0
   commands:
-  - ":"
   - cd /var/www/owncloud/server
   - php occ a:l
   - php occ a:e brute_force_protection
@@ -268,13 +268,13 @@ steps:
     db_password: owncloud
     db_type: mysql
     db_username: owncloud
+    exclude: apps/brute_force_protection
     version: daily-master-qa
 
 - name: setup-server-brute_force_protection
   pull: always
   image: owncloudci/php:7.0
   commands:
-  - ":"
   - cd /var/www/owncloud/server
   - php occ a:l
   - php occ a:e brute_force_protection
@@ -344,13 +344,13 @@ steps:
     db_password: owncloud
     db_type: mysql
     db_username: owncloud
+    exclude: apps/brute_force_protection
     version: daily-master-qa
 
 - name: setup-server-brute_force_protection
   pull: always
   image: owncloudci/php:7.0
   commands:
-  - ":"
   - cd /var/www/owncloud/server
   - php occ a:l
   - php occ a:e brute_force_protection
@@ -420,13 +420,13 @@ steps:
     db_password: owncloud
     db_type: pgsql
     db_username: owncloud
+    exclude: apps/brute_force_protection
     version: daily-master-qa
 
 - name: setup-server-brute_force_protection
   pull: always
   image: owncloudci/php:7.0
   commands:
-  - ":"
   - cd /var/www/owncloud/server
   - php occ a:l
   - php occ a:e brute_force_protection
@@ -495,13 +495,13 @@ steps:
     db_password: oracle
     db_type: oci
     db_username: system
+    exclude: apps/brute_force_protection
     version: daily-master-qa
 
 - name: setup-server-brute_force_protection
   pull: always
   image: owncloudci/php:7.0
   commands:
-  - ":"
   - cd /var/www/owncloud/server
   - php occ a:l
   - php occ a:e brute_force_protection
@@ -571,13 +571,13 @@ steps:
     db_password: owncloud
     db_type: sqlite
     db_username: owncloud
+    exclude: apps/brute_force_protection
     version: daily-master-qa
 
 - name: setup-server-brute_force_protection
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - ":"
   - cd /var/www/owncloud/server
   - php occ a:l
   - php occ a:e brute_force_protection
@@ -628,13 +628,13 @@ steps:
     db_password: owncloud
     db_type: mysql
     db_username: owncloud
+    exclude: apps/brute_force_protection
     version: daily-master-qa
 
 - name: setup-server-brute_force_protection
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - ":"
   - cd /var/www/owncloud/server
   - php occ a:l
   - php occ a:e brute_force_protection
@@ -695,13 +695,13 @@ steps:
     db_password: owncloud
     db_type: sqlite
     db_username: owncloud
+    exclude: apps/brute_force_protection
     version: daily-master-qa
 
 - name: setup-server-brute_force_protection
   pull: always
   image: owncloudci/php:7.2
   commands:
-  - ":"
   - cd /var/www/owncloud/server
   - php occ a:l
   - php occ a:e brute_force_protection
@@ -752,13 +752,13 @@ steps:
     db_password: owncloud
     db_type: mysql
     db_username: owncloud
+    exclude: apps/brute_force_protection
     version: daily-master-qa
 
 - name: setup-server-brute_force_protection
   pull: always
   image: owncloudci/php:7.2
   commands:
-  - ":"
   - cd /var/www/owncloud/server
   - php occ a:l
   - php occ a:e brute_force_protection
@@ -819,13 +819,13 @@ steps:
     db_password: owncloud
     db_type: sqlite
     db_username: owncloud
+    exclude: apps/brute_force_protection
     version: daily-master-qa
 
 - name: setup-server-brute_force_protection
   pull: always
   image: owncloudci/php:7.3
   commands:
-  - ":"
   - cd /var/www/owncloud/server
   - php occ a:l
   - php occ a:e brute_force_protection
@@ -876,13 +876,13 @@ steps:
     db_password: owncloud
     db_type: mysql
     db_username: owncloud
+    exclude: apps/brute_force_protection
     version: daily-master-qa
 
 - name: setup-server-brute_force_protection
   pull: always
   image: owncloudci/php:7.3
   commands:
-  - ":"
   - cd /var/www/owncloud/server
   - php occ a:l
   - php occ a:e brute_force_protection
@@ -930,7 +930,7 @@ platform:
 
 workspace:
   base: /var/www/owncloud
-  path: server/apps/brute_force_protection
+  path: testrunner/apps/brute_force_protection
 
 steps:
 - name: install-core
@@ -943,14 +943,17 @@ steps:
     db_password: owncloud
     db_type: mysql
     db_username: owncloud
+    exclude: apps/brute_force_protection
     version: daily-master-qa
 
 - name: install-testrunner
   pull: always
   image: owncloudci/php:7.0
   commands:
-  - git clone -b master --depth=1 https://github.com/owncloud/core.git /var/www/owncloud/testrunner
-  - cp -r /var/www/owncloud/server/apps/brute_force_protection /var/www/owncloud/testrunner/apps/
+  - mkdir /tmp/testrunner
+  - git clone -b master --depth=1 https://github.com/owncloud/core.git /tmp/testrunner
+  - rsync -aIX /tmp/testrunner /var/www/owncloud
+  - cp -r /var/www/owncloud/testrunner/apps/brute_force_protection /var/www/owncloud/server/apps/
   - cd /var/www/owncloud/testrunner
   - make install-composer-deps vendor-bin-deps
 
@@ -958,7 +961,6 @@ steps:
   pull: always
   image: owncloudci/php:7.0
   commands:
-  - ":"
   - cd /var/www/owncloud/server
   - php occ a:l
   - php occ a:e brute_force_protection
@@ -967,13 +969,18 @@ steps:
   - php occ config:system:set trusted_domains 1 --value=server
   - php occ log:manage --level 2
 
+- name: owncloud-log-server
+  pull: always
+  image: owncloud/ubuntu:18.04
+  detach: true
+  commands:
+  - tail -f /var/www/owncloud/server/data/owncloud.log
+
 - name: fix-permissions
   pull: always
   image: owncloudci/php:7.0
   commands:
-  - chown -R www-data /var/www/owncloud
-  - chmod -R 777 /var/www/owncloud/testrunner/tests/acceptance/filesForUpload
-  - chmod +x /var/www/owncloud/testrunner/tests/acceptance/run.sh
+  - chown -R www-data /var/www/owncloud/server
 
 - name: acceptance-tests
   pull: always
@@ -981,7 +988,6 @@ steps:
   commands:
   - touch /var/www/owncloud/saved-settings.sh
   - . /var/www/owncloud/saved-settings.sh
-  - cd /var/www/owncloud/testrunner/apps/brute_force_protection
   - make test-acceptance-webui
   environment:
     BEHAT_SUITE: webUIBruteForceProtection
@@ -1042,7 +1048,7 @@ platform:
 
 workspace:
   base: /var/www/owncloud
-  path: server/apps/brute_force_protection
+  path: testrunner/apps/brute_force_protection
 
 steps:
 - name: install-core
@@ -1055,14 +1061,17 @@ steps:
     db_password: owncloud
     db_type: mysql
     db_username: owncloud
+    exclude: apps/brute_force_protection
     version: daily-master-qa
 
 - name: install-testrunner
   pull: always
   image: owncloudci/php:7.0
   commands:
-  - git clone -b master --depth=1 https://github.com/owncloud/core.git /var/www/owncloud/testrunner
-  - cp -r /var/www/owncloud/server/apps/brute_force_protection /var/www/owncloud/testrunner/apps/
+  - mkdir /tmp/testrunner
+  - git clone -b master --depth=1 https://github.com/owncloud/core.git /tmp/testrunner
+  - rsync -aIX /tmp/testrunner /var/www/owncloud
+  - cp -r /var/www/owncloud/testrunner/apps/brute_force_protection /var/www/owncloud/server/apps/
   - cd /var/www/owncloud/testrunner
   - make install-composer-deps vendor-bin-deps
 
@@ -1070,7 +1079,6 @@ steps:
   pull: always
   image: owncloudci/php:7.0
   commands:
-  - ":"
   - cd /var/www/owncloud/server
   - php occ a:l
   - php occ a:e brute_force_protection
@@ -1079,13 +1087,18 @@ steps:
   - php occ config:system:set trusted_domains 1 --value=server
   - php occ log:manage --level 2
 
+- name: owncloud-log-server
+  pull: always
+  image: owncloud/ubuntu:18.04
+  detach: true
+  commands:
+  - tail -f /var/www/owncloud/server/data/owncloud.log
+
 - name: fix-permissions
   pull: always
   image: owncloudci/php:7.0
   commands:
-  - chown -R www-data /var/www/owncloud
-  - chmod -R 777 /var/www/owncloud/testrunner/tests/acceptance/filesForUpload
-  - chmod +x /var/www/owncloud/testrunner/tests/acceptance/run.sh
+  - chown -R www-data /var/www/owncloud/server
 
 - name: acceptance-tests
   pull: always
@@ -1093,7 +1106,6 @@ steps:
   commands:
   - touch /var/www/owncloud/saved-settings.sh
   - . /var/www/owncloud/saved-settings.sh
-  - cd /var/www/owncloud/testrunner/apps/brute_force_protection
   - make test-acceptance-webui
   environment:
     BEHAT_SUITE: webUIBruteForceProtection
@@ -1155,7 +1167,7 @@ platform:
 
 workspace:
   base: /var/www/owncloud
-  path: server/apps/brute_force_protection
+  path: testrunner/apps/brute_force_protection
 
 steps:
 - name: install-core
@@ -1168,14 +1180,17 @@ steps:
     db_password: owncloud
     db_type: mysql
     db_username: owncloud
+    exclude: apps/brute_force_protection
     version: 10.2.1
 
 - name: install-testrunner
   pull: always
   image: owncloudci/php:7.0
   commands:
-  - git clone -b master --depth=1 https://github.com/owncloud/core.git /var/www/owncloud/testrunner
-  - cp -r /var/www/owncloud/server/apps/brute_force_protection /var/www/owncloud/testrunner/apps/
+  - mkdir /tmp/testrunner
+  - git clone -b master --depth=1 https://github.com/owncloud/core.git /tmp/testrunner
+  - rsync -aIX /tmp/testrunner /var/www/owncloud
+  - cp -r /var/www/owncloud/testrunner/apps/brute_force_protection /var/www/owncloud/server/apps/
   - cd /var/www/owncloud/testrunner
   - make install-composer-deps vendor-bin-deps
 
@@ -1183,7 +1198,6 @@ steps:
   pull: always
   image: owncloudci/php:7.0
   commands:
-  - ":"
   - cd /var/www/owncloud/server
   - php occ a:l
   - php occ a:e brute_force_protection
@@ -1192,13 +1206,18 @@ steps:
   - php occ config:system:set trusted_domains 1 --value=server
   - php occ log:manage --level 2
 
+- name: owncloud-log-server
+  pull: always
+  image: owncloud/ubuntu:18.04
+  detach: true
+  commands:
+  - tail -f /var/www/owncloud/server/data/owncloud.log
+
 - name: fix-permissions
   pull: always
   image: owncloudci/php:7.0
   commands:
-  - chown -R www-data /var/www/owncloud
-  - chmod -R 777 /var/www/owncloud/testrunner/tests/acceptance/filesForUpload
-  - chmod +x /var/www/owncloud/testrunner/tests/acceptance/run.sh
+  - chown -R www-data /var/www/owncloud/server
 
 - name: acceptance-tests
   pull: always
@@ -1206,7 +1225,6 @@ steps:
   commands:
   - touch /var/www/owncloud/saved-settings.sh
   - . /var/www/owncloud/saved-settings.sh
-  - cd /var/www/owncloud/testrunner/apps/brute_force_protection
   - make test-acceptance-webui
   environment:
     BEHAT_SUITE: webUIBruteForceProtection
@@ -1267,7 +1285,7 @@ platform:
 
 workspace:
   base: /var/www/owncloud
-  path: server/apps/brute_force_protection
+  path: testrunner/apps/brute_force_protection
 
 steps:
 - name: install-core
@@ -1280,14 +1298,17 @@ steps:
     db_password: owncloud
     db_type: mysql
     db_username: owncloud
+    exclude: apps/brute_force_protection
     version: 10.2.1
 
 - name: install-testrunner
   pull: always
   image: owncloudci/php:7.0
   commands:
-  - git clone -b master --depth=1 https://github.com/owncloud/core.git /var/www/owncloud/testrunner
-  - cp -r /var/www/owncloud/server/apps/brute_force_protection /var/www/owncloud/testrunner/apps/
+  - mkdir /tmp/testrunner
+  - git clone -b master --depth=1 https://github.com/owncloud/core.git /tmp/testrunner
+  - rsync -aIX /tmp/testrunner /var/www/owncloud
+  - cp -r /var/www/owncloud/testrunner/apps/brute_force_protection /var/www/owncloud/server/apps/
   - cd /var/www/owncloud/testrunner
   - make install-composer-deps vendor-bin-deps
 
@@ -1295,7 +1316,6 @@ steps:
   pull: always
   image: owncloudci/php:7.0
   commands:
-  - ":"
   - cd /var/www/owncloud/server
   - php occ a:l
   - php occ a:e brute_force_protection
@@ -1304,13 +1324,18 @@ steps:
   - php occ config:system:set trusted_domains 1 --value=server
   - php occ log:manage --level 2
 
+- name: owncloud-log-server
+  pull: always
+  image: owncloud/ubuntu:18.04
+  detach: true
+  commands:
+  - tail -f /var/www/owncloud/server/data/owncloud.log
+
 - name: fix-permissions
   pull: always
   image: owncloudci/php:7.0
   commands:
-  - chown -R www-data /var/www/owncloud
-  - chmod -R 777 /var/www/owncloud/testrunner/tests/acceptance/filesForUpload
-  - chmod +x /var/www/owncloud/testrunner/tests/acceptance/run.sh
+  - chown -R www-data /var/www/owncloud/server
 
 - name: acceptance-tests
   pull: always
@@ -1318,7 +1343,6 @@ steps:
   commands:
   - touch /var/www/owncloud/saved-settings.sh
   - . /var/www/owncloud/saved-settings.sh
-  - cd /var/www/owncloud/testrunner/apps/brute_force_protection
   - make test-acceptance-webui
   environment:
     BEHAT_SUITE: webUIBruteForceProtection
@@ -1380,7 +1404,7 @@ platform:
 
 workspace:
   base: /var/www/owncloud
-  path: server/apps/brute_force_protection
+  path: testrunner/apps/brute_force_protection
 
 steps:
 - name: install-core
@@ -1393,14 +1417,17 @@ steps:
     db_password: owncloud
     db_type: mysql
     db_username: owncloud
+    exclude: apps/brute_force_protection
     version: daily-master-qa
 
 - name: install-testrunner
   pull: always
   image: owncloudci/php:7.0
   commands:
-  - git clone -b master --depth=1 https://github.com/owncloud/core.git /var/www/owncloud/testrunner
-  - cp -r /var/www/owncloud/server/apps/brute_force_protection /var/www/owncloud/testrunner/apps/
+  - mkdir /tmp/testrunner
+  - git clone -b master --depth=1 https://github.com/owncloud/core.git /tmp/testrunner
+  - rsync -aIX /tmp/testrunner /var/www/owncloud
+  - cp -r /var/www/owncloud/testrunner/apps/brute_force_protection /var/www/owncloud/server/apps/
   - cd /var/www/owncloud/testrunner
   - make install-composer-deps vendor-bin-deps
 
@@ -1408,7 +1435,6 @@ steps:
   pull: always
   image: owncloudci/php:7.0
   commands:
-  - ":"
   - cd /var/www/owncloud/server
   - php occ a:l
   - php occ a:e brute_force_protection
@@ -1416,6 +1442,13 @@ steps:
   - php occ a:l
   - php occ config:system:set trusted_domains 1 --value=server
   - php occ log:manage --level 2
+
+- name: owncloud-log-server
+  pull: always
+  image: owncloud/ubuntu:18.04
+  detach: true
+  commands:
+  - tail -f /var/www/owncloud/server/data/owncloud.log
 
 - name: configure-app
   pull: always
@@ -1429,9 +1462,7 @@ steps:
   pull: always
   image: owncloudci/php:7.0
   commands:
-  - chown -R www-data /var/www/owncloud
-  - chmod -R 777 /var/www/owncloud/testrunner/tests/acceptance/filesForUpload
-  - chmod +x /var/www/owncloud/testrunner/tests/acceptance/run.sh
+  - chown -R www-data /var/www/owncloud/server
 
 - name: acceptance-tests
   pull: always
@@ -1439,7 +1470,6 @@ steps:
   commands:
   - touch /var/www/owncloud/saved-settings.sh
   - . /var/www/owncloud/saved-settings.sh
-  - cd /var/www/owncloud/testrunner/apps/brute_force_protection
   - make test-acceptance-api
   environment:
     BEHAT_SUITE: apiBruteForceProtection
@@ -1490,7 +1520,7 @@ platform:
 
 workspace:
   base: /var/www/owncloud
-  path: server/apps/brute_force_protection
+  path: testrunner/apps/brute_force_protection
 
 steps:
 - name: install-core
@@ -1503,14 +1533,17 @@ steps:
     db_password: owncloud
     db_type: mysql
     db_username: owncloud
+    exclude: apps/brute_force_protection
     version: 10.2.1
 
 - name: install-testrunner
   pull: always
   image: owncloudci/php:7.0
   commands:
-  - git clone -b master --depth=1 https://github.com/owncloud/core.git /var/www/owncloud/testrunner
-  - cp -r /var/www/owncloud/server/apps/brute_force_protection /var/www/owncloud/testrunner/apps/
+  - mkdir /tmp/testrunner
+  - git clone -b master --depth=1 https://github.com/owncloud/core.git /tmp/testrunner
+  - rsync -aIX /tmp/testrunner /var/www/owncloud
+  - cp -r /var/www/owncloud/testrunner/apps/brute_force_protection /var/www/owncloud/server/apps/
   - cd /var/www/owncloud/testrunner
   - make install-composer-deps vendor-bin-deps
 
@@ -1518,7 +1551,6 @@ steps:
   pull: always
   image: owncloudci/php:7.0
   commands:
-  - ":"
   - cd /var/www/owncloud/server
   - php occ a:l
   - php occ a:e brute_force_protection
@@ -1526,6 +1558,13 @@ steps:
   - php occ a:l
   - php occ config:system:set trusted_domains 1 --value=server
   - php occ log:manage --level 2
+
+- name: owncloud-log-server
+  pull: always
+  image: owncloud/ubuntu:18.04
+  detach: true
+  commands:
+  - tail -f /var/www/owncloud/server/data/owncloud.log
 
 - name: configure-app
   pull: always
@@ -1539,9 +1578,7 @@ steps:
   pull: always
   image: owncloudci/php:7.0
   commands:
-  - chown -R www-data /var/www/owncloud
-  - chmod -R 777 /var/www/owncloud/testrunner/tests/acceptance/filesForUpload
-  - chmod +x /var/www/owncloud/testrunner/tests/acceptance/run.sh
+  - chown -R www-data /var/www/owncloud/server
 
 - name: acceptance-tests
   pull: always
@@ -1549,7 +1586,6 @@ steps:
   commands:
   - touch /var/www/owncloud/saved-settings.sh
   - . /var/www/owncloud/saved-settings.sh
-  - cd /var/www/owncloud/testrunner/apps/brute_force_protection
   - make test-acceptance-api
   environment:
     BEHAT_SUITE: apiBruteForceProtection
