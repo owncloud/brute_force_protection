@@ -1,6 +1,9 @@
 config = {
 	'app': 'brute_force_protection',
-	'rocketchat': 'builds',
+	'rocketchat': {
+		'channel': 'builds',
+		'from_secret': 'private_rocketchat'
+	},
 
 	'branches': [
 		'master'
@@ -713,9 +716,9 @@ def notify():
 				'pull': 'always',
 				'settings': {
 					'webhook': {
-						'from_secret': 'public_rocketchat'
+						'from_secret': config['rocketchat']['from_secret']
 					},
-					'channel': config['rocketchat']
+					'channel': config['rocketchat']['channel']
 				}
 			}
 		],
