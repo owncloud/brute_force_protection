@@ -1645,6 +1645,10 @@ steps:
     channel: builds
     webhook:
       from_secret: private_rocketchat
+  when:
+    status:
+    - success
+    - failure
 
 trigger:
   ref:
