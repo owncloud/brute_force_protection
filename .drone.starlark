@@ -929,12 +929,6 @@ def notify():
 						'from_secret': config['rocketchat']['from_secret']
 					},
 					'channel': config['rocketchat']['channel']
-				},
-				'when': {
-					'status': [
-						'success',
-						'failure'
-					]
 				}
 			}
 		],
@@ -942,6 +936,10 @@ def notify():
 		'trigger': {
 			'ref': [
 				'refs/tags/**'
+			],
+			'status': [
+				'success',
+				'failure'
 			]
 		}
 	}

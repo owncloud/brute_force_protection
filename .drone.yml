@@ -1645,15 +1645,14 @@ steps:
     channel: builds
     webhook:
       from_secret: private_rocketchat
-  when:
-    status:
-    - success
-    - failure
 
 trigger:
   ref:
   - refs/tags/**
   - refs/heads/master
+  status:
+  - success
+  - failure
 
 depends_on:
 - phpunit-php7.0-sqlite
