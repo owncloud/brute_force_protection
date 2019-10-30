@@ -45,7 +45,7 @@ Feature: brute force protection
       | MKCOL    | /remote.php/dav/files/user1/blocked     | 201       |
       | MKCOL    | /remote.php/webdav/blocked              | 201       |
 
-  Scenario Outline: access is still possible from as an other user after a user was blocked
+  Scenario Outline: access is still possible as another user after a user was blocked
     Given these users have been created with skeleton files:
       | username | password | displayname | email        |
       | user2    | 1234     | User Two    | u2@oc.com.np |
@@ -64,7 +64,7 @@ Feature: brute force protection
       | MKCOL    | /remote.php/dav/files/user2/blocked     | 201       |
       | MKCOL    | /remote.php/webdav/blocked              | 201       |
 
-  Scenario Outline: access is still possible from an other IP after user/ip combination was blocked
+  Scenario Outline: access is still possible from another IP after user/ip combination was blocked
     When the client accesses the server from IP address "10.4.1.248" using X-Forwarded-For header
     And user "user1" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
     And user "user1" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
