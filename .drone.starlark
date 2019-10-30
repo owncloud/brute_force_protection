@@ -61,8 +61,7 @@ config = {
 					'pull': 'always',
 					'commands': [
 						'cd /var/www/owncloud/server',
-						'php occ config:system:set trusted_proxies 1 --value=`ip addr show eth0 | awk \'$1 == "inet" {gsub(/\\\/.*$/, "", $2); print $2}\'`',
-						'php occ config:system:set trusted_proxies 2 --value=`ip addr show eth1 | awk \'$1 == "inet" {gsub(/\\\/.*$/, "", $2); print $2}\'`'
+						'/var/www/owncloud/testrunner/apps/brute_force_protection/tests/acceptance/setup_trusted_proxies.sh'
 					]
 				}
 			],
