@@ -1,7 +1,9 @@
 { "translations": {
     "Preferences are saved" : "Настройки сохранены",
     "Inputs must be positive integers" : "Должны вводиться целые положительные числа",
-    "Too many failed login attempts. Try again in %s minutes." : "Слишком много неудачных попыток входа. Попробуйте ещё раз через %s минут.",
+    "Too many failed login attempts. Try again in %s." : "Слишком много неудачных попыток входа. Попробуйте снова через %s.",
+    "_ %n minute_::_ %n minutes_" : [" %n минуту"," %n минуты"," %n минут"," %n минут"],
+    "_ %n hour_::_ %n hours_" : [" %n час"," %n часа"," %n часов"," %n часов"],
     "Brute Force Protection" : "Защита от прямого перебора",
     "Count failed login attempts over how many seconds?" : "За сколько секунд считать неудачные попытки входа?",
     "Ban after how many failed login attempts?" : "Через сколько неудачных попыток входа банить?",
