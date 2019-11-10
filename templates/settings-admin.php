@@ -30,9 +30,9 @@ script('brute_force_protection', 'settings-admin');
 	<h2 class="inlineblock"><?php p($l->t('Brute Force Protection')); ?></h2>
 	<span id="save-bfp-settings-message" class="msg"></span>
 	<div>
-		<label for="bfp-threshold-time"><?php p($l->t('Count failed login attempts over how many seconds?')) ?></label><br>
+		<label for="bfp-threshold-time"><?php p($l->t('Count failed attempts over how many seconds?')) ?></label><br>
 		<input type="number" id="bfp-threshold-time"  value="<?php p($_['bruteForceProtectionTimeThreshold']) ?>"><br>
-		<label for="bfp-fail-tolerance"><?php p($l->t('Ban after how many failed login attempts?')) ?></label><br>
+		<label for="bfp-fail-tolerance"><?php p($l->t('Ban after how many failed attempts?')) ?></label><br>
 		<input type="number" id="bfp-fail-tolerance"  value="<?php p($_['bruteForceProtectionFailTolerance']) ?>"><br>
 		<label for="bfp-ban-period"><?php p($l->t('Ban for how many seconds?')) ?></label><br>
 		<input type="number" id="bfp-ban-period" value="<?php p($_['bruteForceProtectionBanPeriod']) ?>"><br>
