@@ -28,6 +28,7 @@ use OCA\BruteForceProtection\Hooks;
 use OCA\BruteForceProtection\Throttle;
 use OCP\IRequest;
 use OCP\IUser;
+use OCP\Share;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Test\TestCase;
@@ -57,7 +58,7 @@ class HooksTest extends TestCase {
 	}
 
 	public function testRegister() {
-		$this->eventDispatcherMock->expects($this->exactly(3))
+		$this->eventDispatcherMock->expects($this->exactly(6))
 			->method('addListener');
 		$this->hooks->register();
 	}
@@ -74,14 +75,43 @@ class HooksTest extends TestCase {
 		$mockUser->method('getUID')->willReturn('test');
 		$event = new GenericEvent(null, ['user' => $mockUser]);
 		$this->throttleMock->expects($this->once())
-			->method('clearSuspiciousAttemptsForUidIpCombination');
+			->method('clearFailedLoginAttemptsForUidIpCombination');
 		$this->hooks->postLoginCallback($event);
 	}
 
 	public function testPreLoginCallback() {
-		$event = new GenericEvent(null, ['user' => 'test']);
+		$event = new GenericEvent(null, ['login' => 'test']);
 		$this->throttleMock->expects($this->once())
-			->method('applyBruteForcePolicy');
+			->method('applyBruteForcePolicyForLogin');
 		$this->hooks->preLoginCallback($event);
+	}
+
+	public function testFailedLinkShareAuthCallback() {
+		$share = $this->createMock('OCP\Share\IShare');
+		$share->method('getShareType')->willReturn(Share::SHARE_TYPE_LINK);
+		$event = new GenericEvent(null, ['shareObject' => $share]);
+		$this->throttleMock->expects($this->once())
+			->method('addFailedLinkAccess');
+		$this->hooks->failedLinkShareAuthCallback($event);
+	}
+
+	public function testPostLinkShareAuthCallback() {
+		$share = $this->createMock('OCP\Share\IShare');
+		$share->method('getShareType')->willReturn(Share::SHARE_TYPE_LINK);
+		$mockUser = $this->createMock(IUser::class);
+		$mockUser->method('getUID')->willReturn('test');
+		$event = new GenericEvent(null, ['shareObject' => $share]);
+		$this->throttleMock->expects($this->once())
+			->method('clearFailedLinkAccesses');
+		$this->hooks->postLinkShareAuthCallback($event);
+	}
+
+	public function testPreLinkShareAuthCallback() {
+		$share = $this->createMock('OCP\Share\IShare');
+		$share->method('getShareType')->willReturn(Share::SHARE_TYPE_LINK);
+		$event = new GenericEvent(null, ['shareObject' => $share]);
+		$this->throttleMock->expects($this->once())
+			->method('applyBruteForcePolicyForLinkShare');
+		$this->hooks->preLinkShareAuthCallback($event);
 	}
 }
