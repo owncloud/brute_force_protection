@@ -75,7 +75,7 @@ class BruteForceProtectionConfig {
 	}
 
 	/**
-	 * Count failed login attempts over how many seconds
+	 * Count failed attempts over how many seconds
 	 *
 	 * @return int
 	 */

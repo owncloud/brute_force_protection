@@ -23,25 +23,32 @@
 namespace OCA\BruteForceProtection\Jobs;
 use OC\BackgroundJob\TimedJob;
 use OCA\BruteForceProtection\BruteForceProtectionConfig;
+use OCA\BruteForceProtection\Db\FailedLinkAccessMapper;
 use OCA\BruteForceProtection\Db\FailedLoginAttemptMapper;
 
 class ExpireOldAttempts extends TimedJob {
-	/** @var FailedLoginAttemptMapper $mapper */
-	private $mapper;
+	/** @var FailedLoginAttemptMapper $failedLoginMapper */
+	private $failedLoginMapper;
+	/** @var FailedLinkAccessMapper $linkAccessMapper */
+	private $linkAccessMapper;
 	/** @var BruteForceProtectionConfig $config */
 	private $config;
+
 	public function __construct(
-		FailedLoginAttemptMapper $mapper,
+		FailedLoginAttemptMapper $failedLoginMapper,
+		FailedLinkAccessMapper $linkAccessMapper,
 		BruteForceProtectionConfig $config
 	) {
 		// Run once a day
 		$this->setInterval(24 * 60 * 60);
-		$this->mapper = $mapper;
+		$this->failedLoginMapper = $failedLoginMapper;
+		$this->linkAccessMapper = $linkAccessMapper;
 		$this->config = $config;
 	}
 
 	public function run($argument) {
 		$threshold = $this->config->getBruteForceProtectionTimeThreshold() + $this->config->getBruteForceProtectionBanPeriod();
-		$this->mapper->deleteOldFailedLoginAttempts($threshold);
+		$this->failedLoginMapper->deleteOldFailedLoginAttempts($threshold);
+		$this->linkAccessMapper->deleteOldFailedAccesses($threshold);
 	}
 }

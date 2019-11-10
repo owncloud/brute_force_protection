@@ -25,7 +25,10 @@
 namespace OCA\BruteForceProtection;
 
 use OC\User\LoginException;
+use OCA\BruteForceProtection\Exceptions\LinkAuthException;
 use OCP\IRequest;
+use OCP\IUser;
+use OCP\Share\IShare;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -64,6 +67,11 @@ class Hooks {
 		$this->eventDispatcher->addListener('user.loginfailed', [$this, 'failedLoginCallback']);
 		$this->eventDispatcher->addListener('user.afterlogin', [$this, 'postLoginCallback']);
 		$this->eventDispatcher->addListener('user.beforelogin', [$this, 'preLoginCallback']);
+
+		/* Public link share events */
+		$this->eventDispatcher->addListener('share.linkaccess', [$this, 'linkAccessCallback']);
+		$this->eventDispatcher->addListener('share.afterlinkauth', [$this, 'postLinkAuthCallback']);
+		$this->eventDispatcher->addListener('share.beforelinkauth', [$this, 'preLinkAuthCallback']);
 	}
 
 	/**
@@ -78,9 +86,9 @@ class Hooks {
 	 * @param GenericEvent $event
 	 */
 	public function postLoginCallback($event) {
-		/** @var \OCP\IUser $user */
+		/** @var IUser $user */
 		$user = $event->getArgument('user');
-		$this->throttle->clearSuspiciousAttemptsForUidIpCombination($user->getUID(), $this->request->getRemoteAddress());
+		$this->throttle->clearFailedLoginAttemptsForUidIpCombination($user->getUID(), $this->request->getRemoteAddress());
 	}
 
 	/**
@@ -88,7 +96,38 @@ class Hooks {
 	 * @throws LoginException
 	 */
 	public function preLoginCallback($event) {
-		$uid = $event->getArgument('user');
-		$this->throttle->applyBruteForcePolicy($uid, $this->request->getRemoteAddress());
+		$uid = $event->getArgument('login');
+		$this->throttle->applyBruteForcePolicyForLogin($uid, $this->request->getRemoteAddress());
+	}
+
+	/**
+	 * @param GenericEvent $event
+	 */
+	public function linkAccessCallback($event) {
+		/** @var IShare $share */
+		$share = $event->getArgument('shareObject');
+		$errorCode = $event->getArgument('errorCode');
+		if ($errorCode === 403) {
+			$this->throttle->addFailedLinkAccess($share->getToken(), $this->request->getRemoteAddress());
+		}
+	}
+
+	/**
+	 * @param GenericEvent $event
+	 */
+	public function postLinkAuthCallback($event) {
+		/** @var IShare $share */
+		$share = $event->getArgument('shareObject');
+		$this->throttle->clearFailedLinkAccesses($share->getToken(), $this->request->getRemoteAddress());
+	}
+
+	/**
+	 * @param GenericEvent $event
+	 * @throws LinkAuthException
+	 */
+	public function preLinkAuthCallback($event) {
+		/** @var IShare $share */
+		$share = $event->getArgument('shareObject');
+		$this->throttle->applyBruteForcePolicyForLinkShare($share->getToken(), $this->request->getRemoteAddress());
 	}
 }

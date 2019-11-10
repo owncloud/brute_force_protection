@@ -1,9 +1,8 @@
 <?php
 /**
  * @author Semih Serhat Karakaya <karakayasemi@itu.edu.tr>
- * @author Michael Usher <michael.usher@aarnet.edu.au>
  *
- * @copyright Copyright (c) 2018, ownCloud GmbH
+ * @copyright Copyright (c) 2019, ownCloud GmbH
  * @license GPL-2.0
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -25,8 +24,8 @@
 namespace OCA\BruteForceProtection\Tests\Db;
 
 use OCA\BruteForceProtection\BruteForceProtectionConfig;
-use OCA\BruteForceProtection\Db\FailedLoginAttempt;
-use OCA\BruteForceProtection\Db\FailedLoginAttemptMapper;
+use OCA\BruteForceProtection\Db\FailedLinkAccess;
+use OCA\BruteForceProtection\Db\FailedLinkAccessMapper;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IDBConnection;
 use Test\TestCase;
@@ -34,9 +33,9 @@ use Test\TestCase;
 /**
  * @group DB
  */
-class FailedLoginAttemptMapperTest extends TestCase {
+class FailedLinkAccessMapperTest extends TestCase {
 
-	/** @var  FailedLoginAttemptMapper $mapper*/
+	/** @var  FailedLinkAccess $mapper*/
 	private $mapper;
 
 	/** @var  IDBConnection $connection*/
@@ -52,7 +51,7 @@ class FailedLoginAttemptMapperTest extends TestCase {
 	private $baseTime;
 
 	/** @var string  */
-	private $dbTable = 'bfp_failed_logins';
+	private $dbTable = 'bfp_link_accesses';
 
 	/** @var int $thresholdConfigVal */
 	private $thresholdConfigVal = 60;
@@ -63,45 +62,45 @@ class FailedLoginAttemptMapperTest extends TestCase {
 		$this->timeFactoryMock = $this->createMock(ITimeFactory::class);
 		$this->configMock = $this->createMock(BruteForceProtectionConfig::class);
 		$this->connection = \OC::$server->getDatabaseConnection();
-		$this->mapper = new FailedLoginAttemptMapper($this->connection, $this->configMock, $this->timeFactoryMock);
+		$this->mapper = new FailedLinkAccessMapper($this->connection, $this->configMock, $this->timeFactoryMock);
 
 		$query = $this->connection->getQueryBuilder()->select('*')->from($this->dbTable);
 		$result = $query->execute()->fetchAll();
-		$this->assertEmpty($result, 'we need to start with a empty bfp_failed_logins table');
+		$this->assertEmpty($result, 'we need to start with a empty bfp_link_accesses table');
 
 		$this->addInitialTestEntries();
 	}
 
 	public function addInitialTestEntries() {
-		$failedLoginAttempt = new FailedLoginAttempt();
-		$failedLoginAttempt->setUid('test1');
-		$failedLoginAttempt->setIp("192.168.1.1");
-		$failedLoginAttempt->setAttemptedAt($this->baseTime+20);
-		$this->mapper->insert($failedLoginAttempt);
+		$linkAccess = new FailedLinkAccess();
+		$linkAccess->setLinkToken('token1');
+		$linkAccess->setIp("192.168.1.1");
+		$linkAccess->setAttemptedAt($this->baseTime+20);
+		$this->mapper->insert($linkAccess);
 
-		$failedLoginAttempt = new FailedLoginAttempt();
-		$failedLoginAttempt->setUid('test1');
-		$failedLoginAttempt->setIp("192.168.1.1");
-		$failedLoginAttempt->setAttemptedAt($this->baseTime+60);
-		$this->mapper->insert($failedLoginAttempt);
+		$linkAccess = new FailedLinkAccess();
+		$linkAccess->setLinkToken('token1');
+		$linkAccess->setIp("192.168.1.1");
+		$linkAccess->setAttemptedAt($this->baseTime+60);
+		$this->mapper->insert($linkAccess);
 
-		$failedLoginAttempt = new FailedLoginAttempt();
-		$failedLoginAttempt->setUid('test1');
-		$failedLoginAttempt->setIp("192.168.1.2");
-		$failedLoginAttempt->setAttemptedAt($this->baseTime+60);
-		$this->mapper->insert($failedLoginAttempt);
+		$linkAccess = new FailedLinkAccess();
+		$linkAccess->setLinkToken('token1');
+		$linkAccess->setIp("192.168.1.2");
+		$linkAccess->setAttemptedAt($this->baseTime+60);
+		$this->mapper->insert($linkAccess);
 
-		$failedLoginAttempt = new FailedLoginAttempt();
-		$failedLoginAttempt->setUid('test2');
-		$failedLoginAttempt->setIp("192.168.1.1");
-		$failedLoginAttempt->setAttemptedAt($this->baseTime+60);
-		$this->mapper->insert($failedLoginAttempt);
+		$linkAccess = new FailedLinkAccess();
+		$linkAccess->setLinkToken('token2');
+		$linkAccess->setIp("192.168.1.1");
+		$linkAccess->setAttemptedAt($this->baseTime+60);
+		$this->mapper->insert($linkAccess);
 
-		$failedLoginAttempt = new FailedLoginAttempt();
-		$failedLoginAttempt->setUid('test1');
-		$failedLoginAttempt->setIp("192.168.1.1");
-		$failedLoginAttempt->setAttemptedAt($this->baseTime+100);
-		$this->mapper->insert($failedLoginAttempt);
+		$linkAccess = new FailedLinkAccess();
+		$linkAccess->setLinkToken('token1');
+		$linkAccess->setIp("192.168.1.1");
+		$linkAccess->setAttemptedAt($this->baseTime+100);
+		$this->mapper->insert($linkAccess);
 	}
 
 	public function tearDown(): void {
@@ -110,7 +109,7 @@ class FailedLoginAttemptMapperTest extends TestCase {
 		$query->execute();
 	}
 
-	public function testGetSuspiciousActivityCountForUidIpCombination() {
+	public function testGetFailedAccessCountForTokenIpCombination() {
 		$functionCallTime = $this->baseTime+110;
 		$this->configMock->expects($this->exactly(3))
 			->method('getBruteForceProtectionTimeThreshold')
@@ -119,12 +118,12 @@ class FailedLoginAttemptMapperTest extends TestCase {
 			->method('getTime')
 			->willReturn($functionCallTime);
 
-		$this->assertEquals(3, $this->mapper->getFailedLoginCountForUidIpCombination('test1', '192.168.1.1'));
-		$this->assertEquals(1, $this->mapper->getFailedLoginCountForUidIpCombination('test1', '192.168.1.2'));
-		$this->assertEquals(1, $this->mapper->getFailedLoginCountForUidIpCombination('test2', '192.168.1.1'));
+		$this->assertEquals(3, $this->mapper->getFailedAccessCountForTokenIpCombination('token1', '192.168.1.1'));
+		$this->assertEquals(1, $this->mapper->getFailedAccessCountForTokenIpCombination('token1', '192.168.1.2'));
+		$this->assertEquals(1, $this->mapper->getFailedAccessCountForTokenIpCombination('token2', '192.168.1.1'));
 	}
 
-	public function testGetLastFailedLoginAttemptTimeForUidIpCombination() {
+	public function testGetLastFailedAccessTimeForTokenIpCombination() {
 		$lastAttemptTime = $this->baseTime+100;
 		$this->configMock->expects($this->once())
 			->method('getBruteForceProtectionBanPeriod')
@@ -133,23 +132,23 @@ class FailedLoginAttemptMapperTest extends TestCase {
 			->method('getTime')
 			->willReturn($this->baseTime+300);
 
-		$this->assertEquals($this->mapper->getLastFailedLoginAttemptTimeForUidIpCombination('test1', '192.168.1.1'), $lastAttemptTime);
+		$this->assertEquals($this->mapper->getLastFailedAccessTimeForTokenIpCombination('token1', '192.168.1.1'), $lastAttemptTime);
 	}
 
-	public function testDeleteFailedLoginAttemptsForUidIpCombination() {
+	public function testDeleteFailedAccessForTokenIpCombination() {
 		$builder = $this->connection->getQueryBuilder();
 
 		$query = $builder->select('*')->from($this->dbTable)
 			->Where($builder->expr()->eq('ip', $builder->createNamedParameter("192.168.1.1")))
-			->andWhere($builder->expr()->eq('uid', $builder->createNamedParameter("test1")));
+			->andWhere($builder->expr()->eq('link_token', $builder->createNamedParameter("token1")));
 		$result = $query->execute()->fetchAll();
 		$this->assertCount(3, $result);
 
-		$this->mapper->deleteFailedLoginAttemptsForUidIpCombination('test1', "192.168.1.1");
+		$this->mapper->deleteFailedAccessForTokenIpCombination('token1', "192.168.1.1");
 
 		$query = $builder->select('*')->from($this->dbTable)
 			->Where($builder->expr()->eq('ip', $builder->createNamedParameter("192.168.1.1")))
-			->andWhere($builder->expr()->eq('uid', $builder->createNamedParameter("test1")));
+			->andWhere($builder->expr()->eq('link_token', $builder->createNamedParameter("token1")));
 		$result = $query->execute()->fetchAll();
 		$this->assertCount(0, $result);
 	}
@@ -163,7 +162,7 @@ class FailedLoginAttemptMapperTest extends TestCase {
 		$query = $builder->select('*')->from($this->dbTable);
 		$result = $query->execute()->fetchAll();
 		$this->assertCount(5, $result);
-		$this->mapper->deleteOldFailedLoginAttempts($this->thresholdConfigVal);
+		$this->mapper->deleteOldFailedAccesses($this->thresholdConfigVal);
 		$query = $builder->select('*')->from($this->dbTable);
 		$result = $query->execute()->fetchAll();
 		$this->assertCount(1, $result);
