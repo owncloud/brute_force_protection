@@ -25,8 +25,9 @@
 namespace OCA\BruteForceProtection;
 
 use OC\User\LoginException;
-use OCP\IUserManager;
 use OCP\IRequest;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class Hooks
@@ -34,64 +35,60 @@ use OCP\IRequest;
  */
 class Hooks {
 
-	/** @var \OC\User\Manager */
-	private $userManager;
-
-	/** @var Throttle*/
+	/** @var Throttle */
 	private $throttle;
 
-	/** @var IRequest*/
+	/** @var IRequest */
 	private $request;
 
+	/** @var EventDispatcherInterface */
+	private $eventDispatcher;
+
 	/**
-	 * @param \OC\User\Manager $userManager
 	 * @param Throttle $throttle
 	 * @param IRequest $request
+	 * @param EventDispatcherInterface $eventDispatcher
 	 */
 	public function __construct(
-		IUserManager $userManager,
 		Throttle $throttle,
-		IRequest $request
+		IRequest $request,
+		EventDispatcherInterface $eventDispatcher
 	) {
-		$this->userManager = $userManager;
 		$this->throttle = $throttle;
 		$this->request = $request;
+		$this->eventDispatcher = $eventDispatcher;
 	}
 
 	public function register() {
-		$this->userManager->listen('\OC\User', 'preLogin', function ($uid) {
-			$this->preLoginCallback($uid);
-		});
-
-		$this->userManager->listen('\OC\User', 'failedLogin', function ($uid) {
-			$this->failedLoginCallback($uid);
-		});
-		
-		$this->userManager->listen('\OC\User', 'postLogin', function ($user) {
-			/** @var $user \OCP\IUser */
-			$this->postLoginCallback($user->getUID());
-		});
+		/* Login events */
+		$this->eventDispatcher->addListener('user.loginfailed', [$this, 'failedLoginCallback']);
+		$this->eventDispatcher->addListener('user.afterlogin', [$this, 'postLoginCallback']);
+		$this->eventDispatcher->addListener('user.beforelogin', [$this, 'preLoginCallback']);
 	}
 
 	/**
-	 * @param string $uid
+	 * @param GenericEvent $event
 	 */
-	public function failedLoginCallback($uid) {
+	public function failedLoginCallback($event) {
+		$uid = $event->getArgument('user');
 		$this->throttle->addFailedLoginAttempt($uid, $this->request->getRemoteAddress());
 	}
 
 	/**
-	 * @param string $uid
+	 * @param GenericEvent $event
 	 */
-	public function postLoginCallback($uid) {
-		$this->throttle->clearSuspiciousAttemptsForUidIpCombination($uid, $this->request->getRemoteAddress());
+	public function postLoginCallback($event) {
+		/** @var \OCP\IUser $user */
+		$user = $event->getArgument('user');
+		$this->throttle->clearSuspiciousAttemptsForUidIpCombination($user->getUID(), $this->request->getRemoteAddress());
 	}
 
 	/**
-	 * @param string $uid
+	 * @param GenericEvent $event
 	 * @throws LoginException
 	 */
-	public function preLoginCallback($uid) {
+	public function preLoginCallback($event) {
+		$uid = $event->getArgument('user');
 		$this->throttle->applyBruteForcePolicy($uid, $this->request->getRemoteAddress());
 	}
 }
