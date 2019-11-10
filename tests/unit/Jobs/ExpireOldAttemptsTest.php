@@ -22,6 +22,7 @@
  */
 namespace OCA\BruteForceProtection\Tests\Jobs;
 use OCA\BruteForceProtection\BruteForceProtectionConfig;
+use OCA\BruteForceProtection\Db\FailedLinkAccessMapper;
 use OCA\BruteForceProtection\Db\FailedLoginAttemptMapper;
 use OCA\BruteForceProtection\Jobs\ExpireOldAttempts;
 use Test\TestCase;
@@ -34,7 +35,9 @@ use Test\TestCase;
  */
 class ExpireOldAttemptsTest extends TestCase {
 	/** @var FailedLoginAttemptMapper | \PHPUnit\Framework\MockObject\MockObject $mapper */
-	private $mapper;
+	private $failedLoginMapper;
+	/** @var FailedLinkAccessMapper | \PHPUnit\Framework\MockObject\MockObject $mapper */
+	private $linkAccessMapper;
 	/** @var BruteForceProtectionConfig | \PHPUnit\Framework\MockObject\MockObject $config */
 	private $config;
 	/** @var int $thresholdConfigVal */
@@ -43,27 +46,33 @@ class ExpireOldAttemptsTest extends TestCase {
 	private $banPeriodConfigVal = 300;
 	/** @var ExpireOldAttempts $expireAttempts */
 	private $expireAttempts;
+
 	public function setUp(): void {
-		$this->mapper = $this->getMockBuilder(FailedLoginAttemptMapper::class)
-			->disableOriginalConstructor()
-			->getMock();
-		$this->config = $this->getMockBuilder(BruteForceProtectionConfig::class)
-			->disableOriginalConstructor()
-			->getMock();
-		$this->expireAttempts = new ExpireOldAttempts($this->mapper, $this->config);
+		$this->failedLoginMapper = $this->createMock(FailedLoginAttemptMapper::class);
+		$this->linkAccessMapper = $this->createMock(FailedLinkAccessMapper::class);
+		$this->config = $this->createMock(BruteForceProtectionConfig::class);
+		$this->expireAttempts = new ExpireOldAttempts(
+			$this->failedLoginMapper,
+			$this->linkAccessMapper,
+			$this->config
+		);
 	}
 	public function testExecute() {
 		/** @var \OC\BackgroundJob\JobList $jobList */
 		$argument = [];
+		$threshold = $this->thresholdConfigVal+$this->banPeriodConfigVal;
 		$this->config->expects($this->exactly(1))
 			->method('getBruteForceProtectionTimeThreshold')
 			->willReturn($this->thresholdConfigVal);
 		$this->config->expects($this->exactly(1))
 			->method('getBruteForceProtectionBanPeriod')
 			->willReturn($this->banPeriodConfigVal);
-		$this->mapper->expects($this->exactly(1))
+		$this->failedLoginMapper->expects($this->exactly(1))
 			->method('deleteOldFailedLoginAttempts')
-			->with($this->thresholdConfigVal+$this->banPeriodConfigVal);
+			->with($threshold);
+		$this->linkAccessMapper->expects($this->exactly(1))
+			->method('deleteOldFailedAccesses')
+			->with($threshold);
 		$this->expireAttempts->run($argument);
 	}
 }

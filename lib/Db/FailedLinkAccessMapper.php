@@ -1,9 +1,8 @@
 <?php
 /**
  * @author Semih Serhat Karakaya <karakayasemi@itu.edu.tr>
- * @author Michael Usher <michael.usher@aarnet.edu.au>
  *
- * @copyright Copyright (c) 2018, ownCloud GmbH
+ * @copyright Copyright (c) 2019 ownCloud GmbH
  * @license GPL-2.0
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -30,10 +29,10 @@ use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IDBConnection;
 
 /**
- * Class FailedLoginAttemptMapper
+ * Class FailedLinkAccessMapper
  * @package OCA\BruteForceProtection\Db
  */
-class FailedLoginAttemptMapper extends Mapper {
+class FailedLinkAccessMapper extends Mapper {
 
 	/**
 	 * @var BruteForceProtectionConfig $config
@@ -48,10 +47,10 @@ class FailedLoginAttemptMapper extends Mapper {
 	/**
 	 * @var string $tableName
 	 */
-	protected $tableName = 'bfp_failed_logins';
+	protected $tableName = 'bfp_link_accesses';
 
 	/**
-	 * FailedLoginAttemptMapper constructor.
+	 * FailedLinkAccessMapper constructor.
 	 *
 	 * @param IDBConnection $db
 	 * @param BruteForceProtectionConfig $config
@@ -68,17 +67,17 @@ class FailedLoginAttemptMapper extends Mapper {
 	}
 
 	/**
-	 * @param string $uid
+	 * @param string $token
 	 * @param string $ip
 	 * @return int
 	 */
-	public function getFailedLoginCountForUidIpCombination($uid, $ip) {
+	public function getFailedAccessCountForTokenIpCombination($token, $ip) {
 		$builder = $this->db->getQueryBuilder();
-		$thresholdTime = $this->getLastFailedLoginAttemptTimeForUidIpCombination($uid, $ip) - $this->config->getBruteForceProtectionTimeThreshold();
+		$thresholdTime = $this->getLastFailedAccessTimeForTokenIpCombination($token, $ip) - $this->config->getBruteForceProtectionTimeThreshold();
 		$attempts = $builder->selectAlias($builder->createFunction('COUNT(*)'), 'count')
 			->from($this->tableName)
 			->where($builder->expr()->gt('attempted_at', $builder->createNamedParameter($thresholdTime)))
-			->andWhere($builder->expr()->eq('uid', $builder->createNamedParameter($uid)))
+			->andWhere($builder->expr()->eq('link_token', $builder->createNamedParameter($token)))
 			->andWhere($builder->expr()->eq('ip', $builder->createNamedParameter($ip)))
 			->execute()
 			->fetch();
@@ -86,33 +85,33 @@ class FailedLoginAttemptMapper extends Mapper {
 	}
 
 	/**
-	 * @param string $uid
+	 * @param string $token
 	 * @param string $ip
 	 * @return int
 	 */
-	public function getLastFailedLoginAttemptTimeForUidIpCombination($uid, $ip) {
+	public function getLastFailedAccessTimeForTokenIpCombination($token, $ip) {
 		$builder = $this->db->getQueryBuilder();
 		$thresholdTime = $this->timeFactory->getTime() - $this->config->getBruteForceProtectionBanPeriod();
 		$lastAttempt = $builder->select('attempted_at')
 			->from($this->tableName)
 			->where($builder->expr()->gt('attempted_at', $builder->createNamedParameter($thresholdTime)))
-			->andWhere($builder->expr()->eq('uid', $builder->createNamedParameter($uid)))
+			->andWhere($builder->expr()->eq('link_token', $builder->createNamedParameter($token)))
 			->andWhere($builder->expr()->eq('ip', $builder->createNamedParameter($ip)))
 			->orderBy('attempted_at', 'DESC')
 			->setMaxResults(1)
 			->execute()
 			->fetch();
-		return ($lastAttempt === false) ? 0 : \intval($lastAttempt['attempted_at']);
+		return \intval($lastAttempt['attempted_at']);
 	}
 
 	/**
-	 * @param string $uid
+	 * @param string $token
 	 * @param string $ip
 	 */
-	public function deleteFailedLoginAttemptsForUidIpCombination($uid, $ip) {
+	public function deleteFailedAccessForTokenIpCombination($token, $ip) {
 		$builder = $this->db->getQueryBuilder();
 		$builder->delete($this->tableName)
-			->where($builder->expr()->eq('uid', $builder->createNamedParameter($uid)))
+			->where($builder->expr()->eq('link_token', $builder->createNamedParameter($token)))
 			->andWhere($builder->expr()->eq('ip', $builder->createNamedParameter($ip)))
 			->execute();
 	}
@@ -122,7 +121,7 @@ class FailedLoginAttemptMapper extends Mapper {
 	 *
 	 * @param int $threshold the amount of threshold seconds
 	 */
-	public function deleteOldFailedLoginAttempts($threshold) {
+	public function deleteOldFailedAccesses($threshold) {
 		$builder = $this->db->getQueryBuilder();
 		$thresholdTime = $this->timeFactory->getTime() - $threshold;
 		$builder->delete($this->tableName)
