@@ -24,76 +24,64 @@
 
 namespace OCA\BruteForceProtection\Tests;
 
-use OC\User\Manager;
 use OCA\BruteForceProtection\Hooks;
 use OCA\BruteForceProtection\Throttle;
 use OCP\IRequest;
+use OCP\IUser;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Test\TestCase;
 
 class HooksTest extends TestCase {
 
 	/** @var  Hooks */
 	private $hooks;
-	/**
-	 * @var \PHPUnit\Framework\MockObject\MockObject | Manager
-	 */
-	private $userManagerMock;
-	/**
-	 * @var \PHPUnit\Framework\MockObject\MockObject | Throttle
-	 */
+	/** @var \PHPUnit\Framework\MockObject\MockObject | Throttle */
 	private $throttleMock;
-	/**
-	 * @var \PHPUnit\Framework\MockObject\MockObject | IRequest
-	 */
+	/** @var \PHPUnit\Framework\MockObject\MockObject | IRequest */
 	private $requestMock;
+	/** @var \PHPUnit\Framework\MockObject\MockObject | EventDispatcherInterface */
+	private $eventDispatcherMock;
 
 	public function setUp(): void {
 		parent::setUp();
-
-		$this->userManagerMock = $this->getMockBuilder('\OC\User\Manager')
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->throttleMock = $this->getMockBuilder('OCA\BruteForceProtection\Throttle')
-			->disableOriginalConstructor()
-			->getMock();
-		$this->requestMock = $this->getMockBuilder('OCP\IRequest')
-			->disableOriginalConstructor()
-			->getMock();
+		$this->throttleMock = $this->createMock(Throttle::class);
+		$this->requestMock = $this->createMock(IRequest::class);
+		$this->eventDispatcherMock = $this->createMock(EventDispatcherInterface::class);
 
 		$this->hooks = new Hooks(
-			$this->userManagerMock,
 			$this->throttleMock,
-			$this->requestMock);
+			$this->requestMock,
+			$this->eventDispatcherMock
+		);
 	}
 
 	public function testRegister() {
-		$this->userManagerMock->expects($this->exactly(3))
-			->method('listen');
+		$this->eventDispatcherMock->expects($this->exactly(3))
+			->method('addListener');
 		$this->hooks->register();
 	}
 
 	public function testFailedLoginCallback() {
+		$event = new GenericEvent(null, ['user' => 'test']);
 		$this->throttleMock->expects($this->once())
 			->method('addFailedLoginAttempt');
-
-		$this->hooks->failedLoginCallback("test");
-		$this->assertTrue(true);
+		$this->hooks->failedLoginCallback($event);
 	}
 
 	public function testPostLoginCallback() {
+		$mockUser = $this->createMock(IUser::class);
+		$mockUser->method('getUID')->willReturn('test');
+		$event = new GenericEvent(null, ['user' => $mockUser]);
 		$this->throttleMock->expects($this->once())
 			->method('clearSuspiciousAttemptsForUidIpCombination');
-
-		$this->hooks->postLoginCallback("test");
-		$this->assertTrue(true);
+		$this->hooks->postLoginCallback($event);
 	}
 
 	public function testPreLoginCallback() {
+		$event = new GenericEvent(null, ['user' => 'test']);
 		$this->throttleMock->expects($this->once())
 			->method('applyBruteForcePolicy');
-
-		$this->hooks->preLoginCallback('test');
-		$this->assertTrue(true);
+		$this->hooks->preLoginCallback($event);
 	}
 }
