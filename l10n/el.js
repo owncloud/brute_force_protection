@@ -3,7 +3,8 @@ OC.L10N.register(
     {
     "Preferences are saved" : "Οι προτιμήσεις αποθηκεύτηκαν",
     "Inputs must be positive integers" : "Οι είσοδοι πρέπει να είναι θετικοί ακέραιοι αριθμοί",
-    "Too many failed login attempts. Try again in %s minutes." : "Πολλές αποτυχημένες προσπάθειες σύνδεσης. Δοκιμάστε ξανά σε %s λεπτά.",
+    "_ %n minute_::_ %n minutes_" : ["%n λεπτό","%n λεπτά"],
+    "_ %n hour_::_ %n hours_" : ["%n ώρα","%n ώρες"],
     "Brute Force Protection" : "Προστασία από Brute Force",
     "Count failed login attempts over how many seconds?" : "Καταμέτρηση αποτυχημένων προσπαθειών σύνδεσης πάνω από πόσα δευτερόλεπτα;",
     "Ban after how many failed login attempts?" : "Μετά από πόσες αποτυχημένες προσπάθειες σύνδεσης να γίνεται αποκλεισμός;",
