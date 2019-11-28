@@ -1,32 +1,6 @@
 ---
 kind: pipeline
 type: docker
-name: coding-standard-php7.0
-
-platform:
-  os: linux
-  arch: amd64
-
-workspace:
-  base: /var/www/owncloud
-  path: server/apps/brute_force_protection
-
-steps:
-- name: coding-standard
-  pull: always
-  image: owncloudci/php:7.0
-  commands:
-  - make test-php-style
-
-trigger:
-  ref:
-  - refs/pull/**
-  - refs/tags/**
-  - refs/heads/master
-
----
-kind: pipeline
-type: docker
 name: coding-standard-php7.1
 
 platform:
@@ -105,451 +79,6 @@ trigger:
 ---
 kind: pipeline
 type: docker
-name: phpunit-php7.0-sqlite
-
-platform:
-  os: linux
-  arch: amd64
-
-workspace:
-  base: /var/www/owncloud
-  path: server/apps/brute_force_protection
-
-steps:
-- name: install-core
-  pull: always
-  image: owncloudci/core
-  settings:
-    core_path: /var/www/owncloud/server
-    db_host: sqlite
-    db_name: owncloud
-    db_password: owncloud
-    db_type: sqlite
-    db_username: owncloud
-    exclude: apps/brute_force_protection
-    version: daily-master-qa
-
-- name: setup-server-brute_force_protection
-  pull: always
-  image: owncloudci/php:7.0
-  commands:
-  - cd /var/www/owncloud/server
-  - php occ a:l
-  - php occ a:e brute_force_protection
-  - php occ a:e testing
-  - php occ a:l
-  - php occ config:system:set trusted_domains 1 --value=server
-  - php occ log:manage --level 2
-
-- name: phpunit-tests
-  pull: always
-  image: owncloudci/php:7.0
-  commands:
-  - make test-php-unit-dbg
-
-- name: codecov-upload
-  pull: always
-  image: plugins/codecov:2
-  settings:
-    paths:
-    - tests/output/clover.xml
-    token:
-      from_secret: codecov_token
-
-trigger:
-  ref:
-  - refs/pull/**
-  - refs/tags/**
-  - refs/heads/master
-
-depends_on:
-- coding-standard-php7.0
-- coding-standard-php7.1
-- coding-standard-php7.2
-- coding-standard-php7.3
-
----
-kind: pipeline
-type: docker
-name: phpunit-php7.0-mariadb10.2
-
-platform:
-  os: linux
-  arch: amd64
-
-workspace:
-  base: /var/www/owncloud
-  path: server/apps/brute_force_protection
-
-steps:
-- name: install-core
-  pull: always
-  image: owncloudci/core
-  settings:
-    core_path: /var/www/owncloud/server
-    db_host: mariadb
-    db_name: owncloud
-    db_password: owncloud
-    db_type: mysql
-    db_username: owncloud
-    exclude: apps/brute_force_protection
-    version: daily-master-qa
-
-- name: setup-server-brute_force_protection
-  pull: always
-  image: owncloudci/php:7.0
-  commands:
-  - cd /var/www/owncloud/server
-  - php occ a:l
-  - php occ a:e brute_force_protection
-  - php occ a:e testing
-  - php occ a:l
-  - php occ config:system:set trusted_domains 1 --value=server
-  - php occ log:manage --level 2
-
-- name: phpunit-tests
-  pull: always
-  image: owncloudci/php:7.0
-  commands:
-  - make test-php-unit-dbg
-
-- name: codecov-upload
-  pull: always
-  image: plugins/codecov:2
-  settings:
-    paths:
-    - tests/output/clover.xml
-    token:
-      from_secret: codecov_token
-
-services:
-- name: mariadb
-  pull: always
-  image: mariadb:10.2
-  environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
-
-trigger:
-  ref:
-  - refs/pull/**
-  - refs/tags/**
-  - refs/heads/master
-
-depends_on:
-- coding-standard-php7.0
-- coding-standard-php7.1
-- coding-standard-php7.2
-- coding-standard-php7.3
-
----
-kind: pipeline
-type: docker
-name: phpunit-php7.0-mysql5.5
-
-platform:
-  os: linux
-  arch: amd64
-
-workspace:
-  base: /var/www/owncloud
-  path: server/apps/brute_force_protection
-
-steps:
-- name: install-core
-  pull: always
-  image: owncloudci/core
-  settings:
-    core_path: /var/www/owncloud/server
-    db_host: mysql
-    db_name: owncloud
-    db_password: owncloud
-    db_type: mysql
-    db_username: owncloud
-    exclude: apps/brute_force_protection
-    version: daily-master-qa
-
-- name: setup-server-brute_force_protection
-  pull: always
-  image: owncloudci/php:7.0
-  commands:
-  - cd /var/www/owncloud/server
-  - php occ a:l
-  - php occ a:e brute_force_protection
-  - php occ a:e testing
-  - php occ a:l
-  - php occ config:system:set trusted_domains 1 --value=server
-  - php occ log:manage --level 2
-
-- name: phpunit-tests
-  pull: always
-  image: owncloudci/php:7.0
-  commands:
-  - make test-php-unit-dbg
-
-- name: codecov-upload
-  pull: always
-  image: plugins/codecov:2
-  settings:
-    paths:
-    - tests/output/clover.xml
-    token:
-      from_secret: codecov_token
-
-services:
-- name: mysql
-  pull: always
-  image: mysql:5.5
-  environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
-
-trigger:
-  ref:
-  - refs/pull/**
-  - refs/tags/**
-  - refs/heads/master
-
-depends_on:
-- coding-standard-php7.0
-- coding-standard-php7.1
-- coding-standard-php7.2
-- coding-standard-php7.3
-
----
-kind: pipeline
-type: docker
-name: phpunit-php7.0-mysql5.7
-
-platform:
-  os: linux
-  arch: amd64
-
-workspace:
-  base: /var/www/owncloud
-  path: server/apps/brute_force_protection
-
-steps:
-- name: install-core
-  pull: always
-  image: owncloudci/core
-  settings:
-    core_path: /var/www/owncloud/server
-    db_host: mysql
-    db_name: owncloud
-    db_password: owncloud
-    db_type: mysql
-    db_username: owncloud
-    exclude: apps/brute_force_protection
-    version: daily-master-qa
-
-- name: setup-server-brute_force_protection
-  pull: always
-  image: owncloudci/php:7.0
-  commands:
-  - cd /var/www/owncloud/server
-  - php occ a:l
-  - php occ a:e brute_force_protection
-  - php occ a:e testing
-  - php occ a:l
-  - php occ config:system:set trusted_domains 1 --value=server
-  - php occ log:manage --level 2
-
-- name: phpunit-tests
-  pull: always
-  image: owncloudci/php:7.0
-  commands:
-  - make test-php-unit-dbg
-
-- name: codecov-upload
-  pull: always
-  image: plugins/codecov:2
-  settings:
-    paths:
-    - tests/output/clover.xml
-    token:
-      from_secret: codecov_token
-
-services:
-- name: mysql
-  pull: always
-  image: mysql:5.7
-  environment:
-    MYSQL_DATABASE: owncloud
-    MYSQL_PASSWORD: owncloud
-    MYSQL_ROOT_PASSWORD: owncloud
-    MYSQL_USER: owncloud
-
-trigger:
-  ref:
-  - refs/pull/**
-  - refs/tags/**
-  - refs/heads/master
-
-depends_on:
-- coding-standard-php7.0
-- coding-standard-php7.1
-- coding-standard-php7.2
-- coding-standard-php7.3
-
----
-kind: pipeline
-type: docker
-name: phpunit-php7.0-postgres9.4
-
-platform:
-  os: linux
-  arch: amd64
-
-workspace:
-  base: /var/www/owncloud
-  path: server/apps/brute_force_protection
-
-steps:
-- name: install-core
-  pull: always
-  image: owncloudci/core
-  settings:
-    core_path: /var/www/owncloud/server
-    db_host: postgres
-    db_name: owncloud
-    db_password: owncloud
-    db_type: pgsql
-    db_username: owncloud
-    exclude: apps/brute_force_protection
-    version: daily-master-qa
-
-- name: setup-server-brute_force_protection
-  pull: always
-  image: owncloudci/php:7.0
-  commands:
-  - cd /var/www/owncloud/server
-  - php occ a:l
-  - php occ a:e brute_force_protection
-  - php occ a:e testing
-  - php occ a:l
-  - php occ config:system:set trusted_domains 1 --value=server
-  - php occ log:manage --level 2
-
-- name: phpunit-tests
-  pull: always
-  image: owncloudci/php:7.0
-  commands:
-  - make test-php-unit-dbg
-
-- name: codecov-upload
-  pull: always
-  image: plugins/codecov:2
-  settings:
-    paths:
-    - tests/output/clover.xml
-    token:
-      from_secret: codecov_token
-
-services:
-- name: postgres
-  pull: always
-  image: postgres:9.4
-  environment:
-    POSTGRES_DB: owncloud
-    POSTGRES_PASSWORD: owncloud
-    POSTGRES_USER: owncloud
-
-trigger:
-  ref:
-  - refs/pull/**
-  - refs/tags/**
-  - refs/heads/master
-
-depends_on:
-- coding-standard-php7.0
-- coding-standard-php7.1
-- coding-standard-php7.2
-- coding-standard-php7.3
-
----
-kind: pipeline
-type: docker
-name: phpunit-php7.0-oracle
-
-platform:
-  os: linux
-  arch: amd64
-
-workspace:
-  base: /var/www/owncloud
-  path: server/apps/brute_force_protection
-
-steps:
-- name: install-core
-  pull: always
-  image: owncloudci/core
-  settings:
-    core_path: /var/www/owncloud/server
-    db_host: oracle
-    db_name: XE
-    db_password: oracle
-    db_type: oci
-    db_username: system
-    exclude: apps/brute_force_protection
-    version: daily-master-qa
-
-- name: setup-server-brute_force_protection
-  pull: always
-  image: owncloudci/php:7.0
-  commands:
-  - cd /var/www/owncloud/server
-  - php occ a:l
-  - php occ a:e brute_force_protection
-  - php occ a:e testing
-  - php occ a:l
-  - php occ config:system:set trusted_domains 1 --value=server
-  - php occ log:manage --level 2
-
-- name: phpunit-tests
-  pull: always
-  image: owncloudci/php:7.0
-  commands:
-  - make test-php-unit-dbg
-
-- name: codecov-upload
-  pull: always
-  image: plugins/codecov:2
-  settings:
-    paths:
-    - tests/output/clover.xml
-    token:
-      from_secret: codecov_token
-
-services:
-- name: oracle
-  pull: always
-  image: deepdiver/docker-oracle-xe-11g:latest
-  environment:
-    ORACLE_DB: XE
-    ORACLE_DISABLE_ASYNCH_IO: true
-    ORACLE_PASSWORD: oracle
-    ORACLE_USER: system
-
-trigger:
-  ref:
-  - refs/pull/**
-  - refs/tags/**
-  - refs/heads/master
-
-depends_on:
-- coding-standard-php7.0
-- coding-standard-php7.1
-- coding-standard-php7.2
-- coding-standard-php7.3
-
----
-kind: pipeline
-type: docker
 name: phpunit-php7.1-sqlite
 
 platform:
@@ -590,7 +119,16 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - make test-php-unit
+  - make test-php-unit-dbg
+
+- name: codecov-upload
+  pull: always
+  image: plugins/codecov:2
+  settings:
+    paths:
+    - tests/output/clover.xml
+    token:
+      from_secret: codecov_token
 
 trigger:
   ref:
@@ -599,7 +137,6 @@ trigger:
   - refs/heads/master
 
 depends_on:
-- coding-standard-php7.0
 - coding-standard-php7.1
 - coding-standard-php7.2
 - coding-standard-php7.3
@@ -647,7 +184,16 @@ steps:
   pull: always
   image: owncloudci/php:7.1
   commands:
-  - make test-php-unit
+  - make test-php-unit-dbg
+
+- name: codecov-upload
+  pull: always
+  image: plugins/codecov:2
+  settings:
+    paths:
+    - tests/output/clover.xml
+    token:
+      from_secret: codecov_token
 
 services:
 - name: mariadb
@@ -666,7 +212,305 @@ trigger:
   - refs/heads/master
 
 depends_on:
-- coding-standard-php7.0
+- coding-standard-php7.1
+- coding-standard-php7.2
+- coding-standard-php7.3
+
+---
+kind: pipeline
+type: docker
+name: phpunit-php7.1-mysql5.5
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  base: /var/www/owncloud
+  path: server/apps/brute_force_protection
+
+steps:
+- name: install-core
+  pull: always
+  image: owncloudci/core
+  settings:
+    core_path: /var/www/owncloud/server
+    db_host: mysql
+    db_name: owncloud
+    db_password: owncloud
+    db_type: mysql
+    db_username: owncloud
+    exclude: apps/brute_force_protection
+    version: daily-master-qa
+
+- name: setup-server-brute_force_protection
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - cd /var/www/owncloud/server
+  - php occ a:l
+  - php occ a:e brute_force_protection
+  - php occ a:e testing
+  - php occ a:l
+  - php occ config:system:set trusted_domains 1 --value=server
+  - php occ log:manage --level 2
+
+- name: phpunit-tests
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make test-php-unit-dbg
+
+- name: codecov-upload
+  pull: always
+  image: plugins/codecov:2
+  settings:
+    paths:
+    - tests/output/clover.xml
+    token:
+      from_secret: codecov_token
+
+services:
+- name: mysql
+  pull: always
+  image: mysql:5.5
+  environment:
+    MYSQL_DATABASE: owncloud
+    MYSQL_PASSWORD: owncloud
+    MYSQL_ROOT_PASSWORD: owncloud
+    MYSQL_USER: owncloud
+
+trigger:
+  ref:
+  - refs/pull/**
+  - refs/tags/**
+  - refs/heads/master
+
+depends_on:
+- coding-standard-php7.1
+- coding-standard-php7.2
+- coding-standard-php7.3
+
+---
+kind: pipeline
+type: docker
+name: phpunit-php7.1-mysql5.7
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  base: /var/www/owncloud
+  path: server/apps/brute_force_protection
+
+steps:
+- name: install-core
+  pull: always
+  image: owncloudci/core
+  settings:
+    core_path: /var/www/owncloud/server
+    db_host: mysql
+    db_name: owncloud
+    db_password: owncloud
+    db_type: mysql
+    db_username: owncloud
+    exclude: apps/brute_force_protection
+    version: daily-master-qa
+
+- name: setup-server-brute_force_protection
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - cd /var/www/owncloud/server
+  - php occ a:l
+  - php occ a:e brute_force_protection
+  - php occ a:e testing
+  - php occ a:l
+  - php occ config:system:set trusted_domains 1 --value=server
+  - php occ log:manage --level 2
+
+- name: phpunit-tests
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make test-php-unit-dbg
+
+- name: codecov-upload
+  pull: always
+  image: plugins/codecov:2
+  settings:
+    paths:
+    - tests/output/clover.xml
+    token:
+      from_secret: codecov_token
+
+services:
+- name: mysql
+  pull: always
+  image: mysql:5.7
+  environment:
+    MYSQL_DATABASE: owncloud
+    MYSQL_PASSWORD: owncloud
+    MYSQL_ROOT_PASSWORD: owncloud
+    MYSQL_USER: owncloud
+
+trigger:
+  ref:
+  - refs/pull/**
+  - refs/tags/**
+  - refs/heads/master
+
+depends_on:
+- coding-standard-php7.1
+- coding-standard-php7.2
+- coding-standard-php7.3
+
+---
+kind: pipeline
+type: docker
+name: phpunit-php7.1-postgres9.4
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  base: /var/www/owncloud
+  path: server/apps/brute_force_protection
+
+steps:
+- name: install-core
+  pull: always
+  image: owncloudci/core
+  settings:
+    core_path: /var/www/owncloud/server
+    db_host: postgres
+    db_name: owncloud
+    db_password: owncloud
+    db_type: pgsql
+    db_username: owncloud
+    exclude: apps/brute_force_protection
+    version: daily-master-qa
+
+- name: setup-server-brute_force_protection
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - cd /var/www/owncloud/server
+  - php occ a:l
+  - php occ a:e brute_force_protection
+  - php occ a:e testing
+  - php occ a:l
+  - php occ config:system:set trusted_domains 1 --value=server
+  - php occ log:manage --level 2
+
+- name: phpunit-tests
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make test-php-unit-dbg
+
+- name: codecov-upload
+  pull: always
+  image: plugins/codecov:2
+  settings:
+    paths:
+    - tests/output/clover.xml
+    token:
+      from_secret: codecov_token
+
+services:
+- name: postgres
+  pull: always
+  image: postgres:9.4
+  environment:
+    POSTGRES_DB: owncloud
+    POSTGRES_PASSWORD: owncloud
+    POSTGRES_USER: owncloud
+
+trigger:
+  ref:
+  - refs/pull/**
+  - refs/tags/**
+  - refs/heads/master
+
+depends_on:
+- coding-standard-php7.1
+- coding-standard-php7.2
+- coding-standard-php7.3
+
+---
+kind: pipeline
+type: docker
+name: phpunit-php7.1-oracle
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  base: /var/www/owncloud
+  path: server/apps/brute_force_protection
+
+steps:
+- name: install-core
+  pull: always
+  image: owncloudci/core
+  settings:
+    core_path: /var/www/owncloud/server
+    db_host: oracle
+    db_name: XE
+    db_password: oracle
+    db_type: oci
+    db_username: system
+    exclude: apps/brute_force_protection
+    version: daily-master-qa
+
+- name: setup-server-brute_force_protection
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - cd /var/www/owncloud/server
+  - php occ a:l
+  - php occ a:e brute_force_protection
+  - php occ a:e testing
+  - php occ a:l
+  - php occ config:system:set trusted_domains 1 --value=server
+  - php occ log:manage --level 2
+
+- name: phpunit-tests
+  pull: always
+  image: owncloudci/php:7.1
+  commands:
+  - make test-php-unit-dbg
+
+- name: codecov-upload
+  pull: always
+  image: plugins/codecov:2
+  settings:
+    paths:
+    - tests/output/clover.xml
+    token:
+      from_secret: codecov_token
+
+services:
+- name: oracle
+  pull: always
+  image: deepdiver/docker-oracle-xe-11g:latest
+  environment:
+    ORACLE_DB: XE
+    ORACLE_DISABLE_ASYNCH_IO: true
+    ORACLE_PASSWORD: oracle
+    ORACLE_USER: system
+
+trigger:
+  ref:
+  - refs/pull/**
+  - refs/tags/**
+  - refs/heads/master
+
+depends_on:
 - coding-standard-php7.1
 - coding-standard-php7.2
 - coding-standard-php7.3
@@ -723,7 +567,6 @@ trigger:
   - refs/heads/master
 
 depends_on:
-- coding-standard-php7.0
 - coding-standard-php7.1
 - coding-standard-php7.2
 - coding-standard-php7.3
@@ -790,7 +633,6 @@ trigger:
   - refs/heads/master
 
 depends_on:
-- coding-standard-php7.0
 - coding-standard-php7.1
 - coding-standard-php7.2
 - coding-standard-php7.3
@@ -847,7 +689,6 @@ trigger:
   - refs/heads/master
 
 depends_on:
-- coding-standard-php7.0
 - coding-standard-php7.1
 - coding-standard-php7.2
 - coding-standard-php7.3
@@ -914,7 +755,6 @@ trigger:
   - refs/heads/master
 
 depends_on:
-- coding-standard-php7.0
 - coding-standard-php7.1
 - coding-standard-php7.2
 - coding-standard-php7.3
@@ -922,7 +762,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIBruteForce-master-chrome-mariadb10.2-php7.0
+name: webUIBruteForce-master-chrome-mariadb10.2-php7.1
 
 platform:
   os: linux
@@ -948,7 +788,7 @@ steps:
 
 - name: install-testrunner
   pull: always
-  image: owncloudci/php:7.0
+  image: owncloudci/php:7.1
   commands:
   - mkdir /tmp/testrunner
   - git clone -b master --depth=1 https://github.com/owncloud/core.git /tmp/testrunner
@@ -959,7 +799,7 @@ steps:
 
 - name: setup-server-brute_force_protection
   pull: always
-  image: owncloudci/php:7.0
+  image: owncloudci/php:7.1
   commands:
   - cd /var/www/owncloud/server
   - php occ a:l
@@ -978,13 +818,13 @@ steps:
 
 - name: fix-permissions
   pull: always
-  image: owncloudci/php:7.0
+  image: owncloudci/php:7.1
   commands:
   - chown -R www-data /var/www/owncloud/server
 
 - name: acceptance-tests
   pull: always
-  image: owncloudci/php:7.0
+  image: owncloudci/php:7.1
   commands:
   - touch /var/www/owncloud/saved-settings.sh
   - . /var/www/owncloud/saved-settings.sh
@@ -1015,7 +855,7 @@ services:
 
 - name: server
   pull: always
-  image: owncloudci/php:7.0
+  image: owncloudci/php:7.1
   command:
   - /usr/local/bin/apachectl
   - -e
@@ -1032,7 +872,6 @@ trigger:
   - refs/heads/master
 
 depends_on:
-- coding-standard-php7.0
 - coding-standard-php7.1
 - coding-standard-php7.2
 - coding-standard-php7.3
@@ -1040,7 +879,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIBruteForce-master-firefox-mariadb10.2-php7.0
+name: webUIBruteForce-master-firefox-mariadb10.2-php7.1
 
 platform:
   os: linux
@@ -1066,7 +905,7 @@ steps:
 
 - name: install-testrunner
   pull: always
-  image: owncloudci/php:7.0
+  image: owncloudci/php:7.1
   commands:
   - mkdir /tmp/testrunner
   - git clone -b master --depth=1 https://github.com/owncloud/core.git /tmp/testrunner
@@ -1077,7 +916,7 @@ steps:
 
 - name: setup-server-brute_force_protection
   pull: always
-  image: owncloudci/php:7.0
+  image: owncloudci/php:7.1
   commands:
   - cd /var/www/owncloud/server
   - php occ a:l
@@ -1096,13 +935,13 @@ steps:
 
 - name: fix-permissions
   pull: always
-  image: owncloudci/php:7.0
+  image: owncloudci/php:7.1
   commands:
   - chown -R www-data /var/www/owncloud/server
 
 - name: acceptance-tests
   pull: always
-  image: owncloudci/php:7.0
+  image: owncloudci/php:7.1
   commands:
   - touch /var/www/owncloud/saved-settings.sh
   - . /var/www/owncloud/saved-settings.sh
@@ -1134,7 +973,7 @@ services:
 
 - name: server
   pull: always
-  image: owncloudci/php:7.0
+  image: owncloudci/php:7.1
   command:
   - /usr/local/bin/apachectl
   - -e
@@ -1151,7 +990,6 @@ trigger:
   - refs/heads/master
 
 depends_on:
-- coding-standard-php7.0
 - coding-standard-php7.1
 - coding-standard-php7.2
 - coding-standard-php7.3
@@ -1159,7 +997,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIBruteForce-latest-chrome-mariadb10.2-php7.0
+name: webUIBruteForce-latest-chrome-mariadb10.2-php7.1
 
 platform:
   os: linux
@@ -1185,7 +1023,7 @@ steps:
 
 - name: install-testrunner
   pull: always
-  image: owncloudci/php:7.0
+  image: owncloudci/php:7.1
   commands:
   - mkdir /tmp/testrunner
   - git clone -b master --depth=1 https://github.com/owncloud/core.git /tmp/testrunner
@@ -1196,7 +1034,7 @@ steps:
 
 - name: setup-server-brute_force_protection
   pull: always
-  image: owncloudci/php:7.0
+  image: owncloudci/php:7.1
   commands:
   - cd /var/www/owncloud/server
   - php occ a:l
@@ -1215,13 +1053,13 @@ steps:
 
 - name: fix-permissions
   pull: always
-  image: owncloudci/php:7.0
+  image: owncloudci/php:7.1
   commands:
   - chown -R www-data /var/www/owncloud/server
 
 - name: acceptance-tests
   pull: always
-  image: owncloudci/php:7.0
+  image: owncloudci/php:7.1
   commands:
   - touch /var/www/owncloud/saved-settings.sh
   - . /var/www/owncloud/saved-settings.sh
@@ -1252,7 +1090,7 @@ services:
 
 - name: server
   pull: always
-  image: owncloudci/php:7.0
+  image: owncloudci/php:7.1
   command:
   - /usr/local/bin/apachectl
   - -e
@@ -1269,7 +1107,6 @@ trigger:
   - refs/heads/master
 
 depends_on:
-- coding-standard-php7.0
 - coding-standard-php7.1
 - coding-standard-php7.2
 - coding-standard-php7.3
@@ -1277,7 +1114,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: webUIBruteForce-latest-firefox-mariadb10.2-php7.0
+name: webUIBruteForce-latest-firefox-mariadb10.2-php7.1
 
 platform:
   os: linux
@@ -1303,7 +1140,7 @@ steps:
 
 - name: install-testrunner
   pull: always
-  image: owncloudci/php:7.0
+  image: owncloudci/php:7.1
   commands:
   - mkdir /tmp/testrunner
   - git clone -b master --depth=1 https://github.com/owncloud/core.git /tmp/testrunner
@@ -1314,7 +1151,7 @@ steps:
 
 - name: setup-server-brute_force_protection
   pull: always
-  image: owncloudci/php:7.0
+  image: owncloudci/php:7.1
   commands:
   - cd /var/www/owncloud/server
   - php occ a:l
@@ -1333,13 +1170,13 @@ steps:
 
 - name: fix-permissions
   pull: always
-  image: owncloudci/php:7.0
+  image: owncloudci/php:7.1
   commands:
   - chown -R www-data /var/www/owncloud/server
 
 - name: acceptance-tests
   pull: always
-  image: owncloudci/php:7.0
+  image: owncloudci/php:7.1
   commands:
   - touch /var/www/owncloud/saved-settings.sh
   - . /var/www/owncloud/saved-settings.sh
@@ -1371,7 +1208,7 @@ services:
 
 - name: server
   pull: always
-  image: owncloudci/php:7.0
+  image: owncloudci/php:7.1
   command:
   - /usr/local/bin/apachectl
   - -e
@@ -1388,7 +1225,6 @@ trigger:
   - refs/heads/master
 
 depends_on:
-- coding-standard-php7.0
 - coding-standard-php7.1
 - coding-standard-php7.2
 - coding-standard-php7.3
@@ -1396,7 +1232,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiBruteForceProtection-master-mariadb10.2-php7.0
+name: apiBruteForceProtection-master-mariadb10.2-php7.1
 
 platform:
   os: linux
@@ -1422,7 +1258,7 @@ steps:
 
 - name: install-testrunner
   pull: always
-  image: owncloudci/php:7.0
+  image: owncloudci/php:7.1
   commands:
   - mkdir /tmp/testrunner
   - git clone -b master --depth=1 https://github.com/owncloud/core.git /tmp/testrunner
@@ -1433,7 +1269,7 @@ steps:
 
 - name: setup-server-brute_force_protection
   pull: always
-  image: owncloudci/php:7.0
+  image: owncloudci/php:7.1
   commands:
   - cd /var/www/owncloud/server
   - php occ a:l
@@ -1459,13 +1295,13 @@ steps:
 
 - name: fix-permissions
   pull: always
-  image: owncloudci/php:7.0
+  image: owncloudci/php:7.1
   commands:
   - chown -R www-data /var/www/owncloud/server
 
 - name: acceptance-tests
   pull: always
-  image: owncloudci/php:7.0
+  image: owncloudci/php:7.1
   commands:
   - touch /var/www/owncloud/saved-settings.sh
   - . /var/www/owncloud/saved-settings.sh
@@ -1486,7 +1322,7 @@ services:
 
 - name: server
   pull: always
-  image: owncloudci/php:7.0
+  image: owncloudci/php:7.1
   command:
   - /usr/local/bin/apachectl
   - -e
@@ -1503,7 +1339,6 @@ trigger:
   - refs/heads/master
 
 depends_on:
-- coding-standard-php7.0
 - coding-standard-php7.1
 - coding-standard-php7.2
 - coding-standard-php7.3
@@ -1511,7 +1346,7 @@ depends_on:
 ---
 kind: pipeline
 type: docker
-name: apiBruteForceProtection-latest-mariadb10.2-php7.0
+name: apiBruteForceProtection-latest-mariadb10.2-php7.1
 
 platform:
   os: linux
@@ -1537,7 +1372,7 @@ steps:
 
 - name: install-testrunner
   pull: always
-  image: owncloudci/php:7.0
+  image: owncloudci/php:7.1
   commands:
   - mkdir /tmp/testrunner
   - git clone -b master --depth=1 https://github.com/owncloud/core.git /tmp/testrunner
@@ -1548,7 +1383,7 @@ steps:
 
 - name: setup-server-brute_force_protection
   pull: always
-  image: owncloudci/php:7.0
+  image: owncloudci/php:7.1
   commands:
   - cd /var/www/owncloud/server
   - php occ a:l
@@ -1574,13 +1409,13 @@ steps:
 
 - name: fix-permissions
   pull: always
-  image: owncloudci/php:7.0
+  image: owncloudci/php:7.1
   commands:
   - chown -R www-data /var/www/owncloud/server
 
 - name: acceptance-tests
   pull: always
-  image: owncloudci/php:7.0
+  image: owncloudci/php:7.1
   commands:
   - touch /var/www/owncloud/saved-settings.sh
   - . /var/www/owncloud/saved-settings.sh
@@ -1601,7 +1436,7 @@ services:
 
 - name: server
   pull: always
-  image: owncloudci/php:7.0
+  image: owncloudci/php:7.1
   command:
   - /usr/local/bin/apachectl
   - -e
@@ -1618,7 +1453,6 @@ trigger:
   - refs/heads/master
 
 depends_on:
-- coding-standard-php7.0
 - coding-standard-php7.1
 - coding-standard-php7.2
 - coding-standard-php7.3
@@ -1653,23 +1487,21 @@ trigger:
   - failure
 
 depends_on:
-- phpunit-php7.0-sqlite
-- phpunit-php7.0-mariadb10.2
-- phpunit-php7.0-mysql5.5
-- phpunit-php7.0-mysql5.7
-- phpunit-php7.0-postgres9.4
-- phpunit-php7.0-oracle
 - phpunit-php7.1-sqlite
 - phpunit-php7.1-mariadb10.2
+- phpunit-php7.1-mysql5.5
+- phpunit-php7.1-mysql5.7
+- phpunit-php7.1-postgres9.4
+- phpunit-php7.1-oracle
 - phpunit-php7.2-sqlite
 - phpunit-php7.2-mariadb10.2
 - phpunit-php7.3-sqlite
 - phpunit-php7.3-mariadb10.2
-- webUIBruteForce-master-chrome-mariadb10.2-php7.0
-- webUIBruteForce-master-firefox-mariadb10.2-php7.0
-- webUIBruteForce-latest-chrome-mariadb10.2-php7.0
-- webUIBruteForce-latest-firefox-mariadb10.2-php7.0
-- apiBruteForceProtection-master-mariadb10.2-php7.0
-- apiBruteForceProtection-latest-mariadb10.2-php7.0
+- webUIBruteForce-master-chrome-mariadb10.2-php7.1
+- webUIBruteForce-master-firefox-mariadb10.2-php7.1
+- webUIBruteForce-latest-chrome-mariadb10.2-php7.1
+- webUIBruteForce-latest-firefox-mariadb10.2-php7.1
+- apiBruteForceProtection-master-mariadb10.2-php7.1
+- apiBruteForceProtection-latest-mariadb10.2-php7.1
 
 ...
