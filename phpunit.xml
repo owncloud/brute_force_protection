@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <phpunit bootstrap="../../tests/bootstrap.php"
-	 strict="true"
+	 beStrictAboutOutputDuringTests="true"
 	 verbose="true"
 	 failOnRisky="true"
 	 failOnWarning="true"
 >
-	<testsuite name='unit'>
-		<directory>./tests/unit</directory>
-	</testsuite>
+	<testsuites>
+		<testsuite name='unit'>
+			<directory suffix='Test.php'>./tests/unit</directory>
+		</testsuite>
+	</testsuites>
 	<filter>
 		<whitelist>
 			<directory suffix=".php">./</directory>
