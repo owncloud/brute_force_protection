@@ -52,7 +52,7 @@ class ThrottleTest extends TestCase {
 	 */
 	private $timeFactoryMock;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->attemptMapper = $this->getMockBuilder(FailedLoginAttemptMapper::class)

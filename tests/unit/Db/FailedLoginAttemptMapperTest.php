@@ -57,7 +57,7 @@ class FailedLoginAttemptMapperTest extends TestCase {
 	/** @var int $thresholdConfigVal */
 	private $thresholdConfigVal = 60;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->baseTime = \time();
 		$this->timeFactoryMock = $this->getMockBuilder(ITimeFactory::class)
@@ -108,7 +108,7 @@ class FailedLoginAttemptMapperTest extends TestCase {
 		$this->mapper->insert($failedLoginAttempt);
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		parent::tearDown();
 		$query = $this->connection->getQueryBuilder()->delete($this->dbTable);
 		$query->execute();
