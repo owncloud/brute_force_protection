@@ -34,7 +34,7 @@ class BruteForceProtectionConfigTest extends TestCase {
 	/** @var  BruteForceProtectionConfig */
 	private $bfpConfig;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->config = $this->createMock(IConfig::class);
 		$this->bfpConfig = new BruteForceProtectionConfig($this->config);

@@ -47,7 +47,7 @@ class HooksTest extends TestCase {
 	 */
 	private $requestMock;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->userManagerMock = $this->getMockBuilder('\OC\User\Manager')

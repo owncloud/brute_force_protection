@@ -43,7 +43,7 @@ class ExpireOldAttemptsTest extends TestCase {
 	private $banPeriodConfigVal = 300;
 	/** @var ExpireOldAttempts $expireAttempts */
 	private $expireAttempts;
-	public function setUp() {
+	public function setUp(): void {
 		$this->mapper = $this->getMockBuilder(FailedLoginAttemptMapper::class)
 			->disableOriginalConstructor()
 			->getMock();
