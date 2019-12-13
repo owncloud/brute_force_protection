@@ -89,9 +89,10 @@ class ThrottleTest extends TestCase {
 	 * @param int $banPeriod
 	 * @param int $failTolerance
 	 * @param int $time
-	 * @expectedException \OC\User\LoginException
 	 */
 	public function testApplyBruteForcePolicy($lastAttempt, $attemptCount, $banPeriod, $failTolerance, $time) {
+		$this->expectException(\OC\User\LoginException::class);
+
 		$this->attemptMapper->expects($this->once())
 			->method('getLastFailedLoginAttemptTimeForUidIpCombination')
 			->with('test', '192.168.1.1')
