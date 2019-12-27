@@ -3,7 +3,9 @@ OC.L10N.register(
     {
     "Preferences are saved" : "Preferences are saved",
     "Inputs must be positive integers" : "Inputs must be positive integers",
-    "Too many failed login attempts. Try again in %s minutes." : "Too many failed login attempts. Try again in %s minutes.",
+    "Too many failed login attempts. Try again in %s." : "Too many failed login attempts. Try again in %s.",
+    "_ %n minute_::_ %n minutes_" : [" %n minute"," %n minutes"],
+    "_ %n hour_::_ %n hours_" : [" %n hour"," %n hours"],
     "Brute Force Protection" : "Brute Force Protection",
     "Count failed login attempts over how many seconds?" : "Count failed login attempts over how many seconds?",
     "Ban after how many failed login attempts?" : "Ban after how many failed login attempts?",

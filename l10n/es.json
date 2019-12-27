@@ -1,11 +1,13 @@
 { "translations": {
-    "Preferences are saved" : "Preferencias guardadas",
-    "Inputs must be positive integers" : "El número debe ser un entero positivo",
-    "Too many failed login attempts. Try again in %s minutes." : "Demasiados intentos de login. Puede volver a intentarlo pasados  %s minutos.",
+    "Preferences are saved" : "Las preferencias han sido guardadas",
+    "Inputs must be positive integers" : "Las entradas deben ser enteros positivos",
+    "Too many failed login attempts. Try again in %s." : "Demasiados intentos de inicio de sesión fallidos. Inténtelo de nuevo en %s.",
+    "_ %n minute_::_ %n minutes_" : [" %n minuto"," %n minutos"],
+    "_ %n hour_::_ %n hours_" : [" %n hora"," %n horas"],
     "Brute Force Protection" : "Protección contra Fuerza Bruta",
-    "Count failed login attempts over how many seconds?" : "Cuántos intentos de login en \"x\" segundos desea monitorizar.",
-    "Ban after how many failed login attempts?" : "Banear al cabo de \"x\" intentos de login",
-    "Ban for how many seconds?" : "Tiempo en segundos de baneo",
+    "Count failed login attempts over how many seconds?" : "¿Contar los intentos de inicio de sesión fallidos durante cuántos segundos?",
+    "Ban after how many failed login attempts?" : "¿Banear después de cuántos intentos fallidos de inicio de sesión?",
+    "Ban for how many seconds?" : "¿Banear por cuántos segundos?",
     "Save settings" : "Guardar configuración"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
