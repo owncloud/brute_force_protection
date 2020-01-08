@@ -3,7 +3,9 @@ OC.L10N.register(
     {
     "Preferences are saved" : "Tercihler kaydedildi",
     "Inputs must be positive integers" : "Girdi pozitif bir tam sayı olmalı",
-    "Too many failed login attempts. Try again in %s minutes." : "Çok fazla hatalı giriş denemesi. 1%s dakika içinde tekrar deneyiniz.",
+    "Too many failed login attempts. Try again in %s." : "Çok fazla hatalı giriş denemesi. %s içinde tekrar deneyiniz.",
+    "_ %n minute_::_ %n minutes_" : ["%ndakika","%ndakika"],
+    "_ %n hour_::_ %n hours_" : ["%nsaat","%nsaat"],
     "Brute Force Protection" : "Kaba Kuvvet Koruması",
     "Count failed login attempts over how many seconds?" : "Hatalı giriş denemeleri kaç saniye boyunca sayılmalı?",
     "Ban after how many failed login attempts?" : "Kaç hatalı giriş denemesinden sonra engellenmeli?",
