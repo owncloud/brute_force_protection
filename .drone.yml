@@ -819,6 +819,7 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /var/www/owncloud/server
+  - wait-for-it -t 600 server:80
 
 - name: acceptance-tests
   pull: always
@@ -934,6 +935,7 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /var/www/owncloud/server
+  - wait-for-it -t 600 server:80
 
 - name: acceptance-tests
   pull: always
@@ -1050,6 +1052,7 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /var/www/owncloud/server
+  - wait-for-it -t 600 server:80
 
 - name: acceptance-tests
   pull: always
@@ -1165,6 +1168,7 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /var/www/owncloud/server
+  - wait-for-it -t 600 server:80
 
 - name: acceptance-tests
   pull: always
@@ -1288,6 +1292,7 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /var/www/owncloud/server
+  - wait-for-it -t 600 server:80
 
 - name: acceptance-tests
   pull: always
@@ -1400,6 +1405,7 @@ steps:
   image: owncloudci/php:7.1
   commands:
   - chown -R www-data /var/www/owncloud/server
+  - wait-for-it -t 600 server:80
 
 - name: acceptance-tests
   pull: always
