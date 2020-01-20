@@ -31,14 +31,14 @@ require_once 'bootstrap.php';
  * Context for brute force protection specific steps
  */
 class BruteForceProtectionContext implements Context {
-	use Ip;
-	
+
 	/**
 	 * @var FeatureContext
 	 */
 	private $featureContext;
 
 	private $savedSettings = [];
+
 	/**
 	 * @Given the administrator has set the bruteforceprotection settings to:
 	 *
@@ -49,6 +49,7 @@ class BruteForceProtectionContext implements Context {
 	 *                            threshold-time, fail-tolerance, ban-period
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function setTheBruteforceprotectionSettings(TableNode $settings) {
 		foreach ($settings->getRowsHash() as $setting => $value) {
@@ -94,6 +95,7 @@ class BruteForceProtectionContext implements Context {
 	 * @param string $setting
 	 *
 	 * @return string
+	 * @throws Exception
 	 */
 	public function getBruteforceprotectionSetting($setting) {
 		$settingName = $this->mapSettingName($setting);
@@ -141,6 +143,7 @@ class BruteForceProtectionContext implements Context {
 	 * @param BeforeScenarioScope $scope
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function setUpScenario(BeforeScenarioScope $scope) {
 		// Get the environment
@@ -182,6 +185,7 @@ class BruteForceProtectionContext implements Context {
 	 * @AfterScenario
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function setBackAppSettings() {
 		foreach ($this->savedSettings as $setting => $value) {
