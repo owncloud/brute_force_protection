@@ -24,6 +24,7 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Page\BlockedUserPage;
 use Page\OwncloudPage;
 use Page\BruteForceProtectionPage;
 use Page\LoginPage;
@@ -90,6 +91,7 @@ class WebUIBruteForceProtectionContext extends RawMinkContext implements Context
 	 *                            threshold-time, fail-tolerance, ban-period
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function setTheBruteforceprotectionSettings(TableNode $settings) {
 		$this->webUIGeneralContext->adminLogsInUsingTheWebUI();
@@ -104,6 +106,7 @@ class WebUIBruteForceProtectionContext extends RawMinkContext implements Context
 	 * @param string $password
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theDisabledUserTriesToLogin($username, $password) {
 		/**
