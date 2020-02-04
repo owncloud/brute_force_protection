@@ -1114,12 +1114,15 @@ def owncloudService(version, phpVersion, name = 'server', path = '/var/www/owncl
 		'image': 'owncloudci/php:%s' % phpVersion,
 		'pull': 'always',
 		'environment': environment,
-		'command': [
-			'/usr/local/bin/apachectl',
-			'-e',
-			'debug',
-			'-D',
-			'FOREGROUND'
+		'commands': [
+			'a2enmod remoteip',
+			'cd /etc/apache2',
+			'echo "RemoteIPHeader X-Forwarded-For" >> apache2.conf',
+			# This replaces the first occurrence of "%h with "%a in apache2.conf file telling Apache to log the client
+			# IP as recorded by mod_remoteip (%a) rather than hostname (%h). For more info check this out:
+			# https://www.digitalocean.com/community/questions/get-client-public-ip-on-apache-server-used-behind-load-balancer
+			'sed -i \'0,/"%h/s//"%a/\' apache2.conf',
+			'/usr/local/bin/apachectl -e debug -D FOREGROUND',
 		]
 	}]
 
