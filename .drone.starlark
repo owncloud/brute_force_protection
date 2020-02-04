@@ -48,10 +48,10 @@ config = {
 				'firefox'
 			],
 		},
-		'api': {
-			'suites': [
-				'apiBruteForceProtection'
-			],
+		'api1': {
+			'suites': {
+				'apiBruteForceProtection': 'bruteForceProtection1'
+			},
 			'extraSetup': [
 				{
 					'name': 'configure-app',
@@ -64,6 +64,134 @@ config = {
 				}
 			],
 		},
+		'api2': {
+            'suites': {
+                'apiBruteForceProtection': 'bruteForceProtection2'
+            },
+            'extraSetup': [
+                {
+                    'name': 'configure-app',
+                    'image': 'owncloudci/php:7.2',
+                    'pull': 'always',
+                    'commands': [
+                        'cd /var/www/owncloud/server',
+                        '/var/www/owncloud/testrunner/apps/brute_force_protection/tests/acceptance/setup_trusted_proxies.sh'
+                    ]
+                }
+            ],
+        },
+        'api3': {
+            'suites': {
+                'apiBruteForceProtection': 'bruteForceProtection3'
+            },
+            'extraSetup': [
+                {
+                    'name': 'configure-app',
+                    'image': 'owncloudci/php:7.2',
+                    'pull': 'always',
+                    'commands': [
+                        'cd /var/www/owncloud/server',
+                        '/var/www/owncloud/testrunner/apps/brute_force_protection/tests/acceptance/setup_trusted_proxies.sh'
+                    ]
+                }
+            ],
+        },
+        'api4': {
+            'suites': {
+                'apiBruteForceProtection': 'bruteForceProtection4'
+            },
+            'extraSetup': [
+                {
+                    'name': 'configure-app',
+                    'image': 'owncloudci/php:7.2',
+                    'pull': 'always',
+                    'commands': [
+                        'cd /var/www/owncloud/server',
+                        '/var/www/owncloud/testrunner/apps/brute_force_protection/tests/acceptance/setup_trusted_proxies.sh'
+                    ]
+                }
+            ],
+        },
+        'api5': {
+            'suites': {
+                'apiBruteForceProtection': 'bruteForceProtection5'
+            },
+            'extraSetup': [
+                {
+                    'name': 'configure-app',
+                    'image': 'owncloudci/php:7.2',
+                    'pull': 'always',
+                    'commands': [
+                        'cd /var/www/owncloud/server',
+                        '/var/www/owncloud/testrunner/apps/brute_force_protection/tests/acceptance/setup_trusted_proxies.sh'
+                    ]
+                }
+            ],
+        },
+        'api6': {
+            'suites': {
+                'apiBruteForceProtection': 'bruteForceProtection6'
+            },
+            'extraSetup': [
+                {
+                    'name': 'configure-app',
+                    'image': 'owncloudci/php:7.2',
+                    'pull': 'always',
+                    'commands': [
+                        'cd /var/www/owncloud/server',
+                        '/var/www/owncloud/testrunner/apps/brute_force_protection/tests/acceptance/setup_trusted_proxies.sh'
+                    ]
+                }
+            ],
+        },
+        'api7': {
+            'suites': {
+                'apiBruteForceProtection': 'bruteForceProtection7'
+            },
+            'extraSetup': [
+                {
+                    'name': 'configure-app',
+                    'image': 'owncloudci/php:7.2',
+                    'pull': 'always',
+                    'commands': [
+                        'cd /var/www/owncloud/server',
+                        '/var/www/owncloud/testrunner/apps/brute_force_protection/tests/acceptance/setup_trusted_proxies.sh'
+                    ]
+                }
+            ],
+        },
+        'api8': {
+            'suites': {
+                'apiBruteForceProtection': 'bruteForceProtection8'
+            },
+            'extraSetup': [
+                {
+                    'name': 'configure-app',
+                    'image': 'owncloudci/php:7.2',
+                    'pull': 'always',
+                    'commands': [
+                        'cd /var/www/owncloud/server',
+                        '/var/www/owncloud/testrunner/apps/brute_force_protection/tests/acceptance/setup_trusted_proxies.sh'
+                    ]
+                }
+            ],
+        },
+        'api9': {
+            'suites': {
+                'apiBruteForceProtection': 'bruteForceProtection9'
+            },
+            'extraSetup': [
+                {
+                    'name': 'configure-app',
+                    'image': 'owncloudci/php:7.2',
+                    'pull': 'always',
+                    'commands': [
+                        'cd /var/www/owncloud/server',
+                        '/var/www/owncloud/testrunner/apps/brute_force_protection/tests/acceptance/setup_trusted_proxies.sh'
+                    ]
+                }
+            ],
+        },
 	}
 }
 
