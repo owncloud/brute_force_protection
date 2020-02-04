@@ -855,12 +855,12 @@ services:
 - name: server
   pull: always
   image: owncloudci/php:7.1
-  command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  commands:
+  - a2enmod remoteip
+  - cd /etc/apache2
+  - echo "RemoteIPHeader X-Forwarded-For" >> apache2.conf
+  - sed -i '0,/"%h/s//"%a/' apache2.conf
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /var/www/owncloud/server
 
@@ -972,12 +972,12 @@ services:
 - name: server
   pull: always
   image: owncloudci/php:7.1
-  command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  commands:
+  - a2enmod remoteip
+  - cd /etc/apache2
+  - echo "RemoteIPHeader X-Forwarded-For" >> apache2.conf
+  - sed -i '0,/"%h/s//"%a/' apache2.conf
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /var/www/owncloud/server
 
@@ -1088,12 +1088,12 @@ services:
 - name: server
   pull: always
   image: owncloudci/php:7.1
-  command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  commands:
+  - a2enmod remoteip
+  - cd /etc/apache2
+  - echo "RemoteIPHeader X-Forwarded-For" >> apache2.conf
+  - sed -i '0,/"%h/s//"%a/' apache2.conf
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /var/www/owncloud/server
 
@@ -1205,12 +1205,12 @@ services:
 - name: server
   pull: always
   image: owncloudci/php:7.1
-  command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  commands:
+  - a2enmod remoteip
+  - cd /etc/apache2
+  - echo "RemoteIPHeader X-Forwarded-For" >> apache2.conf
+  - sed -i '0,/"%h/s//"%a/' apache2.conf
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /var/www/owncloud/server
 
@@ -1318,12 +1318,12 @@ services:
 - name: server
   pull: always
   image: owncloudci/php:7.1
-  command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  commands:
+  - a2enmod remoteip
+  - cd /etc/apache2
+  - echo "RemoteIPHeader X-Forwarded-For" >> apache2.conf
+  - sed -i '0,/"%h/s//"%a/' apache2.conf
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /var/www/owncloud/server
 
@@ -1431,12 +1431,12 @@ services:
 - name: server
   pull: always
   image: owncloudci/php:7.1
-  command:
-  - /usr/local/bin/apachectl
-  - -e
-  - debug
-  - -D
-  - FOREGROUND
+  commands:
+  - a2enmod remoteip
+  - cd /etc/apache2
+  - echo "RemoteIPHeader X-Forwarded-For" >> apache2.conf
+  - sed -i '0,/"%h/s//"%a/' apache2.conf
+  - /usr/local/bin/apachectl -e debug -D FOREGROUND
   environment:
     APACHE_WEBROOT: /var/www/owncloud/server
 
