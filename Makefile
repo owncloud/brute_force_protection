@@ -16,10 +16,11 @@ JSDOC=$(NODE_PREFIX)/node_modules/.bin/jsdoc
 
 app_name=$(notdir $(CURDIR))
 project_directory=$(CURDIR)/../$(app_name)
-build_tools_directory=$(CURDIR)/build/tools
-source_build_directory=$(CURDIR)/build/artifacts/source
+build_dir=$(CURDIR)/build
+build_tools_directory=$(build_dir)/tools
+source_build_directory=$(build_dir)/artifacts/source
 source_package_name=$(source_build_directory)/$(app_name)
-appstore_build_directory=$(CURDIR)/build/artifacts/appstore
+appstore_build_directory=$(build_dir)/artifacts/appstore
 appstore_package_name=$(appstore_build_directory)/$(app_name)
 npm=$(shell which npm 2> /dev/null)
 
@@ -81,20 +82,20 @@ else
 	npm run build
 endif
 
-# Removes the appstore build
-.PHONY: clean
-clean:
-	rm -rf ./build
+.PHONY: clean-build
+clean-build:
+	rm -Rf $(build_dir)
 
-# Same as clean but also removes dependencies installed by composer, bower and
-# npm
-.PHONY: distclean
-distclean: clean
-	rm -rf vendor
+.PHONY: clean-deps
+clean-deps:
+	rm -Rf vendor
 	rm -rf node_modules
 	rm -rf js/vendor
 	rm -rf js/node_modules
 	rm -Rf vendor-bin/**/vendor vendor-bin/**/composer.lock
+
+.PHONY: clean
+clean: clean-deps clean-build
 
 # Builds the source and appstore package
 .PHONY: dist
