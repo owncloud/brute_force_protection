@@ -87,3 +87,13 @@ Feature: brute force protection
     And user "user1" sends HTTP method "GET" to URL "/remote.php/webdav/welcome.txt" with password "notvalid"
     And user "user1" sends HTTP method "GET" to URL "/index.php/apps/files"
     Then the HTTP status code should be "403"
+
+  Scenario: access to public link is not blocked after too many invalid requests
+    Given user "user1" has uploaded file with content "user1 file" to "/PARENT/randomfile.txt"
+    When user "user1" creates a public link share using the sharing API with settings
+      | path        | PARENT   |
+      | password    | %public% |
+    And the public download of the last publicly shared file using the new public WebDAV API with password "12345" should fail with HTTP status code "401"
+    And the public download of the last publicly shared file using the new public WebDAV API with password "12345" should fail with HTTP status code "401"
+    And the public download of the last publicly shared file using the new public WebDAV API with password "123455" should fail with HTTP status code "401"
+    And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the new public WebDAV API with password "%public%" and the content should be "user1 file"
