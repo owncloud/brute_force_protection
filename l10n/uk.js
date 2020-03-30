@@ -3,7 +3,9 @@ OC.L10N.register(
     {
     "Preferences are saved" : "Налаштування збережені",
     "Inputs must be positive integers" : "Має бути вказано натуральне число",
-    "Too many failed login attempts. Try again in %s minutes." : "Забагато помилкових спроб входу до системи. Спробуйте ще раз за %s хвилин.",
+    "Too many failed login attempts. Try again in %s." : "Забагато помилкових спроб входу. Спробуйте ще раз за %s.",
+    "_ %n minute_::_ %n minutes_" : [" %n хвилину"," %n хвилин"," %n хвилин"," %n хвилин"],
+    "_ %n hour_::_ %n hours_" : [" %n годину"," %n годин"," %n годин"," %n годин"],
     "Brute Force Protection" : "Захист від Brute Force",
     "Count failed login attempts over how many seconds?" : "За скільки секунд рахувати помилкові спроби входу?",
     "Ban after how many failed login attempts?" : "Після скількох помилкових спроб входу заборонити?",
