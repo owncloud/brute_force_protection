@@ -44,7 +44,7 @@ class Hooks {
 	private $request;
 
 	/**
-	 * @param IUserManager $userManager
+	 * @param \OC\User\Manager $userManager
 	 * @param Throttle $throttle
 	 * @param IRequest $request
 	 */

@@ -106,20 +106,20 @@ class BruteForceProtectionConfig {
 	 * @param int $attempts
 	 */
 	public function setBruteForceProtectionFailTolerance($attempts) {
-		$this->config->setAppValue('brute_force_protection', 'brute_force_protection_fail_tolerance', $attempts);
+		$this->config->setAppValue('brute_force_protection', 'brute_force_protection_fail_tolerance', (string)$attempts);
 	}
 
 	/**
 	 * @param int $seconds
 	 */
 	public function setBruteForceProtectionTimeThreshold($seconds) {
-		$this->config->setAppValue('brute_force_protection', 'brute_force_protection_time_threshold', $seconds);
+		$this->config->setAppValue('brute_force_protection', 'brute_force_protection_time_threshold', (string)$seconds);
 	}
 
 	/**
 	 * @param int $seconds
 	 */
 	public function setBruteForceProtectionBanPeriod($seconds) {
-		$this->config->setAppValue('brute_force_protection', 'brute_force_protection_ban_period', $seconds);
+		$this->config->setAppValue('brute_force_protection', 'brute_force_protection_ban_period', (string)$seconds);
 	}
 }

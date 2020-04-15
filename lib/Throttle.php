@@ -99,7 +99,7 @@ class Throttle {
 			$this->config->getBruteForceProtectionFailTolerance() &&
 			$banUntil > $this->timeFactory->getTime()) {
 			throw new LoginException($this->l->t("Too many failed login attempts. Try again in %s.",
-				$this->parseBanPeriodForHumans($banPeriod))
+				[$this->parseBanPeriodForHumans($banPeriod)])
 			);
 		}
 	}
@@ -114,7 +114,7 @@ class Throttle {
 	}
 
 	/**
-	 * @param int $minutes
+	 * @param int $banPeriod
 	 * @return string $banPeriodForHumans
 	 */
 	private function parseBanPeriodForHumans($banPeriod) {
