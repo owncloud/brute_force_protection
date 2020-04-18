@@ -27,13 +27,13 @@ use OCP\AppFramework\Db\Entity;
 
 /**
  * @method int getId()
- * @method void setId(\int $id)
+ * @method void setId(int $id)
  * @method string getIp()
- * @method void setIp(\string $ip)
+ * @method void setIp(string $ip)
  * @method string getUid()
- * @method void setUid(\string $uid)
+ * @method void setUid(string $uid)
  * @method int getAttemptedAt()
- * @method void setAttemptedAt(\int $attemptedAt)
+ * @method void setAttemptedAt(int $attemptedAt)
  */
 class FailedLoginAttempt extends Entity {
 
