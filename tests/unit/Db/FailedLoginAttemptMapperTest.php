@@ -29,6 +29,7 @@ use OCA\BruteForceProtection\Db\FailedLoginAttempt;
 use OCA\BruteForceProtection\Db\FailedLoginAttemptMapper;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IDBConnection;
+use PHPUnit\Framework\MockObject\MockObject;
 use Test\TestCase;
 
 /**
@@ -42,10 +43,10 @@ class FailedLoginAttemptMapperTest extends TestCase {
 	/** @var  IDBConnection $connection*/
 	private $connection;
 
-	/** @var BruteForceProtectionConfig | \PHPUnit\Framework\MockObject\MockObject $configMock */
+	/** @var BruteForceProtectionConfig | MockObject $configMock */
 	private $configMock;
 
-	/** @var ITimeFactory | \PHPUnit\Framework\MockObject\MockObject $timeFactory */
+	/** @var ITimeFactory | MockObject $timeFactory */
 	private $timeFactoryMock;
 
 	/** @var int $baseTime */
@@ -122,7 +123,6 @@ class FailedLoginAttemptMapperTest extends TestCase {
 		$this->timeFactoryMock->expects($this->exactly(3))
 			->method('getTime')
 			->willReturn($functionCallTime);
-
 		$this->assertEquals(3, $this->mapper->getSuspiciousActivityCountForUidIpCombination('test1', '192.168.1.1'));
 		$this->assertEquals(1, $this->mapper->getSuspiciousActivityCountForUidIpCombination('test1', '192.168.1.2'));
 		$this->assertEquals(1, $this->mapper->getSuspiciousActivityCountForUidIpCombination('test2', '192.168.1.1'));
