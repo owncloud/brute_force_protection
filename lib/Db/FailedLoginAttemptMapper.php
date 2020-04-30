@@ -102,7 +102,7 @@ class FailedLoginAttemptMapper extends Mapper {
 			->setMaxResults(1)
 			->execute()
 			->fetch();
-		return \intval($lastAttempt['attempted_at']);
+		return ($lastAttempt === false) ? 0 : \intval($lastAttempt['attempted_at']);
 	}
 
 	/**

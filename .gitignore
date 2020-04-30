@@ -62,6 +62,7 @@ vendor-bin/**/composer.lock
 /tests/output/clover.xml
 /tests/js/node_modules
 /build/
+.phpunit.result.cache
 
 # php-cs-fixer
 .php_cs.cache
