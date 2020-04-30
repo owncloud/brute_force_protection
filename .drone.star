@@ -53,10 +53,13 @@ config = {
 			'suites': [
 				'apiBruteForceProtection'
 			],
+			'phpVersions': [
+			    '7.4',
+			],
 			'extraSetup': [
 				{
 					'name': 'configure-app',
-					'image': 'owncloudci/php:7.2',
+					'image': 'owncloudci/php:7.4',
 					'pull': 'always',
 					'commands': [
 						'cd /var/www/owncloud/server',
