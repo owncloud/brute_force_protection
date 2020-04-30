@@ -56,7 +56,7 @@ config = {
 			'extraSetup': [
 				{
 					'name': 'configure-app',
-					'image': 'owncloudci/php:7.4',
+					'image': 'owncloudci/php:7.2',
 					'pull': 'always',
 					'commands': [
 						'cd /var/www/owncloud/server',
