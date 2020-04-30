@@ -53,6 +53,9 @@ config = {
 			'suites': [
 				'apiBruteForceProtection'
 			],
+			'servers': [
+				'daily-master-qa'
+			],
 			'phpVersions': [
 			    '7.4',
 			],
