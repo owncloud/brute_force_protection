@@ -29,11 +29,11 @@ use OCP\AppFramework\Db\Entity;
  * @method int getId()
  * @method void setId(\int $id)
  * @method string getIp()
- * @method void setIp(\string $ip)
+ * @method void setIp(string $ip)
  * @method string getLinkToken()
- * @method void setLinkToken(\string $linkToken)
+ * @method void setLinkToken(string $linkToken)
  * @method int getAttemptedAt()
- * @method void setAttemptedAt(\int $attemptedAt)
+ * @method void setAttemptedAt(int $attemptedAt)
  */
 class FailedLinkAccess extends Entity {
 

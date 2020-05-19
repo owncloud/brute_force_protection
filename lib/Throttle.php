@@ -139,7 +139,7 @@ class Throttle {
 			$this->config->getBruteForceProtectionFailTolerance() &&
 			$banUntil > $this->timeFactory->getTime()) {
 			throw new LinkAuthException($this->l->t("Too many failed attempts. Try again in %s.",
-				$this->parseBanPeriodForHumans($banPeriod))
+				[$this->parseBanPeriodForHumans($banPeriod)])
 			);
 		}
 	}
