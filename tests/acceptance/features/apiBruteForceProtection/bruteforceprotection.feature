@@ -89,8 +89,8 @@ Feature: brute force protection
     Then the HTTP status code should be "403"
 
   Scenario: access to public link is not blocked after too many invalid requests
-    Given user "user1" has uploaded file with content "user1 file" to "/PARENT/randomfile.txt"
-    When user "user1" creates a public link share using the sharing API with settings
+    Given user "Alice" has uploaded file with content "user1 file" to "/PARENT/randomfile.txt"
+    When user "Alice" creates a public link share using the sharing API with settings
       | path        | PARENT   |
       | password    | %public% |
     And the public download of the last publicly shared file using the new public WebDAV API with password "12345" should fail with HTTP status code "401"
