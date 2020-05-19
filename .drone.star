@@ -45,6 +45,9 @@ config = {
 			'suites': {
 				'webUIBruteForceProtection': 'webUIBruteForce',
 			},
+			'servers': [
+				'daily-master-qa'
+			],
 			'browsers': [
 				'chrome',
 				'firefox'
