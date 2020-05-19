@@ -21,7 +21,7 @@ See the [2-Factor Authentication](https://marketplace.owncloud.com/apps/twofacto
 	<summary>Prevent attackers from guessing user passwords</summary>
 	<licence>GPLv2</licence>
 	<author>Semih Serhat Karakaya</author>
-	<version>1.0.1</version>
+	<version>1.1.0</version>
 	<namespace>BruteForceProtection</namespace>
 	<use-migrations>true</use-migrations>
 	<dependencies>
