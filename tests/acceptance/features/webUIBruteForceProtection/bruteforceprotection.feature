@@ -8,7 +8,7 @@ Feature: brute force protection
   Background:
     Given these users have been created with skeleton files:
       | username |
-      | user1    |
+      | Alice    |
     When the administrator sets the bruteforceprotection settings using the webUI to:
       | threshold-time | 60  |
       | fail-tolerance | 2   |
@@ -16,12 +16,12 @@ Feature: brute force protection
     And the administrator has logged out of the webUI
 
   Scenario: valid login works after one false password
-    When the user logs in with username "user1" and invalid password "invalidpassword" using the webUI
-    And the user logs in with username "user1" and password "%alt1%" using the webUI
+    When the user logs in with username "Alice" and invalid password "invalidpassword" using the webUI
+    And the user logs in with username "Alice" and password "%regular%" using the webUI
     Then the user should be redirected to a webUI page with the title "Files - ownCloud"
 
   Scenario: login blocked
-    When the user logs in with username "user1" and invalid password "invalidpassword" using the webUI
-    And the user logs in with username "user1" and invalid password "invalidpassword" using the webUI
-    And the blocked user "user1" tries to login using the password "%alt1%" from the webUI
+    When the user logs in with username "Alice" and invalid password "invalidpassword" using the webUI
+    And the user logs in with username "Alice" and invalid password "invalidpassword" using the webUI
+    And the blocked user "Alice" tries to login using the password "%regular%" from the webUI
     Then the user should be redirected to a webUI page with the title "ownCloud"
