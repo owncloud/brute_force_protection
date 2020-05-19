@@ -101,6 +101,9 @@ class FailedLinkAccessMapper extends Mapper {
 			->setMaxResults(1)
 			->execute()
 			->fetch();
+		if ($lastAttempt === false) {
+			return 0;
+		}
 		return \intval($lastAttempt['attempted_at']);
 	}
 
