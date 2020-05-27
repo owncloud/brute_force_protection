@@ -174,7 +174,9 @@ class BruteForceProtectionContext implements Context {
 	 */
 	public function cleanupBannedUsers() {
 		$this->setBruteforceprotectionSetting('ban-period', '0');
+		echo "cleanupBannedUsersto reset ban period\n";
 		foreach ($this->featureContext->getCreatedUsers() as $user => $userData) {
+			echo "initializeUser $user to reset ban period\n";
 			$this->featureContext->initializeUser(
 				$user, $this->featureContext->getUserPassword($user)
 			);
