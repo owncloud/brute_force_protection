@@ -93,19 +93,18 @@ Feature: brute force protection
     When user "Alice" creates a public link share using the sharing API with settings
       | path        | PARENT   |
       | password    | %public% |
-    And the public download of the last publicly shared file using the new public WebDAV API with password "12345" should fail with HTTP status code "401"
-    And the public download of the last publicly shared file using the new public WebDAV API with password "12345" should fail with HTTP status code "401"
-    And the public download of the last publicly shared file using the new public WebDAV API with password "123455" should fail with HTTP status code "500"
-    # actually this next test step should fail - let's see the result
-    And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the new public WebDAV API with password "%public%" and the content should be "user1 file"
+    Then the public download of the last publicly shared file using the new public WebDAV API with password "abcdef" should fail with HTTP status code "401"
+    And the public download of the last publicly shared file using the new public WebDAV API with password "123abc" should fail with HTTP status code "401"
+    And the public download of the last publicly shared file using the new public WebDAV API with password "abc123" should fail with HTTP status code "500"
+    And the public download of the last publicly shared file using the new public WebDAV API with password "%public%" should fail with HTTP status code "500"
 
   Scenario: access to public link is blocked after too many invalid requests
     Given user "Alice" has uploaded file with content "user1 file" to "/randomfile.txt"
     When user "Alice" creates a public link share using the sharing API with settings
       | path        | randomfile.txt |
       | password    | %public%       |
-    Then the public download of the last publicly shared file using the new public WebDAV API with password "12345" should fail with HTTP status code "401"
-    And the public download of the last publicly shared file using the new public WebDAV API with password "12345" should fail with HTTP status code "401"
-    And the public download of the last publicly shared file using the new public WebDAV API with password "123455" should fail with HTTP status code "500"
-    # actually this next test step should fail - let's see the result
-    And the public should be able to download the last publicly shared file using the new public WebDAV API with password "%public%" and the content should be "user1 file"
+    Then the public should be able to download the last publicly shared file using the new public WebDAV API with password "%public%" and the content should be "user1 file"
+    And the public download of the last publicly shared file using the new public WebDAV API with password "abcdef" should fail with HTTP status code "401"
+    And the public download of the last publicly shared file using the new public WebDAV API with password "123abc" should fail with HTTP status code "401"
+    And the public download of the last publicly shared file using the new public WebDAV API with password "abc123" should fail with HTTP status code "500"
+    And the public download of the last publicly shared file using the new public WebDAV API with password "%public%" should fail with HTTP status code "500"
