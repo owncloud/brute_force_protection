@@ -95,7 +95,7 @@ Feature: brute force protection
       | password    | %public% |
     And the public download of the last publicly shared file using the new public WebDAV API with password "12345" should fail with HTTP status code "401"
     And the public download of the last publicly shared file using the new public WebDAV API with password "12345" should fail with HTTP status code "401"
-    And the public download of the last publicly shared file using the new public WebDAV API with password "123455" should fail with HTTP status code "401"
+    And the public download of the last publicly shared file using the new public WebDAV API with password "123455" should fail with HTTP status code "500"
     # actually this next test step should fail - let's see the result
     And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the new public WebDAV API with password "%public%" and the content should be "user1 file"
 
@@ -106,6 +106,6 @@ Feature: brute force protection
       | password    | %public%       |
     Then the public download of the last publicly shared file using the new public WebDAV API with password "12345" should fail with HTTP status code "401"
     And the public download of the last publicly shared file using the new public WebDAV API with password "12345" should fail with HTTP status code "401"
-    And the public download of the last publicly shared file using the new public WebDAV API with password "123455" should fail with HTTP status code "401"
+    And the public download of the last publicly shared file using the new public WebDAV API with password "123455" should fail with HTTP status code "500"
     # actually this next test step should fail - let's see the result
     And the public should be able to download the last publicly shared file using the new public WebDAV API with password "%public%" and the content should be "user1 file"
