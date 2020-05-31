@@ -26,14 +26,10 @@ use Doctrine\DBAL\Schema\Schema;
 use OCP\Migration\ISchemaMigration;
 
 class Version20191109111104 implements ISchemaMigration {
-
-	/** @var  string */
-	private $prefix;
-
 	public function changeSchema(Schema $schema, array $options) {
-		$this->prefix = $options['tablePrefix'];
-		if (!$schema->hasTable("{$this->prefix}bfp_link_accesses")) {
-			$table = $schema->createTable("{$this->prefix}bfp_link_accesses");
+		$prefix = $options['tablePrefix'];
+		if (!$schema->hasTable("{$prefix}bfp_link_accesses")) {
+			$table = $schema->createTable("{$prefix}bfp_link_accesses");
 			$table->addColumn('id', 'integer', [
 				'autoincrement' => true,
 				'unsigned' => true,

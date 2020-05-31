@@ -71,12 +71,6 @@ class ThrottleTest extends TestCase {
 		);
 	}
 
-	public function testAddFailedLoginAttempt() {
-		$this->loginAttemptMapper->expects($this->once())->method('insert');
-
-		$this->throttle->addFailedLoginAttempt('test', '192.168.1.1');
-	}
-
 	/**
 	 * @dataProvider bruteForceForLoginTestData
 	 * @param int $lastAttempt
@@ -114,18 +108,6 @@ class ThrottleTest extends TestCase {
 		];
 	}
 
-	public function testClearFailedLoginAttemptsForUidIpCombination() {
-		$this->loginAttemptMapper->expects($this->once())->method('deleteFailedLoginAttemptsForUidIpCombination');
-
-		$this->throttle->clearFailedLoginAttemptsForUidIpCombination('test', '192.168.1.1');
-	}
-
-	public function testAddFailedLinkAccess() {
-		$this->linkAccessMapper->expects($this->once())->method('insert');
-
-		$this->throttle->addFailedLinkAccess('test', '192.168.1.1');
-	}
-
 	/**
 	 * @dataProvider bruteForceForLoginTestData
 	 * @param int $lastAttempt
@@ -161,10 +143,5 @@ class ThrottleTest extends TestCase {
 			[5, 5, 10, 4, 14],
 			[0, 3, 300, 2, 250]
 		];
-	}
-
-	public function testClearFailedLinkAccesses() {
-		$this->linkAccessMapper->expects($this->once())->method('deleteFailedAccessForTokenIpCombination');
-		$this->throttle->clearFailedLinkAccesses('test', '192.168.1.1');
 	}
 }

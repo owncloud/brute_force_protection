@@ -2,7 +2,7 @@
 /**
  * @author Semih Serhat Karakaya <karakayasemi@itu.edu.tr>
  *
- * @copyright Copyright (c) 2019 ownCloud GmbH
+ * @copyright Copyright (c) 2020 ownCloud GmbH
  * @license GPL-2.0
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -24,7 +24,6 @@
 namespace OCA\BruteForceProtection\Db;
 
 use OCP\AppFramework\Db\Mapper;
-use OCA\BruteForceProtection\BruteForceProtectionConfig;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IDBConnection;
 
@@ -33,11 +32,6 @@ use OCP\IDBConnection;
  * @package OCA\BruteForceProtection\Db
  */
 class FailedLinkAccessMapper extends Mapper {
-
-	/**
-	 * @var BruteForceProtectionConfig $config
-	 */
-	protected $config;
 
 	/**
 	 * @var ITimeFactory $timeFactory
@@ -53,27 +47,24 @@ class FailedLinkAccessMapper extends Mapper {
 	 * FailedLinkAccessMapper constructor.
 	 *
 	 * @param IDBConnection $db
-	 * @param BruteForceProtectionConfig $config
 	 * @param ITimeFactory $timeFactory
 	 */
 	public function __construct(
 		IDBConnection $db,
-		BruteForceProtectionConfig $config,
 		ITimeFactory $timeFactory
 	) {
 		parent::__construct($db, $this->tableName);
-		$this->config = $config;
 		$this->timeFactory = $timeFactory;
 	}
 
 	/**
 	 * @param string $token
 	 * @param string $ip
+	 * @param int $thresholdTime the timestamp where attempts will start counting
 	 * @return int
 	 */
-	public function getFailedAccessCountForTokenIpCombination($token, $ip) {
+	public function getFailedAccessCountForTokenIpCombination($token, $ip, $thresholdTime) {
 		$builder = $this->db->getQueryBuilder();
-		$thresholdTime = $this->getLastFailedAccessTimeForTokenIpCombination($token, $ip) - $this->config->getBruteForceProtectionTimeThreshold();
 		$attempts = $builder->selectAlias($builder->createFunction('COUNT(*)'), 'count')
 			->from($this->tableName)
 			->where($builder->expr()->gt('attempted_at', $builder->createNamedParameter($thresholdTime)))
@@ -87,24 +78,19 @@ class FailedLinkAccessMapper extends Mapper {
 	/**
 	 * @param string $token
 	 * @param string $ip
-	 * @return int
+	 * @return int|null unix timestamp of the last attempt or null if no prior attempt
 	 */
 	public function getLastFailedAccessTimeForTokenIpCombination($token, $ip) {
 		$builder = $this->db->getQueryBuilder();
-		$thresholdTime = $this->timeFactory->getTime() - $this->config->getBruteForceProtectionBanPeriod();
 		$lastAttempt = $builder->select('attempted_at')
 			->from($this->tableName)
-			->where($builder->expr()->gt('attempted_at', $builder->createNamedParameter($thresholdTime)))
-			->andWhere($builder->expr()->eq('link_token', $builder->createNamedParameter($token)))
+			->where($builder->expr()->eq('link_token', $builder->createNamedParameter($token)))
 			->andWhere($builder->expr()->eq('ip', $builder->createNamedParameter($ip)))
 			->orderBy('attempted_at', 'DESC')
 			->setMaxResults(1)
 			->execute()
 			->fetch();
-		if ($lastAttempt === false) {
-			return 0;
-		}
-		return \intval($lastAttempt['attempted_at']);
+		return ($lastAttempt === false) ? null : \intval($lastAttempt['attempted_at']);
 	}
 
 	/**

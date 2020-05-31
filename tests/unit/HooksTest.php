@@ -24,11 +24,15 @@
 
 namespace OCA\BruteForceProtection\Tests;
 
+use OCA\BruteForceProtection\Db\FailedLinkAccessMapper;
+use OCA\BruteForceProtection\Db\FailedLoginAttemptMapper;
 use OCA\BruteForceProtection\Hooks;
 use OCA\BruteForceProtection\Throttle;
+use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IRequest;
 use OCP\IUser;
 use OCP\Share;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Test\TestCase;
@@ -37,23 +41,41 @@ class HooksTest extends TestCase {
 
 	/** @var  Hooks */
 	private $hooks;
-	/** @var \PHPUnit\Framework\MockObject\MockObject | Throttle */
+
+	/** @var MockObject | Throttle */
 	private $throttleMock;
-	/** @var \PHPUnit\Framework\MockObject\MockObject | IRequest */
+
+	/** @var MockObject | IRequest */
 	private $requestMock;
-	/** @var \PHPUnit\Framework\MockObject\MockObject | EventDispatcherInterface */
+
+	/** @var MockObject | FailedLoginAttemptMapper */
+	private $loginAttemptMapperMock;
+
+	/** @var MockObject | FailedLinkAccessMapper */
+	private $linkAccessMapperMock;
+
+	/** @var MockObject | EventDispatcherInterface */
 	private $eventDispatcherMock;
+
+	/** @var MockObject | ITimeFactory */
+	private $timeFactoryMock;
 
 	public function setUp(): void {
 		parent::setUp();
 		$this->throttleMock = $this->createMock(Throttle::class);
 		$this->requestMock = $this->createMock(IRequest::class);
+		$this->loginAttemptMapperMock = $this->createMock(FailedLoginAttemptMapper::class);
+		$this->linkAccessMapperMock = $this->createMock(FailedLinkAccessMapper::class);
 		$this->eventDispatcherMock = $this->createMock(EventDispatcherInterface::class);
+		$this->timeFactoryMock = $this->createMock(ITimeFactory::class);
 
 		$this->hooks = new Hooks(
 			$this->throttleMock,
 			$this->requestMock,
-			$this->eventDispatcherMock
+			$this->loginAttemptMapperMock,
+			$this->linkAccessMapperMock,
+			$this->eventDispatcherMock,
+			$this->timeFactoryMock
 		);
 	}
 
@@ -65,8 +87,8 @@ class HooksTest extends TestCase {
 
 	public function testFailedLoginCallback() {
 		$event = new GenericEvent(null, ['user' => 'test']);
-		$this->throttleMock->expects($this->once())
-			->method('addFailedLoginAttempt');
+		$this->loginAttemptMapperMock->expects($this->once())
+			->method('insert');
 		$this->hooks->failedLoginCallback($event);
 	}
 
@@ -74,8 +96,8 @@ class HooksTest extends TestCase {
 		$mockUser = $this->createMock(IUser::class);
 		$mockUser->method('getUID')->willReturn('test');
 		$event = new GenericEvent(null, ['user' => $mockUser]);
-		$this->throttleMock->expects($this->once())
-			->method('clearFailedLoginAttemptsForUidIpCombination');
+		$this->loginAttemptMapperMock->expects($this->once())
+			->method('deleteFailedLoginAttemptsForUidIpCombination');
 		$this->hooks->postLoginCallback($event);
 	}
 
@@ -88,27 +110,22 @@ class HooksTest extends TestCase {
 
 	public function testFailedLinkShareAuthCallback() {
 		$share = $this->createMock('OCP\Share\IShare');
-		$share->method('getShareType')->willReturn(Share::SHARE_TYPE_LINK);
 		$event = new GenericEvent(null, ['shareObject' => $share]);
-		$this->throttleMock->expects($this->once())
-			->method('addFailedLinkAccess');
+		$this->linkAccessMapperMock->expects($this->once())
+			->method('insert');
 		$this->hooks->failedLinkShareAuthCallback($event);
 	}
 
 	public function testPostLinkShareAuthCallback() {
 		$share = $this->createMock('OCP\Share\IShare');
-		$share->method('getShareType')->willReturn(Share::SHARE_TYPE_LINK);
-		$mockUser = $this->createMock(IUser::class);
-		$mockUser->method('getUID')->willReturn('test');
 		$event = new GenericEvent(null, ['shareObject' => $share]);
-		$this->throttleMock->expects($this->once())
-			->method('clearFailedLinkAccesses');
+		$this->linkAccessMapperMock->expects($this->once())
+			->method('deleteFailedAccessForTokenIpCombination');
 		$this->hooks->postLinkShareAuthCallback($event);
 	}
 
 	public function testPreLinkShareAuthCallback() {
 		$share = $this->createMock('OCP\Share\IShare');
-		$share->method('getShareType')->willReturn(Share::SHARE_TYPE_LINK);
 		$event = new GenericEvent(null, ['shareObject' => $share]);
 		$this->throttleMock->expects($this->once())
 			->method('applyBruteForcePolicyForLinkShare');

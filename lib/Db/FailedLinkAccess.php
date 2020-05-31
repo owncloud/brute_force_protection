@@ -2,7 +2,7 @@
 /**
  * @author Semih Serhat Karakaya <karakayasemi@itu.edu.tr>
  *
- * @copyright Copyright (c) 2019, ownCloud GmbH
+ * @copyright Copyright (c) 2020, ownCloud GmbH
  * @license GPL-2.0
  *
  * This program is free software; you can redistribute it and/or modify it

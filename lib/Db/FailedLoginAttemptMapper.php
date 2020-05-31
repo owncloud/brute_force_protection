@@ -25,7 +25,6 @@
 namespace OCA\BruteForceProtection\Db;
 
 use OCP\AppFramework\Db\Mapper;
-use OCA\BruteForceProtection\BruteForceProtectionConfig;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IDBConnection;
 
@@ -34,11 +33,6 @@ use OCP\IDBConnection;
  * @package OCA\BruteForceProtection\Db
  */
 class FailedLoginAttemptMapper extends Mapper {
-
-	/**
-	 * @var BruteForceProtectionConfig $config
-	 */
-	protected $config;
 
 	/**
 	 * @var ITimeFactory $timeFactory
@@ -54,27 +48,24 @@ class FailedLoginAttemptMapper extends Mapper {
 	 * FailedLoginAttemptMapper constructor.
 	 *
 	 * @param IDBConnection $db
-	 * @param BruteForceProtectionConfig $config
 	 * @param ITimeFactory $timeFactory
 	 */
 	public function __construct(
 		IDBConnection $db,
-		BruteForceProtectionConfig $config,
 		ITimeFactory $timeFactory
 	) {
 		parent::__construct($db, $this->tableName);
-		$this->config = $config;
 		$this->timeFactory = $timeFactory;
 	}
 
 	/**
 	 * @param string $uid
 	 * @param string $ip
+	 * @param int $thresholdTime the timestamp where attempts will start counting
 	 * @return int
 	 */
-	public function getFailedLoginCountForUidIpCombination($uid, $ip) {
+	public function getFailedLoginCountForUidIpCombination($uid, $ip, $thresholdTime) {
 		$builder = $this->db->getQueryBuilder();
-		$thresholdTime = $this->getLastFailedLoginAttemptTimeForUidIpCombination($uid, $ip) - $this->config->getBruteForceProtectionTimeThreshold();
 		$attempts = $builder->selectAlias($builder->createFunction('COUNT(*)'), 'count')
 			->from($this->tableName)
 			->where($builder->expr()->gt('attempted_at', $builder->createNamedParameter($thresholdTime)))
@@ -88,21 +79,19 @@ class FailedLoginAttemptMapper extends Mapper {
 	/**
 	 * @param string $uid
 	 * @param string $ip
-	 * @return int
+	 * @return int|null unix timestamp of the last attempt or null if no prior attempt
 	 */
 	public function getLastFailedLoginAttemptTimeForUidIpCombination($uid, $ip) {
 		$builder = $this->db->getQueryBuilder();
-		$thresholdTime = $this->timeFactory->getTime() - $this->config->getBruteForceProtectionBanPeriod();
 		$lastAttempt = $builder->select('attempted_at')
 			->from($this->tableName)
-			->where($builder->expr()->gt('attempted_at', $builder->createNamedParameter($thresholdTime)))
-			->andWhere($builder->expr()->eq('uid', $builder->createNamedParameter($uid)))
+			->where($builder->expr()->eq('uid', $builder->createNamedParameter($uid)))
 			->andWhere($builder->expr()->eq('ip', $builder->createNamedParameter($ip)))
 			->orderBy('attempted_at', 'DESC')
 			->setMaxResults(1)
 			->execute()
 			->fetch();
-		return ($lastAttempt === false) ? 0 : \intval($lastAttempt['attempted_at']);
+		return ($lastAttempt === false) ? null : \intval($lastAttempt['attempted_at']);
 	}
 
 	/**

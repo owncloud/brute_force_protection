@@ -2,7 +2,7 @@
 /**
  * @author Semih Serhat Karakaya <karakayasemi@itu.edu.tr>
  *
- * @copyright Copyright (c) 2019, ownCloud GmbH
+ * @copyright Copyright (c) 2020, ownCloud GmbH
  * @license GPL-2.0
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -23,7 +23,6 @@
 
 namespace OCA\BruteForceProtection\Tests\Db;
 
-use OCA\BruteForceProtection\BruteForceProtectionConfig;
 use OCA\BruteForceProtection\Db\FailedLinkAccess;
 use OCA\BruteForceProtection\Db\FailedLinkAccessMapper;
 use OCP\AppFramework\Utility\ITimeFactory;
@@ -41,9 +40,6 @@ class FailedLinkAccessMapperTest extends TestCase {
 	/** @var  IDBConnection $connection*/
 	private $connection;
 
-	/** @var BruteForceProtectionConfig | \PHPUnit\Framework\MockObject\MockObject $configMock */
-	private $configMock;
-
 	/** @var ITimeFactory | \PHPUnit\Framework\MockObject\MockObject $timeFactory */
 	private $timeFactoryMock;
 
@@ -60,9 +56,8 @@ class FailedLinkAccessMapperTest extends TestCase {
 		parent::setUp();
 		$this->baseTime = \time();
 		$this->timeFactoryMock = $this->createMock(ITimeFactory::class);
-		$this->configMock = $this->createMock(BruteForceProtectionConfig::class);
 		$this->connection = \OC::$server->getDatabaseConnection();
-		$this->mapper = new FailedLinkAccessMapper($this->connection, $this->configMock, $this->timeFactoryMock);
+		$this->mapper = new FailedLinkAccessMapper($this->connection, $this->timeFactoryMock);
 
 		$query = $this->connection->getQueryBuilder()->select('*')->from($this->dbTable);
 		$result = $query->execute()->fetchAll();
@@ -110,28 +105,13 @@ class FailedLinkAccessMapperTest extends TestCase {
 	}
 
 	public function testGetFailedAccessCountForTokenIpCombination() {
-		$functionCallTime = $this->baseTime+110;
-		$this->configMock->expects($this->exactly(3))
-			->method('getBruteForceProtectionTimeThreshold')
-			->willReturn($this->thresholdConfigVal);
-		$this->timeFactoryMock->expects($this->exactly(3))
-			->method('getTime')
-			->willReturn($functionCallTime);
-
-		$this->assertEquals(3, $this->mapper->getFailedAccessCountForTokenIpCombination('token1', '192.168.1.1'));
-		$this->assertEquals(1, $this->mapper->getFailedAccessCountForTokenIpCombination('token1', '192.168.1.2'));
-		$this->assertEquals(1, $this->mapper->getFailedAccessCountForTokenIpCombination('token2', '192.168.1.1'));
+		$this->assertEquals(3, $this->mapper->getFailedAccessCountForTokenIpCombination('token1', '192.168.1.1', $this->baseTime));
+		$this->assertEquals(1, $this->mapper->getFailedAccessCountForTokenIpCombination('token1', '192.168.1.2', $this->baseTime));
+		$this->assertEquals(1, $this->mapper->getFailedAccessCountForTokenIpCombination('token2', '192.168.1.1', $this->baseTime));
 	}
 
 	public function testGetLastFailedAccessTimeForTokenIpCombination() {
 		$lastAttemptTime = $this->baseTime+100;
-		$this->configMock->expects($this->once())
-			->method('getBruteForceProtectionBanPeriod')
-			->willReturn('250');
-		$this->timeFactoryMock->expects($this->once())
-			->method('getTime')
-			->willReturn($this->baseTime+300);
-
 		$this->assertEquals($this->mapper->getLastFailedAccessTimeForTokenIpCombination('token1', '192.168.1.1'), $lastAttemptTime);
 	}
 
@@ -156,13 +136,12 @@ class FailedLinkAccessMapperTest extends TestCase {
 	public function testDeleteOldFailedLoginAttempts() {
 		$builder = $this->connection->getQueryBuilder();
 		$functionCallTime = $this->baseTime+130;
-		$this->timeFactoryMock->expects($this->exactly(1))
-			->method('getTime')
+		$this->timeFactoryMock->method('getTime')
 			->willReturn($functionCallTime);
 		$query = $builder->select('*')->from($this->dbTable);
 		$result = $query->execute()->fetchAll();
 		$this->assertCount(5, $result);
-		$this->mapper->deleteOldFailedAccesses($this->thresholdConfigVal);
+		$this->mapper->deleteOldFailedAccesses(60);
 		$query = $builder->select('*')->from($this->dbTable);
 		$result = $query->execute()->fetchAll();
 		$this->assertCount(1, $result);

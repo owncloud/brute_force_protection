@@ -25,7 +25,12 @@
 namespace OCA\BruteForceProtection;
 
 use OC\User\LoginException;
+use OCA\BruteForceProtection\Db\FailedLinkAccess;
+use OCA\BruteForceProtection\Db\FailedLinkAccessMapper;
+use OCA\BruteForceProtection\Db\FailedLoginAttempt;
+use OCA\BruteForceProtection\Db\FailedLoginAttemptMapper;
 use OCA\BruteForceProtection\Exceptions\LinkAuthException;
+use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IRequest;
 use OCP\IUser;
 use OCP\Share\IShare;
@@ -44,22 +49,40 @@ class Hooks {
 	/** @var IRequest */
 	private $request;
 
+	/** @var FailedLoginAttemptMapper */
+	private $loginAttemptMapper;
+
+	/** @var FailedLinkAccessMapper */
+	private $linkAccessMapper;
+
 	/** @var EventDispatcherInterface */
 	private $eventDispatcher;
+
+	/** @var ITimeFactory */
+	private $timeFactory;
 
 	/**
 	 * @param Throttle $throttle
 	 * @param IRequest $request
+	 * @param FailedLoginAttemptMapper $loginAttemptMapper
+	 * @param FailedLinkAccessMapper $linkAccessMapper
 	 * @param EventDispatcherInterface $eventDispatcher
+	 * @param ITimeFactory $timeFactory
 	 */
 	public function __construct(
 		Throttle $throttle,
 		IRequest $request,
-		EventDispatcherInterface $eventDispatcher
+		FailedLoginAttemptMapper $loginAttemptMapper,
+		FailedLinkAccessMapper $linkAccessMapper,
+		EventDispatcherInterface $eventDispatcher,
+		ITimeFactory $timeFactory
 	) {
 		$this->throttle = $throttle;
 		$this->request = $request;
+		$this->loginAttemptMapper = $loginAttemptMapper;
+		$this->linkAccessMapper = $linkAccessMapper;
 		$this->eventDispatcher = $eventDispatcher;
+		$this->timeFactory = $timeFactory;
 	}
 
 	public function register() {
@@ -79,7 +102,11 @@ class Hooks {
 	 */
 	public function failedLoginCallback($event) {
 		$uid = $event->getArgument('user');
-		$this->throttle->addFailedLoginAttempt($uid, $this->request->getRemoteAddress());
+		$attempt = new FailedLoginAttempt();
+		$attempt->setUid($uid);
+		$attempt->setIp($this->request->getRemoteAddress());
+		$attempt->setAttemptedAt($this->timeFactory->getTime());
+		$this->loginAttemptMapper->insert($attempt);
 	}
 
 	/**
@@ -88,7 +115,7 @@ class Hooks {
 	public function postLoginCallback($event) {
 		/** @var IUser $user */
 		$user = $event->getArgument('user');
-		$this->throttle->clearFailedLoginAttemptsForUidIpCombination($user->getUID(), $this->request->getRemoteAddress());
+		$this->loginAttemptMapper->deleteFailedLoginAttemptsForUidIpCombination($user->getUID(), $this->request->getRemoteAddress());
 	}
 
 	/**
@@ -106,7 +133,11 @@ class Hooks {
 	public function failedLinkShareAuthCallback($event) {
 		/** @var IShare $share */
 		$share = $event->getArgument('shareObject');
-		$this->throttle->addFailedLinkAccess($share->getToken(), $this->request->getRemoteAddress());
+		$access = new FailedLinkAccess();
+		$access->setLinkToken($share->getToken());
+		$access->setIp($this->request->getRemoteAddress());
+		$access->setAttemptedAt($this->timeFactory->getTime());
+		$this->linkAccessMapper->insert($access);
 	}
 
 	/**
@@ -115,7 +146,7 @@ class Hooks {
 	public function postLinkShareAuthCallback($event) {
 		/** @var IShare $share */
 		$share = $event->getArgument('shareObject');
-		$this->throttle->clearFailedLinkAccesses($share->getToken(), $this->request->getRemoteAddress());
+		$this->linkAccessMapper->deleteFailedAccessForTokenIpCombination($share->getToken(), $this->request->getRemoteAddress());
 	}
 
 	/**
