@@ -39,7 +39,7 @@ See the [2-Factor Authentication](https://marketplace.owncloud.com/apps/twofacto
 		<job>OCA\BruteForceProtection\Jobs\ExpireOldAttempts</job>
 	</background-jobs>
 	<documentation>
-		<admin>https://doc.owncloud.com/server/latest/admin_manual/configuration/server/security/password_policy.html</admin>
+		<admin>https://doc.owncloud.com/server/latest/admin_manual/configuration/server/security/brute_force_protection.html</admin>
 	</documentation>
 	<website>https://github.com/owncloud/brute_force_protection</website>
 	<bugs>https://github.com/owncloud/brute_force_protection/issues</bugs>
