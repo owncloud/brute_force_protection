@@ -24,7 +24,6 @@
 
 namespace OCA\BruteForceProtection\Tests\Db;
 
-use OCA\BruteForceProtection\BruteForceProtectionConfig;
 use OCA\BruteForceProtection\Db\FailedLoginAttempt;
 use OCA\BruteForceProtection\Db\FailedLoginAttemptMapper;
 use OCP\AppFramework\Utility\ITimeFactory;
@@ -43,9 +42,6 @@ class FailedLoginAttemptMapperTest extends TestCase {
 	/** @var  IDBConnection $connection*/
 	private $connection;
 
-	/** @var BruteForceProtectionConfig | MockObject $configMock */
-	private $configMock;
-
 	/** @var ITimeFactory | MockObject $timeFactory */
 	private $timeFactoryMock;
 
@@ -55,20 +51,12 @@ class FailedLoginAttemptMapperTest extends TestCase {
 	/** @var string  */
 	private $dbTable = 'bfp_failed_logins';
 
-	/** @var int $thresholdConfigVal */
-	private $thresholdConfigVal = 60;
-
 	public function setUp(): void {
 		parent::setUp();
 		$this->baseTime = \time();
-		$this->timeFactoryMock = $this->getMockBuilder(ITimeFactory::class)
-			->disableOriginalConstructor()
-			->getMock();
+		$this->timeFactoryMock = $this->createMock(ITimeFactory::class);
 		$this->connection = \OC::$server->getDatabaseConnection();
-		$this->configMock = $this->getMockBuilder(BruteForceProtectionConfig::class)
-			->disableOriginalConstructor()
-			->getMock();
-		$this->mapper = new FailedLoginAttemptMapper($this->connection, $this->configMock, $this->timeFactoryMock);
+		$this->mapper = new FailedLoginAttemptMapper($this->connection, $this->timeFactoryMock);
 
 		$query = $this->connection->getQueryBuilder()->select('*')->from($this->dbTable);
 		$result = $query->execute()->fetchAll();
@@ -116,31 +104,17 @@ class FailedLoginAttemptMapperTest extends TestCase {
 	}
 
 	public function testGetSuspiciousActivityCountForUidIpCombination() {
-		$functionCallTime = $this->baseTime+110;
-		$this->configMock->expects($this->exactly(3))
-			->method('getBruteForceProtectionTimeThreshold')
-			->willReturn($this->thresholdConfigVal);
-		$this->timeFactoryMock->expects($this->exactly(3))
-			->method('getTime')
-			->willReturn($functionCallTime);
-		$this->assertEquals(3, $this->mapper->getSuspiciousActivityCountForUidIpCombination('test1', '192.168.1.1'));
-		$this->assertEquals(1, $this->mapper->getSuspiciousActivityCountForUidIpCombination('test1', '192.168.1.2'));
-		$this->assertEquals(1, $this->mapper->getSuspiciousActivityCountForUidIpCombination('test2', '192.168.1.1'));
+		$this->assertEquals(3, $this->mapper->getFailedLoginCountForUidIpCombination('test1', '192.168.1.1', $this->baseTime));
+		$this->assertEquals(1, $this->mapper->getFailedLoginCountForUidIpCombination('test1', '192.168.1.2', $this->baseTime));
+		$this->assertEquals(1, $this->mapper->getFailedLoginCountForUidIpCombination('test2', '192.168.1.1', $this->baseTime));
 	}
 
 	public function testGetLastFailedLoginAttemptTimeForUidIpCombination() {
 		$lastAttemptTime = $this->baseTime+100;
-		$this->configMock->expects($this->once())
-			->method('getBruteForceProtectionBanPeriod')
-			->willReturn('250');
-		$this->timeFactoryMock->expects($this->once())
-			->method('getTime')
-			->willReturn($this->baseTime+300);
-
 		$this->assertEquals($this->mapper->getLastFailedLoginAttemptTimeForUidIpCombination('test1', '192.168.1.1'), $lastAttemptTime);
 	}
 
-	public function testDeleteSuspiciousAttemptsForUidIpCombination() {
+	public function testDeleteFailedLoginAttemptsForUidIpCombination() {
 		$builder = $this->connection->getQueryBuilder();
 
 		$query = $builder->select('*')->from($this->dbTable)
@@ -149,7 +123,7 @@ class FailedLoginAttemptMapperTest extends TestCase {
 		$result = $query->execute()->fetchAll();
 		$this->assertCount(3, $result);
 
-		$this->mapper->deleteSuspiciousAttemptsForUidIpCombination('test1', "192.168.1.1");
+		$this->mapper->deleteFailedLoginAttemptsForUidIpCombination('test1', "192.168.1.1");
 
 		$query = $builder->select('*')->from($this->dbTable)
 			->Where($builder->expr()->eq('ip', $builder->createNamedParameter("192.168.1.1")))
@@ -161,13 +135,12 @@ class FailedLoginAttemptMapperTest extends TestCase {
 	public function testDeleteOldFailedLoginAttempts() {
 		$builder = $this->connection->getQueryBuilder();
 		$functionCallTime = $this->baseTime+130;
-		$this->timeFactoryMock->expects($this->exactly(1))
-			->method('getTime')
+		$this->timeFactoryMock->method('getTime')
 			->willReturn($functionCallTime);
 		$query = $builder->select('*')->from($this->dbTable);
 		$result = $query->execute()->fetchAll();
 		$this->assertCount(5, $result);
-		$this->mapper->deleteOldFailedLoginAttempts($this->thresholdConfigVal);
+		$this->mapper->deleteOldFailedLoginAttempts(60);
 		$query = $builder->select('*')->from($this->dbTable);
 		$result = $query->execute()->fetchAll();
 		$this->assertCount(1, $result);

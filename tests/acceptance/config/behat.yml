@@ -25,6 +25,8 @@ default:
         - BruteForceProtectionContext:
         - IpContext:
         - FeatureContext: *common_feature_context_params
+        - OccContext:
+        - PublicWebDavContext:
 
   extensions:
       jarnaiz\JUnitFormatter\JUnitFormatterExtension:

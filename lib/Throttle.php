@@ -25,8 +25,9 @@
 namespace OCA\BruteForceProtection;
 
 use OC\User\LoginException;
-use OCA\BruteForceProtection\Db\FailedLoginAttempt;
+use OCA\BruteForceProtection\Db\FailedLinkAccessMapper;
 use OCA\BruteForceProtection\Db\FailedLoginAttemptMapper;
+use OCA\BruteForceProtection\Exceptions\LinkAuthException;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IL10N;
 
@@ -36,39 +37,37 @@ use OCP\IL10N;
  */
 class Throttle {
 
-	/**
-	 * @var FailedLoginAttemptMapper $attemptMapper
-	 */
-	protected $attemptMapper;
+	/** @var FailedLoginAttemptMapper $loginAttemptMapper */
+	protected $loginAttemptMapper;
 
-	/**
-	 * @var BruteForceProtectionConfig $config
-	 */
+	/** @var FailedLinkAccessMapper $linkAccessMapper */
+	protected $linkAccessMapper;
+
+	/** @var BruteForceProtectionConfig $config */
 	protected $config;
 
-	/**
-	 * @var IL10N $l
-	 */
+	/** @var IL10N $l */
 	protected $l;
 
-	/**
-	 * @var ITimeFactory $timeFactory
-	 */
+	/** @var ITimeFactory $timeFactory */
 	protected $timeFactory;
 
 	/**
-	 * @param FailedLoginAttemptMapper $attemptMapper
+	 * @param FailedLoginAttemptMapper $loginAttemptMapper
+	 * @param FailedLinkAccessMapper $linkAccessMapper
 	 * @param BruteForceProtectionConfig $config
 	 * @param IL10N $l
 	 * @param ITimeFactory $timeFactory
 	 */
 	public function __construct(
-		FailedLoginAttemptMapper $attemptMapper,
+		FailedLoginAttemptMapper $loginAttemptMapper,
+		FailedLinkAccessMapper $linkAccessMapper,
 		BruteForceProtectionConfig $config,
 		IL10N $l,
 		ITimeFactory $timeFactory
 	) {
-		$this->attemptMapper = $attemptMapper;
+		$this->loginAttemptMapper = $loginAttemptMapper;
+		$this->linkAccessMapper = $linkAccessMapper;
 		$this->config = $config;
 		$this->l = $l;
 		$this->timeFactory = $timeFactory;
@@ -77,27 +76,18 @@ class Throttle {
 	/**
 	 * @param string $uid
 	 * @param string $ip
-	 * @return void
-	 */
-	public function addFailedLoginAttempt($uid, $ip) {
-		$attempt = new FailedLoginAttempt();
-		$attempt->setUid($uid);
-		$attempt->setIp($ip);
-		$attempt->setAttemptedAt($this->timeFactory->getTime());
-		$this->attemptMapper->insert($attempt);
-	}
-
-	/**
-	 * @param string $uid
-	 * @param string $ip
 	 * @throws LoginException
+	 * return void
 	 */
-	public function applyBruteForcePolicy($uid, $ip) {
+	public function applyBruteForcePolicyForLogin($uid, $ip) {
 		$banPeriod = $this->config->getBruteForceProtectionBanPeriod();
-		$banUntil = $this->attemptMapper->getLastFailedLoginAttemptTimeForUidIpCombination($uid, $ip) + $banPeriod;
-		if ($this->attemptMapper->getSuspiciousActivityCountForUidIpCombination($uid, $ip) >=
-			$this->config->getBruteForceProtectionFailTolerance() &&
-			$banUntil > $this->timeFactory->getTime()) {
+		$lastAttempt = $this->loginAttemptMapper->getLastFailedLoginAttemptTimeForUidIpCombination($uid, $ip);
+		if ($lastAttempt === null || ($lastAttempt + $banPeriod) <= $this->timeFactory->getTime()) {
+			return;
+		}
+		$thresholdTime = $lastAttempt - $this->config->getBruteForceProtectionTimeThreshold();
+		if ($this->loginAttemptMapper->getFailedLoginCountForUidIpCombination($uid, $ip, $thresholdTime) >=
+			$this->config->getBruteForceProtectionFailTolerance()) {
 			throw new LoginException($this->l->t("Too many failed login attempts. Try again in %s.",
 				[$this->parseBanPeriodForHumans($banPeriod)])
 			);
@@ -105,21 +95,33 @@ class Throttle {
 	}
 
 	/**
-	 * @param string $uid
+	 * @param string $token
 	 * @param string $ip
-	 * @return void
+	 * @throws LinkAuthException
+	 * return void
 	 */
-	public function clearSuspiciousAttemptsForUidIpCombination($uid, $ip) {
-		$this->attemptMapper->deleteSuspiciousAttemptsForUidIpCombination($uid, $ip);
+	public function applyBruteForcePolicyForLinkShare($token, $ip) {
+		$banPeriod = $this->config->getBruteForceProtectionBanPeriod();
+		$lastAttempt = $this->linkAccessMapper->getLastFailedAccessTimeForTokenIpCombination($token, $ip) ;
+		if ($lastAttempt === null || ($lastAttempt + $banPeriod) <= $this->timeFactory->getTime()) {
+			return;
+		}
+		$thresholdTime = $lastAttempt - $this->config->getBruteForceProtectionTimeThreshold();
+		if ($this->linkAccessMapper->getFailedAccessCountForTokenIpCombination($token, $ip, $thresholdTime) >=
+			$this->config->getBruteForceProtectionFailTolerance()) {
+			throw new LinkAuthException($this->l->t("Too many failed attempts. Try again in %s.",
+				[$this->parseBanPeriodForHumans($banPeriod)])
+			);
+		}
 	}
 
 	/**
-	 * @param int $banPeriod
+	 * @param int $seconds
 	 * @return string $banPeriodForHumans
 	 */
-	private function parseBanPeriodForHumans($banPeriod) {
-		return ($banPeriod / 60 < 60)
-			? $this->l->n(' %n minute', ' %n minutes', (int)\ceil($banPeriod/60))
-			: $this->l->n(' %n hour', ' %n hours', (int)\ceil(($banPeriod/60)/60));
+	private function parseBanPeriodForHumans($seconds) {
+		return ($seconds / 60 < 60)
+			? $this->l->n(' %n minute', ' %n minutes', (int)\ceil($seconds/60))
+			: $this->l->n(' %n hour', ' %n hours', (int)\ceil(($seconds/60)/60));
 	}
 }
