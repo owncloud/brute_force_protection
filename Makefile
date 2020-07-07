@@ -113,6 +113,7 @@ appstore:
 	l10n \
 	lib \
 	templates \
+	CHANGELOG.md \
 	LICENSE \
 	README.md \
 	$(appstore_package_name)
