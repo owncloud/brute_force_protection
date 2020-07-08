@@ -8,8 +8,8 @@ OC.L10N.register(
     "_ %n minute_::_ %n minutes_" : ["%n Minute","%n Minuten"],
     "_ %n hour_::_ %n hours_" : ["%n Stunde","%n Stunden"],
     "Brute Force Protection" : "Brute-Force-Schutz",
-    "Count failed attempts over how many seconds?" : "Fehlgeschlagene Versuche über wie viele Sekunden zählen?",
-    "Ban after how many failed attempts?" : "Nach wie vielen fehlgeschlagenen Versuchen sperren?",
+    "Count failed attempts over how many seconds?" : "Wie viele Sekunden soll nach gescheiterten Versuchen gewartet werden bis sich User neu anmelden können?",
+    "Ban after how many failed attempts?" : "Sperre nach wie vielen gescheiterten Versuchen?",
     "Ban for how many seconds?" : "Für wie viele Sekunden sperren?",
     "Save settings" : "Einstellungen speichern"
 },
