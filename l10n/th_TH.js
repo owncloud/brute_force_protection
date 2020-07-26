@@ -2,7 +2,7 @@ OC.L10N.register(
     "brute_force_protection",
     {
     "Preferences are saved" : "บันทึกการตั้งค่าแล้ว",
-    "Inputs must be positive integers" : "ค่าที่ใส่จะต้องเป็นจำนวนเต็มบวก",
+    "Inputs must be positive integers" : "ค่าที่กรอกจะต้องเป็นจำนวนเต็มบวก",
     "Too many failed login attempts. Try again in %s." : "พยายามลงชื่อเข้าใช้ล้มเหลวมากเกินไป กรุณาลองอีกครั้งในอีก %s",
     "Too many failed attempts. Try again in %s." : "ล็อกอินล้มเหลวมากเกินไป กรุณาลองอีกครั้งใน %s วินาที",
     "_ %n minute_::_ %n minutes_" : ["%n นาที"],
