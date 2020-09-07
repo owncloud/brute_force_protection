@@ -111,6 +111,7 @@ appstore:
 	appinfo \
 	js \
 	l10n \
+	img \
 	lib \
 	templates \
 	CHANGELOG.md \
