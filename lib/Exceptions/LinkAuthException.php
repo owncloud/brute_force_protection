@@ -23,5 +23,7 @@
 
 namespace OCA\BruteForceProtection\Exceptions;
 
-class LinkAuthException extends \Exception {
+use OC\User\LoginException;
+
+class LinkAuthException extends LoginException {
 }
