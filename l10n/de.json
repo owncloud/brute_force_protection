@@ -2,11 +2,12 @@
     "Preferences are saved" : "Einstellungen wurden gespeichert",
     "Inputs must be positive integers" : "Eingaben müssen positive ganzzahlige Werte sein",
     "Too many failed login attempts. Try again in %s." : "Zu viele fehlgeschlagene Versuche. Probiere es in %s erneut.",
+    "Too many failed attempts. Try again in %s." : "Zu viele gescheiterte Versuche. Versuchen Sie es noch einmal in %s.",
     "_ %n minute_::_ %n minutes_" : ["%n Minute","%n Minuten"],
     "_ %n hour_::_ %n hours_" : ["%n Stunde","%n Stunden"],
     "Brute Force Protection" : "Brute-Force-Schutz",
-    "Count failed login attempts over how many seconds?" : "Fehlgeschlagene Anmeldeversuche über wie viele Sekunden zählen?",
-    "Ban after how many failed login attempts?" : "Nach wie vielen fehlgeschlagenen Anmeldeversuchen sperren?",
+    "Count failed attempts over how many seconds?" : "Wie viele Sekunden soll nach gescheiterten Versuchen gewartet werden bis sich User neu anmelden können?",
+    "Ban after how many failed attempts?" : "Sperre nach wie vielen gescheiterten Versuchen?",
     "Ban for how many seconds?" : "Für wie viele Sekunden sperren?",
     "Save settings" : "Einstellungen speichern"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

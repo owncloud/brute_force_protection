@@ -1,14 +1,15 @@
 OC.L10N.register(
     "brute_force_protection",
     {
-    "Preferences are saved" : "يتم حفظ التفضيلات",
+    "Preferences are saved" : "تم حفظ التفضيلات",
     "Inputs must be positive integers" : "يجب أن تكون الإدخالات أعدادًا صحيحة موجبة",
     "Too many failed login attempts. Try again in %s." : "عدد كبير للغاية من محاولات تسجيل الدخول الفاشلة. أعد المحاولة مرة أخرى في غضون %s.",
+    "Too many failed attempts. Try again in %s." : "عدد كبير للغاية من المحاولات الفاشلة. أعد المحاولة مرة أخرى في غضون %s.",
     "_ %n minute_::_ %n minutes_" : [" %n دقيقة"," %n دقائق"," %n دقائق"," %n دقائق"," %n دقائق"," %n دقائق"],
     "_ %n hour_::_ %n hours_" : [" %n ساعة"," %n ساعات"," %n ساعات"," %n ساعات"," %n ساعات"," %n ساعات"],
     "Brute Force Protection" : "Brute Force Protection",
-    "Count failed login attempts over how many seconds?" : "عد محاولات تسجيل الدخول الفاشلة في كم ثانية؟",
-    "Ban after how many failed login attempts?" : "الحظر بعد كم محاولة تسجيل دخول فاشلة؟",
+    "Count failed attempts over how many seconds?" : "عد المحاولات الفاشلة في كم ثانية؟",
+    "Ban after how many failed attempts?" : "الحظر بعد كم محاولة فاشلة؟",
     "Ban for how many seconds?" : "الحظر بعد كم ثانية؟",
     "Save settings" : "حفظ الإعدادات"
 },
