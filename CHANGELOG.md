@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
-## [1.1.0] - 2020-06-23
+## [1.1.0] - 2020-09-17
 
 ### Added
 
@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
+- Internal Server Error entering a wrong password - [#134](https://github.com/owncloud/brute_force_protection/issues/134)
 - Fix documentation path - [#130](https://github.com/owncloud/brute_force_protection/issues/130)
 - Protect public links password page - [#90](https://github.com/owncloud/brute_force_protection/issues/90)
 
