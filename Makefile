@@ -111,8 +111,10 @@ appstore:
 	appinfo \
 	js \
 	l10n \
+	img \
 	lib \
 	templates \
+	CHANGELOG.md \
 	LICENSE \
 	README.md \
 	$(appstore_package_name)
