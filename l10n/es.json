@@ -6,6 +6,7 @@
     "_ %n minute_::_ %n minutes_" : [" %n minuto"," %n minutos"],
     "_ %n hour_::_ %n hours_" : [" %n hora"," %n horas"],
     "Brute Force Protection" : "Protección contra Fuerza Bruta",
+    "Count failed attempts over how many seconds?" : "¿Contar los intentos de inicio de sesión fallidos durante cuántos segundos?",
     "Ban after how many failed attempts?" : "¿Banear después de cuántos intentos fallidos de inicio de sesión?",
     "Ban for how many seconds?" : "¿Banear por cuántos segundos?",
     "Save settings" : "Guardar configuración"
