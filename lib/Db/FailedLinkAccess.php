@@ -27,7 +27,7 @@ use OCP\AppFramework\Db\Entity;
 
 /**
  * @method int getId()
- * @method void setId(\int $id)
+ * @method void setId(int $id)
  * @method string getIp()
  * @method void setIp(string $ip)
  * @method string getLinkToken()

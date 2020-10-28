@@ -32,8 +32,6 @@ use OCA\BruteForceProtection\Db\FailedLoginAttemptMapper;
 use OCA\BruteForceProtection\Exceptions\LinkAuthException;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IRequest;
-use OCP\IUser;
-use OCP\Share\IShare;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -113,7 +111,7 @@ class Hooks {
 	 * @param GenericEvent $event
 	 */
 	public function postLoginCallback($event) {
-		/** @var IUser $user */
+		/** @var \OCP\IUser $user */
 		$user = $event->getArgument('user');
 		$this->loginAttemptMapper->deleteFailedLoginAttemptsForUidIpCombination($user->getUID(), $this->request->getRemoteAddress());
 	}
@@ -131,7 +129,7 @@ class Hooks {
 	 * @param GenericEvent $event
 	 */
 	public function failedLinkShareAuthCallback($event) {
-		/** @var IShare $share */
+		/** @var \OCP\Share\IShare $share */
 		$share = $event->getArgument('shareObject');
 		$access = new FailedLinkAccess();
 		$access->setLinkToken($share->getToken());
@@ -144,7 +142,7 @@ class Hooks {
 	 * @param GenericEvent $event
 	 */
 	public function postLinkShareAuthCallback($event) {
-		/** @var IShare $share */
+		/** @var \OCP\Share\IShare $share */
 		$share = $event->getArgument('shareObject');
 		$this->linkAccessMapper->deleteFailedAccessForTokenIpCombination($share->getToken(), $this->request->getRemoteAddress());
 	}
@@ -154,7 +152,7 @@ class Hooks {
 	 * @throws LinkAuthException
 	 */
 	public function preLinkShareAuthCallback($event) {
-		/** @var IShare $share */
+		/** @var \OCP\Share\IShare $share */
 		$share = $event->getArgument('shareObject');
 		$this->throttle->applyBruteForcePolicyForLinkShare($share->getToken(), $this->request->getRemoteAddress());
 	}
