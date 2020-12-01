@@ -3,10 +3,12 @@ OC.L10N.register(
     {
     "Preferences are saved" : "Nustatymai išsaugoti",
     "Inputs must be positive integers" : "Įvestis turi būti teigiami skaičiai",
-    "Too many failed login attempts. Try again in %s minutes." : "Per daug nepavykusių prisijungimų. Bandykite už %sminučių.",
+    "Too many failed login attempts. Try again in %s." : "Per daug nepavykusių bandymų prisijungti. Po %s bandykite dar kartą.",
+    "Too many failed attempts. Try again in %s." : "Per daug nepavykusių bandymų. Po %s bandykite dar kartą.",
+    "_ %n minute_::_ %n minutes_" : [" %n minutė"," %n minutės"," %n minučių"," %n minučių"],
+    "_ %n hour_::_ %n hours_" : [" %n valanda"," %n valandos"," %n valandų"," %n valandų"],
     "Brute Force Protection" : "Brutalios jėgos apsauga",
-    "Count failed login attempts over how many seconds?" : "Skaičiuoti nepavykusius prisijungimus per kiek sekundžių",
-    "Ban after how many failed login attempts?" : "Užblokuoti po kelių nepavykusių prisijungimų?",
+    "Ban after how many failed attempts?" : "Po kelių nepavykusių prisijungimų užblokuoti?",
     "Ban for how many seconds?" : "Užblokuoti sekundėm?",
     "Save settings" : "Išsaugoti nustatymus"
 },
