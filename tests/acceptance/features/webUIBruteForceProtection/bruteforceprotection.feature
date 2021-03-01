@@ -6,7 +6,7 @@ Feature: brute force protection
   So that the server is protected against brute force password attacks
 
   Background:
-    Given these users have been created with skeleton files:
+    Given these users have been created without skeleton files:
       | username |
       | Alice    |
     When the administrator sets the bruteforceprotection settings using the webUI to:
