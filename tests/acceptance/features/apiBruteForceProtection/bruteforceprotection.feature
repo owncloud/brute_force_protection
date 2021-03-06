@@ -46,7 +46,7 @@ Feature: brute force protection
       | MKCOL    | /remote.php/webdav/blocked              | 201       |
 
   Scenario Outline: access is still possible as another user after a user was blocked
-    Given these users have been created with skeleton files:
+    Given these users have been created with small skeleton files:
       | username |
       | Brian    |
     When user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
