@@ -7,8 +7,7 @@ OC.L10N.register(
     "_ %n minute_::_ %n minutes_" : [" %n minute"," %n minutes"],
     "_ %n hour_::_ %n hours_" : [" %n hour"," %n hours"],
     "Brute Force Protection" : "Brute Force Protection",
-    "Count failed login attempts over how many seconds?" : "Count failed login attempts over how many seconds?",
-    "Ban after how many failed login attempts?" : "Ban after how many failed login attempts?",
+    "Ban after how many failed attempts?" : "Ban after how many failed attempts?",
     "Ban for how many seconds?" : "Ban for how many seconds?",
     "Save settings" : "Save settings"
 },
