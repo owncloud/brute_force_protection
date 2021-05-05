@@ -65,6 +65,7 @@ class FailedLinkAccessMapper extends Mapper {
 	 */
 	public function getFailedAccessCountForTokenIpCombination($token, $ip, $thresholdTime) {
 		$builder = $this->db->getQueryBuilder();
+		/* @phan-suppress-next-line PhanDeprecatedFunction */
 		$attempts = $builder->selectAlias($builder->createFunction('COUNT(*)'), 'count')
 			->from($this->tableName)
 			->where($builder->expr()->gt('attempted_at', $builder->createNamedParameter($thresholdTime)))
@@ -82,6 +83,7 @@ class FailedLinkAccessMapper extends Mapper {
 	 */
 	public function getLastFailedAccessTimeForTokenIpCombination($token, $ip) {
 		$builder = $this->db->getQueryBuilder();
+		/* @phan-suppress-next-line PhanDeprecatedFunction */
 		$lastAttempt = $builder->select('attempted_at')
 			->from($this->tableName)
 			->where($builder->expr()->eq('link_token', $builder->createNamedParameter($token)))
