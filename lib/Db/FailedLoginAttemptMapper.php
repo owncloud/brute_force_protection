@@ -66,6 +66,7 @@ class FailedLoginAttemptMapper extends Mapper {
 	 */
 	public function getFailedLoginCountForUidIpCombination($uid, $ip, $thresholdTime) {
 		$builder = $this->db->getQueryBuilder();
+		/* @phan-suppress-next-line PhanDeprecatedFunction */
 		$attempts = $builder->selectAlias($builder->createFunction('COUNT(*)'), 'count')
 			->from($this->tableName)
 			->where($builder->expr()->gt('attempted_at', $builder->createNamedParameter($thresholdTime)))
@@ -83,6 +84,7 @@ class FailedLoginAttemptMapper extends Mapper {
 	 */
 	public function getLastFailedLoginAttemptTimeForUidIpCombination($uid, $ip) {
 		$builder = $this->db->getQueryBuilder();
+		/* @phan-suppress-next-line PhanDeprecatedFunction */
 		$lastAttempt = $builder->select('attempted_at')
 			->from($this->tableName)
 			->where($builder->expr()->eq('uid', $builder->createNamedParameter($uid)))
