@@ -88,8 +88,11 @@ class Throttle {
 		$thresholdTime = $lastAttempt - $this->config->getBruteForceProtectionTimeThreshold();
 		if ($this->loginAttemptMapper->getFailedLoginCountForUidIpCombination($uid, $ip, $thresholdTime) >=
 			$this->config->getBruteForceProtectionFailTolerance()) {
-			throw new LoginException($this->l->t("Too many failed login attempts. Try again in %s.",
-				[$this->parseBanPeriodForHumans($banPeriod)])
+			throw new LoginException(
+				$this->l->t(
+					"Too many failed login attempts. Try again in %s.",
+					[$this->parseBanPeriodForHumans($banPeriod)]
+				)
 			);
 		}
 	}
@@ -109,8 +112,11 @@ class Throttle {
 		$thresholdTime = $lastAttempt - $this->config->getBruteForceProtectionTimeThreshold();
 		if ($this->linkAccessMapper->getFailedAccessCountForTokenIpCombination($token, $ip, $thresholdTime) >=
 			$this->config->getBruteForceProtectionFailTolerance()) {
-			throw new LinkAuthException($this->l->t("Too many failed attempts. Try again in %s.",
-				[$this->parseBanPeriodForHumans($banPeriod)])
+			throw new LinkAuthException(
+				$this->l->t(
+					"Too many failed attempts. Try again in %s.",
+					[$this->parseBanPeriodForHumans($banPeriod)]
+				)
 			);
 		}
 	}
