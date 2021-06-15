@@ -74,7 +74,8 @@ class BruteForceProtectionConfigTest extends TestCase {
 		$this->config->expects($this->once())->method('getAppValue')
 			->with('brute_force_protection', 'brute_force_protection_fail_tolerance', '3')
 			->willReturn($appConfigValue);
-		$this->assertSame($expected,
+		$this->assertSame(
+			$expected,
 			$this->bfpConfig->getBruteForceProtectionFailTolerance()
 		);
 	}
@@ -88,7 +89,8 @@ class BruteForceProtectionConfigTest extends TestCase {
 		$this->config->expects($this->once())->method('getAppValue')
 			->with('brute_force_protection', 'brute_force_protection_time_threshold', '60')
 			->willReturn($appConfigValue);
-		$this->assertSame($expected,
+		$this->assertSame(
+			$expected,
 			$this->bfpConfig->getBruteForceProtectionTimeThreshold()
 		);
 	}
@@ -102,7 +104,8 @@ class BruteForceProtectionConfigTest extends TestCase {
 		$this->config->expects($this->once())->method('getAppValue')
 			->with('brute_force_protection', 'brute_force_protection_ban_period', '300')
 			->willReturn($appConfigValue);
-		$this->assertSame($expected,
+		$this->assertSame(
+			$expected,
 			$this->bfpConfig->getBruteForceProtectionBanPeriod()
 		);
 	}
