@@ -2,7 +2,7 @@
   "name": "owncloud/brute_force_protection",
   "config" : {
     "platform": {
-      "php": "7.2"
+      "php": "7.3"
     }
   },
   "require": {
