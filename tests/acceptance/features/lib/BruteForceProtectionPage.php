@@ -41,7 +41,7 @@ class BruteForceProtectionPage extends OwncloudPage {
 	private $failToleranceInputId = 'bfp-fail-tolerance';
 	private $banPeriodInputId = 'bfp-ban-period';
 	private $saveButtonId = 'save-bfp-settings';
-	
+
 	/**
 	 * fills the input field of the setting with the given value
 	 *
@@ -53,7 +53,10 @@ class BruteForceProtectionPage extends OwncloudPage {
 	 *
 	 * @return BruteForceProtectionPage
 	 */
-	public function fillSettingInput($setting, $value) {
+	public function fillSettingInput(
+		string $setting,
+		$value
+	): BruteForceProtectionPage {
 		switch ($setting) {
 			case "threshold-time":
 				$fieldToFillId = $this->thresholdTimeInputId;
@@ -89,7 +92,9 @@ class BruteForceProtectionPage extends OwncloudPage {
 	 * @throws ElementNotFoundException
 	 * @return BruteForceProtectionPage
 	 */
-	public function saveSettings($session) {
+	public function saveSettings(
+		Session $session
+	): BruteForceProtectionPage {
 		$saveButton = $this->findById($this->saveButtonId);
 		if ($saveButton === null) {
 			throw new ElementNotFoundException(
@@ -112,7 +117,11 @@ class BruteForceProtectionPage extends OwncloudPage {
 	 *
 	 * @return BruteForceProtectionPage
 	 */
-	public function setSetting($session, $setting, $value) {
+	public function setSetting(
+		Session $session,
+		string $setting,
+		$value
+	): BruteForceProtectionPage {
 		$this->fillSettingInput($setting, $value);
 		$this->saveSettings($session);
 		return $this;
@@ -126,7 +135,10 @@ class BruteForceProtectionPage extends OwncloudPage {
 	 *
 	 * @return BruteForceProtectionPage
 	 */
-	public function setSettings($session, $settings) {
+	public function setSettings(
+		Session $session,
+		array $settings
+	): BruteForceProtectionPage {
 		foreach ($settings as $setting => $value) {
 			$this->fillSettingInput($setting, $value);
 		}

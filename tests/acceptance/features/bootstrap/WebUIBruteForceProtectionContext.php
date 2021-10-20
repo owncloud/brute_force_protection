@@ -40,7 +40,7 @@ class WebUIBruteForceProtectionContext extends RawMinkContext implements Context
 	 * @var FeatureContext
 	 */
 	private $featureContext;
-	
+
 	/**
 	 *
 	 * @var WebUIGeneralContext
@@ -93,7 +93,7 @@ class WebUIBruteForceProtectionContext extends RawMinkContext implements Context
 	 * @return void
 	 * @throws Exception
 	 */
-	public function setTheBruteforceprotectionSettings(TableNode $settings) {
+	public function setTheBruteforceprotectionSettings(TableNode $settings): void {
 		$this->webUIGeneralContext->adminLogsInUsingTheWebUI();
 		$this->bruteForceProtectionPage->open();
 		$this->bruteForceProtectionPage->setSettings($this->getSession(), $settings->getRowsHash());
@@ -108,7 +108,10 @@ class WebUIBruteForceProtectionContext extends RawMinkContext implements Context
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theDisabledUserTriesToLogin($username, $password) {
+	public function theDisabledUserTriesToLogin(
+		string $username,
+		string $password
+	): void {
 		/**
 		 *
 		 * @var BlockedUserPage $blockedUserPage
@@ -124,7 +127,7 @@ class WebUIBruteForceProtectionContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function setUpScenario(BeforeScenarioScope $scope) {
+	public function setUpScenario(BeforeScenarioScope $scope): void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
