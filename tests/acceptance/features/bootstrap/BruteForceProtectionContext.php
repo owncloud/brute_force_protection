@@ -51,12 +51,14 @@ class BruteForceProtectionContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function setTheBruteforceprotectionSettings(TableNode $settings) {
+	public function setTheBruteforceprotectionSettings(
+		TableNode $settings
+	): void {
 		foreach ($settings->getRowsHash() as $setting => $value) {
 			$this->setBruteforceprotectionSetting($setting, $value);
 		}
 	}
-	
+
 	/**
 	 *
 	 * @param string $setting
@@ -65,7 +67,10 @@ class BruteForceProtectionContext implements Context {
 	 * @throws \Exception
 	 * @return void
 	 */
-	public function setBruteforceprotectionSetting($setting, $value) {
+	public function setBruteforceprotectionSetting(
+		string $setting,
+		string $value
+	): void {
 		$settingName = $this->mapSettingName($setting);
 
 		if ($value === '') {
@@ -97,7 +102,7 @@ class BruteForceProtectionContext implements Context {
 	 * @return string
 	 * @throws Exception
 	 */
-	public function getBruteforceprotectionSetting($setting) {
+	public function getBruteforceprotectionSetting(string $setting): string {
 		$settingName = $this->mapSettingName($setting);
 		return \trim(
 			SetupHelper::runOcc(
@@ -118,7 +123,7 @@ class BruteForceProtectionContext implements Context {
 	 * @throws \InvalidArgumentException
 	 * @return string
 	 */
-	public function mapSettingName($setting) {
+	public function mapSettingName(string $setting): string {
 		switch ($setting) {
 			case "threshold-time":
 				$settingName = "brute_force_protection_time_threshold";
@@ -145,7 +150,7 @@ class BruteForceProtectionContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function setUpScenario(BeforeScenarioScope $scope) {
+	public function setUpScenario(BeforeScenarioScope $scope): void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
@@ -172,7 +177,7 @@ class BruteForceProtectionContext implements Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function cleanupBannedUsers() {
+	public function cleanupBannedUsers(): void {
 		$this->setBruteforceprotectionSetting('ban-period', '0');
 		foreach ($this->featureContext->getCreatedUsers() as $user => $userData) {
 			$this->featureContext->initializeUser(
@@ -188,7 +193,7 @@ class BruteForceProtectionContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function setBackAppSettings() {
+	public function setBackAppSettings(): void {
 		foreach ($this->savedSettings as $setting => $value) {
 			$this->setBruteforceprotectionSetting($setting, $value);
 		}
