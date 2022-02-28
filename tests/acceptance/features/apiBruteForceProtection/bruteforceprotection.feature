@@ -132,26 +132,30 @@ Feature: brute force protection
 #    And the public creation of folder "a-folder" in the last public shared folder using the new public WebDAV API with password "abc123" should fail with HTTP status code "401"
 #    And the public creation of folder "a-folder" in the last public shared folder using the new public WebDAV API with password "%public%" should fail with HTTP status code "401"
 
-  Scenario Outline: access is still possible if the invalid requests did not reach fail-tolerance
+  Scenario Outline: access is still possible as another user after a user was blocked
+    Given these users have been created with small skeleton files:
+      | username |
+      | Brian    |
     When user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
+    And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
+    And user "Brian" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
       | method   | endpoint                                | http-code |
       | GET      | /index.php/apps/files                   | 200       |
       | PROPFIND | /remote.php/dav/systemtags              | 207       |
-      | PROPFIND | /remote.php/dav/files/Alice/welcome.txt | 207       |
-      | GET      | /remote.php/dav/files/Alice/welcome.txt | 200       |
+      | PROPFIND | /remote.php/dav/files/Brian/welcome.txt | 207       |
+      | GET      | /remote.php/dav/files/Brian/welcome.txt | 200       |
       | PROPFIND | /remote.php/webdav/welcome.txt          | 207       |
       | GET      | /remote.php/webdav/welcome.txt          | 200       |
-      | MKCOL    | /remote.php/dav/files/Alice/blocked     | 201       |
+      | MKCOL    | /remote.php/dav/files/Brian/blocked     | 201       |
       | MKCOL    | /remote.php/webdav/blocked              | 201       |
 
   Scenario Outline: access is still possible from another IP after user/ip combination was blocked
     When the client accesses the server from IP address "10.4.1.248" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And the client accesses the server from IP address "192.168.56.1" using X-Forwarded-For header
+    And the client accesses the server from IP address "10.0.56.1" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
@@ -165,26 +169,30 @@ Feature: brute force protection
       | MKCOL    | /remote.php/dav/files/Alice/blocked     | 201       |
       | MKCOL    | /remote.php/webdav/blocked              | 201       |
 
-  Scenario Outline: access is still possible if the invalid requests did not reach fail-tolerance
+  Scenario Outline: access is still possible as another user after a user was blocked
+    Given these users have been created with small skeleton files:
+      | username |
+      | Brian    |
     When user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
+    And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
+    And user "Brian" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
       | method   | endpoint                                | http-code |
       | GET      | /index.php/apps/files                   | 200       |
       | PROPFIND | /remote.php/dav/systemtags              | 207       |
-      | PROPFIND | /remote.php/dav/files/Alice/welcome.txt | 207       |
-      | GET      | /remote.php/dav/files/Alice/welcome.txt | 200       |
+      | PROPFIND | /remote.php/dav/files/Brian/welcome.txt | 207       |
+      | GET      | /remote.php/dav/files/Brian/welcome.txt | 200       |
       | PROPFIND | /remote.php/webdav/welcome.txt          | 207       |
       | GET      | /remote.php/webdav/welcome.txt          | 200       |
-      | MKCOL    | /remote.php/dav/files/Alice/blocked     | 201       |
+      | MKCOL    | /remote.php/dav/files/Brian/blocked     | 201       |
       | MKCOL    | /remote.php/webdav/blocked              | 201       |
 
   Scenario Outline: access is still possible from another IP after user/ip combination was blocked
     When the client accesses the server from IP address "10.4.1.248" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And the client accesses the server from IP address "192.168.56.1" using X-Forwarded-For header
+    And the client accesses the server from IP address "10.0.56.1" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
@@ -198,26 +206,30 @@ Feature: brute force protection
       | MKCOL    | /remote.php/dav/files/Alice/blocked     | 201       |
       | MKCOL    | /remote.php/webdav/blocked              | 201       |
 
-  Scenario Outline: access is still possible if the invalid requests did not reach fail-tolerance
+  Scenario Outline: access is still possible as another user after a user was blocked
+    Given these users have been created with small skeleton files:
+      | username |
+      | Brian    |
     When user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
+    And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
+    And user "Brian" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
       | method   | endpoint                                | http-code |
       | GET      | /index.php/apps/files                   | 200       |
       | PROPFIND | /remote.php/dav/systemtags              | 207       |
-      | PROPFIND | /remote.php/dav/files/Alice/welcome.txt | 207       |
-      | GET      | /remote.php/dav/files/Alice/welcome.txt | 200       |
+      | PROPFIND | /remote.php/dav/files/Brian/welcome.txt | 207       |
+      | GET      | /remote.php/dav/files/Brian/welcome.txt | 200       |
       | PROPFIND | /remote.php/webdav/welcome.txt          | 207       |
       | GET      | /remote.php/webdav/welcome.txt          | 200       |
-      | MKCOL    | /remote.php/dav/files/Alice/blocked     | 201       |
+      | MKCOL    | /remote.php/dav/files/Brian/blocked     | 201       |
       | MKCOL    | /remote.php/webdav/blocked              | 201       |
 
   Scenario Outline: access is still possible from another IP after user/ip combination was blocked
     When the client accesses the server from IP address "10.4.1.248" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And the client accesses the server from IP address "192.168.56.1" using X-Forwarded-For header
+    And the client accesses the server from IP address "10.0.56.1" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
@@ -231,26 +243,30 @@ Feature: brute force protection
       | MKCOL    | /remote.php/dav/files/Alice/blocked     | 201       |
       | MKCOL    | /remote.php/webdav/blocked              | 201       |
 
-  Scenario Outline: access is still possible if the invalid requests did not reach fail-tolerance
+  Scenario Outline: access is still possible as another user after a user was blocked
+    Given these users have been created with small skeleton files:
+      | username |
+      | Brian    |
     When user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
+    And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
+    And user "Brian" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
       | method   | endpoint                                | http-code |
       | GET      | /index.php/apps/files                   | 200       |
       | PROPFIND | /remote.php/dav/systemtags              | 207       |
-      | PROPFIND | /remote.php/dav/files/Alice/welcome.txt | 207       |
-      | GET      | /remote.php/dav/files/Alice/welcome.txt | 200       |
+      | PROPFIND | /remote.php/dav/files/Brian/welcome.txt | 207       |
+      | GET      | /remote.php/dav/files/Brian/welcome.txt | 200       |
       | PROPFIND | /remote.php/webdav/welcome.txt          | 207       |
       | GET      | /remote.php/webdav/welcome.txt          | 200       |
-      | MKCOL    | /remote.php/dav/files/Alice/blocked     | 201       |
+      | MKCOL    | /remote.php/dav/files/Brian/blocked     | 201       |
       | MKCOL    | /remote.php/webdav/blocked              | 201       |
 
   Scenario Outline: access is still possible from another IP after user/ip combination was blocked
     When the client accesses the server from IP address "10.4.1.248" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And the client accesses the server from IP address "192.168.56.1" using X-Forwarded-For header
+    And the client accesses the server from IP address "10.0.56.1" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
@@ -264,26 +280,30 @@ Feature: brute force protection
       | MKCOL    | /remote.php/dav/files/Alice/blocked     | 201       |
       | MKCOL    | /remote.php/webdav/blocked              | 201       |
 
-  Scenario Outline: access is still possible if the invalid requests did not reach fail-tolerance
+  Scenario Outline: access is still possible as another user after a user was blocked
+    Given these users have been created with small skeleton files:
+      | username |
+      | Brian    |
     When user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
+    And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
+    And user "Brian" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
       | method   | endpoint                                | http-code |
       | GET      | /index.php/apps/files                   | 200       |
       | PROPFIND | /remote.php/dav/systemtags              | 207       |
-      | PROPFIND | /remote.php/dav/files/Alice/welcome.txt | 207       |
-      | GET      | /remote.php/dav/files/Alice/welcome.txt | 200       |
+      | PROPFIND | /remote.php/dav/files/Brian/welcome.txt | 207       |
+      | GET      | /remote.php/dav/files/Brian/welcome.txt | 200       |
       | PROPFIND | /remote.php/webdav/welcome.txt          | 207       |
       | GET      | /remote.php/webdav/welcome.txt          | 200       |
-      | MKCOL    | /remote.php/dav/files/Alice/blocked     | 201       |
+      | MKCOL    | /remote.php/dav/files/Brian/blocked     | 201       |
       | MKCOL    | /remote.php/webdav/blocked              | 201       |
 
   Scenario Outline: access is still possible from another IP after user/ip combination was blocked
     When the client accesses the server from IP address "10.4.1.248" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And the client accesses the server from IP address "192.168.56.1" using X-Forwarded-For header
+    And the client accesses the server from IP address "10.0.56.1" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
@@ -297,26 +317,30 @@ Feature: brute force protection
       | MKCOL    | /remote.php/dav/files/Alice/blocked     | 201       |
       | MKCOL    | /remote.php/webdav/blocked              | 201       |
 
-  Scenario Outline: access is still possible if the invalid requests did not reach fail-tolerance
+  Scenario Outline: access is still possible as another user after a user was blocked
+    Given these users have been created with small skeleton files:
+      | username |
+      | Brian    |
     When user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
+    And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
+    And user "Brian" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
       | method   | endpoint                                | http-code |
       | GET      | /index.php/apps/files                   | 200       |
       | PROPFIND | /remote.php/dav/systemtags              | 207       |
-      | PROPFIND | /remote.php/dav/files/Alice/welcome.txt | 207       |
-      | GET      | /remote.php/dav/files/Alice/welcome.txt | 200       |
+      | PROPFIND | /remote.php/dav/files/Brian/welcome.txt | 207       |
+      | GET      | /remote.php/dav/files/Brian/welcome.txt | 200       |
       | PROPFIND | /remote.php/webdav/welcome.txt          | 207       |
       | GET      | /remote.php/webdav/welcome.txt          | 200       |
-      | MKCOL    | /remote.php/dav/files/Alice/blocked     | 201       |
+      | MKCOL    | /remote.php/dav/files/Brian/blocked     | 201       |
       | MKCOL    | /remote.php/webdav/blocked              | 201       |
 
   Scenario Outline: access is still possible from another IP after user/ip combination was blocked
     When the client accesses the server from IP address "10.4.1.248" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And the client accesses the server from IP address "192.168.56.1" using X-Forwarded-For header
+    And the client accesses the server from IP address "10.0.56.1" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
@@ -330,26 +354,30 @@ Feature: brute force protection
       | MKCOL    | /remote.php/dav/files/Alice/blocked     | 201       |
       | MKCOL    | /remote.php/webdav/blocked              | 201       |
 
-  Scenario Outline: access is still possible if the invalid requests did not reach fail-tolerance
+  Scenario Outline: access is still possible as another user after a user was blocked
+    Given these users have been created with small skeleton files:
+      | username |
+      | Brian    |
     When user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
+    And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
+    And user "Brian" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
       | method   | endpoint                                | http-code |
       | GET      | /index.php/apps/files                   | 200       |
       | PROPFIND | /remote.php/dav/systemtags              | 207       |
-      | PROPFIND | /remote.php/dav/files/Alice/welcome.txt | 207       |
-      | GET      | /remote.php/dav/files/Alice/welcome.txt | 200       |
+      | PROPFIND | /remote.php/dav/files/Brian/welcome.txt | 207       |
+      | GET      | /remote.php/dav/files/Brian/welcome.txt | 200       |
       | PROPFIND | /remote.php/webdav/welcome.txt          | 207       |
       | GET      | /remote.php/webdav/welcome.txt          | 200       |
-      | MKCOL    | /remote.php/dav/files/Alice/blocked     | 201       |
+      | MKCOL    | /remote.php/dav/files/Brian/blocked     | 201       |
       | MKCOL    | /remote.php/webdav/blocked              | 201       |
 
   Scenario Outline: access is still possible from another IP after user/ip combination was blocked
     When the client accesses the server from IP address "10.4.1.248" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And the client accesses the server from IP address "192.168.56.1" using X-Forwarded-For header
+    And the client accesses the server from IP address "10.0.56.1" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
@@ -363,26 +391,30 @@ Feature: brute force protection
       | MKCOL    | /remote.php/dav/files/Alice/blocked     | 201       |
       | MKCOL    | /remote.php/webdav/blocked              | 201       |
 
-  Scenario Outline: access is still possible if the invalid requests did not reach fail-tolerance
+  Scenario Outline: access is still possible as another user after a user was blocked
+    Given these users have been created with small skeleton files:
+      | username |
+      | Brian    |
     When user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
+    And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
+    And user "Brian" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
       | method   | endpoint                                | http-code |
       | GET      | /index.php/apps/files                   | 200       |
       | PROPFIND | /remote.php/dav/systemtags              | 207       |
-      | PROPFIND | /remote.php/dav/files/Alice/welcome.txt | 207       |
-      | GET      | /remote.php/dav/files/Alice/welcome.txt | 200       |
+      | PROPFIND | /remote.php/dav/files/Brian/welcome.txt | 207       |
+      | GET      | /remote.php/dav/files/Brian/welcome.txt | 200       |
       | PROPFIND | /remote.php/webdav/welcome.txt          | 207       |
       | GET      | /remote.php/webdav/welcome.txt          | 200       |
-      | MKCOL    | /remote.php/dav/files/Alice/blocked     | 201       |
+      | MKCOL    | /remote.php/dav/files/Brian/blocked     | 201       |
       | MKCOL    | /remote.php/webdav/blocked              | 201       |
 
   Scenario Outline: access is still possible from another IP after user/ip combination was blocked
     When the client accesses the server from IP address "10.4.1.248" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And the client accesses the server from IP address "192.168.56.1" using X-Forwarded-For header
+    And the client accesses the server from IP address "10.0.56.1" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
@@ -396,26 +428,30 @@ Feature: brute force protection
       | MKCOL    | /remote.php/dav/files/Alice/blocked     | 201       |
       | MKCOL    | /remote.php/webdav/blocked              | 201       |
 
-  Scenario Outline: access is still possible if the invalid requests did not reach fail-tolerance
+  Scenario Outline: access is still possible as another user after a user was blocked
+    Given these users have been created with small skeleton files:
+      | username |
+      | Brian    |
     When user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
+    And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
+    And user "Brian" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
       | method   | endpoint                                | http-code |
       | GET      | /index.php/apps/files                   | 200       |
       | PROPFIND | /remote.php/dav/systemtags              | 207       |
-      | PROPFIND | /remote.php/dav/files/Alice/welcome.txt | 207       |
-      | GET      | /remote.php/dav/files/Alice/welcome.txt | 200       |
+      | PROPFIND | /remote.php/dav/files/Brian/welcome.txt | 207       |
+      | GET      | /remote.php/dav/files/Brian/welcome.txt | 200       |
       | PROPFIND | /remote.php/webdav/welcome.txt          | 207       |
       | GET      | /remote.php/webdav/welcome.txt          | 200       |
-      | MKCOL    | /remote.php/dav/files/Alice/blocked     | 201       |
+      | MKCOL    | /remote.php/dav/files/Brian/blocked     | 201       |
       | MKCOL    | /remote.php/webdav/blocked              | 201       |
 
   Scenario Outline: access is still possible from another IP after user/ip combination was blocked
     When the client accesses the server from IP address "10.4.1.248" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And the client accesses the server from IP address "192.168.56.1" using X-Forwarded-For header
+    And the client accesses the server from IP address "10.0.56.1" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
@@ -429,26 +465,30 @@ Feature: brute force protection
       | MKCOL    | /remote.php/dav/files/Alice/blocked     | 201       |
       | MKCOL    | /remote.php/webdav/blocked              | 201       |
 
-  Scenario Outline: access is still possible if the invalid requests did not reach fail-tolerance
+  Scenario Outline: access is still possible as another user after a user was blocked
+    Given these users have been created with small skeleton files:
+      | username |
+      | Brian    |
     When user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
+    And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
+    And user "Brian" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
       | method   | endpoint                                | http-code |
       | GET      | /index.php/apps/files                   | 200       |
       | PROPFIND | /remote.php/dav/systemtags              | 207       |
-      | PROPFIND | /remote.php/dav/files/Alice/welcome.txt | 207       |
-      | GET      | /remote.php/dav/files/Alice/welcome.txt | 200       |
+      | PROPFIND | /remote.php/dav/files/Brian/welcome.txt | 207       |
+      | GET      | /remote.php/dav/files/Brian/welcome.txt | 200       |
       | PROPFIND | /remote.php/webdav/welcome.txt          | 207       |
       | GET      | /remote.php/webdav/welcome.txt          | 200       |
-      | MKCOL    | /remote.php/dav/files/Alice/blocked     | 201       |
+      | MKCOL    | /remote.php/dav/files/Brian/blocked     | 201       |
       | MKCOL    | /remote.php/webdav/blocked              | 201       |
 
   Scenario Outline: access is still possible from another IP after user/ip combination was blocked
     When the client accesses the server from IP address "10.4.1.248" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And the client accesses the server from IP address "192.168.56.1" using X-Forwarded-For header
+    And the client accesses the server from IP address "10.0.56.1" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
@@ -462,26 +502,30 @@ Feature: brute force protection
       | MKCOL    | /remote.php/dav/files/Alice/blocked     | 201       |
       | MKCOL    | /remote.php/webdav/blocked              | 201       |
 
-  Scenario Outline: access is still possible if the invalid requests did not reach fail-tolerance
+  Scenario Outline: access is still possible as another user after a user was blocked
+    Given these users have been created with small skeleton files:
+      | username |
+      | Brian    |
     When user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
+    And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
+    And user "Brian" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
       | method   | endpoint                                | http-code |
       | GET      | /index.php/apps/files                   | 200       |
       | PROPFIND | /remote.php/dav/systemtags              | 207       |
-      | PROPFIND | /remote.php/dav/files/Alice/welcome.txt | 207       |
-      | GET      | /remote.php/dav/files/Alice/welcome.txt | 200       |
+      | PROPFIND | /remote.php/dav/files/Brian/welcome.txt | 207       |
+      | GET      | /remote.php/dav/files/Brian/welcome.txt | 200       |
       | PROPFIND | /remote.php/webdav/welcome.txt          | 207       |
       | GET      | /remote.php/webdav/welcome.txt          | 200       |
-      | MKCOL    | /remote.php/dav/files/Alice/blocked     | 201       |
+      | MKCOL    | /remote.php/dav/files/Brian/blocked     | 201       |
       | MKCOL    | /remote.php/webdav/blocked              | 201       |
 
   Scenario Outline: access is still possible from another IP after user/ip combination was blocked
     When the client accesses the server from IP address "10.4.1.248" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And the client accesses the server from IP address "192.168.56.1" using X-Forwarded-For header
+    And the client accesses the server from IP address "10.0.56.1" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
@@ -495,26 +539,30 @@ Feature: brute force protection
       | MKCOL    | /remote.php/dav/files/Alice/blocked     | 201       |
       | MKCOL    | /remote.php/webdav/blocked              | 201       |
 
-  Scenario Outline: access is still possible if the invalid requests did not reach fail-tolerance
+  Scenario Outline: access is still possible as another user after a user was blocked
+    Given these users have been created with small skeleton files:
+      | username |
+      | Brian    |
     When user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
+    And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
+    And user "Brian" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
       | method   | endpoint                                | http-code |
       | GET      | /index.php/apps/files                   | 200       |
       | PROPFIND | /remote.php/dav/systemtags              | 207       |
-      | PROPFIND | /remote.php/dav/files/Alice/welcome.txt | 207       |
-      | GET      | /remote.php/dav/files/Alice/welcome.txt | 200       |
+      | PROPFIND | /remote.php/dav/files/Brian/welcome.txt | 207       |
+      | GET      | /remote.php/dav/files/Brian/welcome.txt | 200       |
       | PROPFIND | /remote.php/webdav/welcome.txt          | 207       |
       | GET      | /remote.php/webdav/welcome.txt          | 200       |
-      | MKCOL    | /remote.php/dav/files/Alice/blocked     | 201       |
+      | MKCOL    | /remote.php/dav/files/Brian/blocked     | 201       |
       | MKCOL    | /remote.php/webdav/blocked              | 201       |
 
   Scenario Outline: access is still possible from another IP after user/ip combination was blocked
     When the client accesses the server from IP address "10.4.1.248" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And the client accesses the server from IP address "192.168.56.1" using X-Forwarded-For header
+    And the client accesses the server from IP address "10.0.56.1" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
