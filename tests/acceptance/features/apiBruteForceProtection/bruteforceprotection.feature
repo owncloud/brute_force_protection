@@ -229,7 +229,7 @@ Feature: brute force protection
     When the client accesses the server from IP address "10.4.1.248" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And the client accesses the server from IP address "10.0.56.1" using X-Forwarded-For header
+    And the client accesses the server from IP address "192.168.56.1" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
@@ -266,7 +266,7 @@ Feature: brute force protection
     When the client accesses the server from IP address "10.4.1.248" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And the client accesses the server from IP address "10.0.56.1" using X-Forwarded-For header
+    And the client accesses the server from IP address "192.168.56.1" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
@@ -303,7 +303,7 @@ Feature: brute force protection
     When the client accesses the server from IP address "10.4.1.248" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And the client accesses the server from IP address "10.0.56.1" using X-Forwarded-For header
+    And the client accesses the server from IP address "192.168.56.1" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
@@ -340,7 +340,7 @@ Feature: brute force protection
     When the client accesses the server from IP address "10.4.1.248" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And the client accesses the server from IP address "10.0.56.1" using X-Forwarded-For header
+    And the client accesses the server from IP address "192.168.56.1" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
@@ -377,7 +377,7 @@ Feature: brute force protection
     When the client accesses the server from IP address "10.4.1.248" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And the client accesses the server from IP address "10.0.56.1" using X-Forwarded-For header
+    And the client accesses the server from IP address "192.168.56.1" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
@@ -414,7 +414,7 @@ Feature: brute force protection
     When the client accesses the server from IP address "10.4.1.248" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And the client accesses the server from IP address "10.0.56.1" using X-Forwarded-For header
+    And the client accesses the server from IP address "192.168.56.1" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
@@ -451,7 +451,7 @@ Feature: brute force protection
     When the client accesses the server from IP address "10.4.1.248" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And the client accesses the server from IP address "10.0.56.1" using X-Forwarded-For header
+    And the client accesses the server from IP address "192.168.56.1" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
@@ -488,7 +488,7 @@ Feature: brute force protection
     When the client accesses the server from IP address "10.4.1.248" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And the client accesses the server from IP address "10.0.56.1" using X-Forwarded-For header
+    And the client accesses the server from IP address "192.168.56.1" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
@@ -525,7 +525,7 @@ Feature: brute force protection
     When the client accesses the server from IP address "10.4.1.248" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
-    And the client accesses the server from IP address "10.0.56.1" using X-Forwarded-For header
+    And the client accesses the server from IP address "192.168.56.1" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
     Then the HTTP status code should be "<http-code>"
     Examples:
