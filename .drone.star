@@ -43,40 +43,11 @@ config = {
     "branches": [
         "master",
     ],
-    "codestyle": True,
-    "phpstan": True,
-    "phan": True,
-    "phpunit": {
-        "allDatabases": {
-            "phpVersions": [
-                "7.3",
-            ],
-        },
-        "reducedDatabases": {
-            "phpVersions": [
-                DEFAULT_PHP_VERSION,
-            ],
-            "databases": [
-                "sqlite",
-                "mariadb:10.2",
-            ],
-            "coverage": False,
-        },
-    },
+    "codestyle": False,
+    "phpstan": False,
+    "phan": False,
+    "phpunit": False,
     "acceptance": {
-        "webUI": {
-            "suites": {
-                "webUIBruteForceProtection": "webUIBruteForce",
-            },
-            "servers": [
-                "daily-master-qa",
-            ],
-            "browsers": [
-                "chrome",
-                "firefox",
-            ],
-            "xForwardedFor": True,
-        },
         "api": {
             "suites": [
                 "apiBruteForceProtection",
