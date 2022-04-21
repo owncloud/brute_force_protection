@@ -109,7 +109,7 @@ def main(ctx):
 
     dependsOn(before, coverageTests)
 
-    nonCoverageTests = nonCoveragePipelines(ctx)
+    nonCoverageTests = []
     if (nonCoverageTests == False):
         print("Errors detected in nonCoveragePipelines. Review messages above.")
         return []
@@ -135,7 +135,7 @@ def main(ctx):
     return before + coverageTests + afterCoverageTests + nonCoverageTests + stages + after
 
 def beforePipelines(ctx):
-    return codestyle(ctx) + jscodestyle(ctx) + cancelPreviousBuilds() + phpstan(ctx) + phan(ctx) + phplint(ctx) + checkStarlark()
+    return codestyle(ctx) + jscodestyle(ctx) + cancelPreviousBuilds() + checkStarlark()
 
 def coveragePipelines(ctx):
     # All unit test pipelines that have coverage or other test analysis reported
