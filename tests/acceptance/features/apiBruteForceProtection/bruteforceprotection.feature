@@ -93,11 +93,11 @@ Feature: brute force protection
     When user "Alice" creates a public link share using the sharing API with settings
       | path        | PARENT   |
       | password    | %public% |
-    Then the public should be able to download file "randomfile.txt" from inside the last public shared folder using the new public WebDAV API with password "%public%"
-    And the public download of file "randomfile.txt" from inside the last public shared folder using the new public WebDAV API with password "abcdef" should fail with HTTP status code "401"
-    And the public download of file "randomfile.txt" from inside the last public shared folder using the new public WebDAV API with password "123abc" should fail with HTTP status code "401"
-    And the public download of file "randomfile.txt" from inside the last public shared folder using the new public WebDAV API with password "abc123" should fail with HTTP status code "401"
-    And the public download of file "randomfile.txt" from inside the last public shared folder using the new public WebDAV API with password "%public%" should fail with HTTP status code "401"
+    Then the public should be able to download file "randomfile.txt" from inside the last public link shared folder using the new public WebDAV API with password "%public%"
+    And the public download of file "randomfile.txt" from inside the last public link shared folder using the new public WebDAV API with password "abcdef" should fail with HTTP status code "401"
+    And the public download of file "randomfile.txt" from inside the last public link shared folder using the new public WebDAV API with password "123abc" should fail with HTTP status code "401"
+    And the public download of file "randomfile.txt" from inside the last public link shared folder using the new public WebDAV API with password "abc123" should fail with HTTP status code "401"
+    And the public download of file "randomfile.txt" from inside the last public link shared folder using the new public WebDAV API with password "%public%" should fail with HTTP status code "401"
 
   Scenario: access to download a public link file is blocked after too many invalid requests
     Given user "Alice" has uploaded file with content "user1 file" to "/randomfile.txt"
@@ -115,19 +115,19 @@ Feature: brute force protection
       | path        | PARENT      |
       | password    | %public%    |
       | permissions | read,create |
-    Then the public should be able to upload file "randomfile.txt" into the last public shared folder using the new public WebDAV API with password "%public%"
-    And the public upload of file "randomfile.txt" into the last public shared folder using the new public WebDAV API with password "abcdef" should fail with HTTP status code "401"
-    And the public upload of file "randomfile.txt" into the last public shared folder using the new public WebDAV API with password "123abc" should fail with HTTP status code "401"
-    And the public upload of file "randomfile.txt" into the last public shared folder using the new public WebDAV API with password "abc123" should fail with HTTP status code "401"
-    And the public upload of file "randomfile.txt" into the last public shared folder using the new public WebDAV API with password "%public%" should fail with HTTP status code "401"
+    Then the public should be able to upload file "randomfile.txt" into the last public link shared folder using the new public WebDAV API with password "%public%"
+    And the public upload of file "randomfile.txt" into the last public link shared folder using the new public WebDAV API with password "abcdef" should fail with HTTP status code "401"
+    And the public upload of file "randomfile.txt" into the last public link shared folder using the new public WebDAV API with password "123abc" should fail with HTTP status code "401"
+    And the public upload of file "randomfile.txt" into the last public link shared folder using the new public WebDAV API with password "abc123" should fail with HTTP status code "401"
+    And the public upload of file "randomfile.txt" into the last public link shared folder using the new public WebDAV API with password "%public%" should fail with HTTP status code "401"
 
   Scenario: access to create a folder in a public link folder is blocked after too many invalid requests
     When user "Alice" creates a public link share using the sharing API with settings
       | path        | PARENT      |
       | password    | %public%    |
       | permissions | read,create |
-    Then the public should be able to create folder "new-folder" in the last public shared folder using the new public WebDAV API with password "%public%"
-    And the public creation of folder "a-folder" in the last public shared folder using the new public WebDAV API with password "abcdef" should fail with HTTP status code "401"
-    And the public creation of folder "a-folder" in the last public shared folder using the new public WebDAV API with password "123abc" should fail with HTTP status code "401"
-    And the public creation of folder "a-folder" in the last public shared folder using the new public WebDAV API with password "abc123" should fail with HTTP status code "401"
-    And the public creation of folder "a-folder" in the last public shared folder using the new public WebDAV API with password "%public%" should fail with HTTP status code "401"
+    Then the public should be able to create folder "new-folder" in the last public link shared folder using the new public WebDAV API with password "%public%"
+    And the public creation of folder "a-folder" in the last public link shared folder using the new public WebDAV API with password "abcdef" should fail with HTTP status code "401"
+    And the public creation of folder "a-folder" in the last public link shared folder using the new public WebDAV API with password "123abc" should fail with HTTP status code "401"
+    And the public creation of folder "a-folder" in the last public link shared folder using the new public WebDAV API with password "abc123" should fail with HTTP status code "401"
+    And the public creation of folder "a-folder" in the last public link shared folder using the new public WebDAV API with password "%public%" should fail with HTTP status code "401"
