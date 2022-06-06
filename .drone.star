@@ -94,6 +94,9 @@ config = {
                     ],
                 },
             ],
+            # In drone CI the test scenarios that check the blocking by client IP address are unreliable.
+            # So do not run them in CI.
+            "filterTags": "~@blockBasedOnClientIpAddress",
             "xForwardedFor": True,
         },
     },
