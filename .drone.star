@@ -1547,6 +1547,7 @@ def owncloudService(version, phpVersion, name, path, ssl, xForwardedFor):
             "cat apache2.conf",
         ] if xForwardedFor else []) + [
             # "/usr/local/bin/apachectl -e debug -D FOREGROUND",
+            "sleep 300"
         ],
     }]
 
@@ -1856,9 +1857,9 @@ def waitForServer(federatedServerNeeded):
         "name": "wait-for-server",
         "image": OC_CI_WAIT_FOR,
         "commands": [
-            "sleep 300",
+            "sleep 30",
         ] + ([
-            "sleep 300",
+            "sleep 30",
         ] if federatedServerNeeded else []),
     }]
 
