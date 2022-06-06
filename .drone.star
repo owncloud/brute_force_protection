@@ -1544,6 +1544,7 @@ def owncloudService(version, phpVersion, name, path, ssl, xForwardedFor):
             # IP as recorded by mod_remoteip (%a) rather than hostname (%h). For more info check this out:
             # https://www.digitalocean.com/community/questions/get-client-public-ip-on-apache-server-used-behind-load-balancer
             "sed -i '0,/\"%h/s//\"%a/' apache2.conf",
+            "cat apache2.conf",
         ] if xForwardedFor else []) + [
             "/usr/local/bin/apachectl -e debug -D FOREGROUND",
         ],
