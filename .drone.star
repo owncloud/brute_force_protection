@@ -1547,7 +1547,7 @@ def owncloudService(version, phpVersion, name, path, ssl, xForwardedFor):
             "cat apache2.conf",
         ] if xForwardedFor else []) + [
             # "/usr/local/bin/apachectl -e debug -D FOREGROUND",
-            "sleep 300"
+            "sleep 300",
         ],
     }]
 
