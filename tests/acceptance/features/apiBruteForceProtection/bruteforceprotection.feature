@@ -64,6 +64,7 @@ Feature: brute force protection
       | MKCOL    | /remote.php/dav/files/Brian/blocked     | 201       |
       | MKCOL    | /remote.php/webdav/blocked              | 201       |
 
+  @blockBasedOnClientIpAddress
   Scenario Outline: access is still possible from another IP after user/ip combination was blocked
     When the client accesses the server from IP address "10.4.1.248" using X-Forwarded-For header
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
