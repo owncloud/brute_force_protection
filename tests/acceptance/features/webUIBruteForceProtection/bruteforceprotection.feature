@@ -15,10 +15,12 @@ Feature: brute force protection
       | ban-period     | 300 |
     And the administrator has logged out of the webUI
 
+
   Scenario: valid login works after one false password
     When the user logs in with username "Alice" and invalid password "invalidpassword" using the webUI
     And the user logs in with username "Alice" and password "%regular%" using the webUI
     Then the user should be redirected to a webUI page with the title "Files - ownCloud"
+
 
   Scenario: login blocked
     When the user logs in with username "Alice" and invalid password "invalidpassword" using the webUI

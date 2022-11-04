@@ -14,6 +14,7 @@ Feature: brute force protection
       | fail-tolerance | 2   |
       | ban-period     | 300 |
 
+
   Scenario Outline: access is blocked after too many invalid requests
     When user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
@@ -30,6 +31,7 @@ Feature: brute force protection
       | MKCOL    | /remote.php/dav/files/Alice/blocked     | 401       |
       | MKCOL    | /remote.php/webdav/blocked              | 401       |
 
+
   Scenario Outline: access is still possible if the invalid requests did not reach fail-tolerance
     When user "Alice" sends HTTP method "<method>" to URL "<endpoint>" with password "notvalid"
     And user "Alice" sends HTTP method "<method>" to URL "<endpoint>"
@@ -44,6 +46,7 @@ Feature: brute force protection
       | GET      | /remote.php/webdav/welcome.txt          | 200       |
       | MKCOL    | /remote.php/dav/files/Alice/blocked     | 201       |
       | MKCOL    | /remote.php/webdav/blocked              | 201       |
+
 
   Scenario Outline: access is still possible as another user after a user was blocked
     Given these users have been created with small skeleton files:
@@ -83,11 +86,13 @@ Feature: brute force protection
       | MKCOL    | /remote.php/dav/files/Alice/blocked     | 201       |
       | MKCOL    | /remote.php/webdav/blocked              | 201       |
 
+
   Scenario: accessing different endpoints with wrong password should block user
     When user "Alice" sends HTTP method "PROPFIND" to URL "/remote.php/dav/systemtags" with password "notvalid"
     And user "Alice" sends HTTP method "GET" to URL "/remote.php/webdav/welcome.txt" with password "notvalid"
     And user "Alice" sends HTTP method "GET" to URL "/index.php/apps/files"
     Then the HTTP status code should be "403"
+
 
   Scenario: access to download a file in a public link folder is blocked after too many invalid requests
     Given user "Alice" has uploaded file with content "user1 file" to "/PARENT/randomfile.txt"
@@ -100,6 +105,7 @@ Feature: brute force protection
     And the public download of file "randomfile.txt" from inside the last public link shared folder using the new public WebDAV API with password "abc123" should fail with HTTP status code "401"
     And the public download of file "randomfile.txt" from inside the last public link shared folder using the new public WebDAV API with password "%public%" should fail with HTTP status code "401"
 
+
   Scenario: access to download a public link file is blocked after too many invalid requests
     Given user "Alice" has uploaded file with content "user1 file" to "/randomfile.txt"
     When user "Alice" creates a public link share using the sharing API with settings
@@ -111,6 +117,7 @@ Feature: brute force protection
     And the public download of the last publicly shared file using the new public WebDAV API with password "abc123" should fail with HTTP status code "401"
     And the public download of the last publicly shared file using the new public WebDAV API with password "%public%" should fail with HTTP status code "401"
 
+
   Scenario: access to upload a file in a public link folder is blocked after too many invalid requests
     When user "Alice" creates a public link share using the sharing API with settings
       | path        | PARENT      |
@@ -121,6 +128,7 @@ Feature: brute force protection
     And the public upload of file "randomfile.txt" into the last public link shared folder using the new public WebDAV API with password "123abc" should fail with HTTP status code "401"
     And the public upload of file "randomfile.txt" into the last public link shared folder using the new public WebDAV API with password "abc123" should fail with HTTP status code "401"
     And the public upload of file "randomfile.txt" into the last public link shared folder using the new public WebDAV API with password "%public%" should fail with HTTP status code "401"
+
 
   Scenario: access to create a folder in a public link folder is blocked after too many invalid requests
     When user "Alice" creates a public link share using the sharing API with settings
