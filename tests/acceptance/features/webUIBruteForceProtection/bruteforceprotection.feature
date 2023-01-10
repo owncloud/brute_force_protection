@@ -27,3 +27,10 @@ Feature: brute force protection
     And the user logs in with username "Alice" and invalid password "invalidpassword" using the webUI
     And the blocked user "Alice" tries to login using the password "%regular%" from the webUI
     Then the user should be redirected to a webUI page with the title "ownCloud"
+
+
+  Scenario: login is not blocked with invalid password
+    When the user logs in with username "Alice" and invalid password "invalidpassword" using the webUI
+    And the user logs in with username "Alice" and invalid password "invalidpassword" using the webUI
+    And the user logs in with username "Alice" and invalid password "invalidpassword" using the webUI
+    Then the user should be redirected to the login page
