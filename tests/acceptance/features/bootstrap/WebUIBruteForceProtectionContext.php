@@ -116,6 +116,8 @@ class WebUIBruteForceProtectionContext extends RawMinkContext implements Context
 		 *
 		 * @var BlockedUserPage $blockedUserPage
 		 */
+
+		$password = $this->featureContext->getActualPassword($password);
 		$blockedUserPage = $this->loginPage->loginAs($username, $password, 'BlockedUserPage');
 		$blockedUserPage->waitTillPageIsLoaded($this->getSession());
 	}
