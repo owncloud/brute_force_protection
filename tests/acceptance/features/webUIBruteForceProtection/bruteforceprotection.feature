@@ -9,6 +9,7 @@ Feature: brute force protection
     Given these users have been created without skeleton files:
       | username |
       | Alice    |
+      | Brian    |
     When the administrator sets the bruteforceprotection settings using the webUI to:
       | threshold-time | 60  |
       | fail-tolerance | 2   |
@@ -22,15 +23,15 @@ Feature: brute force protection
     Then the user should be redirected to a webUI page with the title "Files - ownCloud"
 
 
-  Scenario: login blocked
+  Scenario: login is blocked with valid password
     When the user logs in with username "Alice" and invalid password "invalidpassword" using the webUI
     And the user logs in with username "Alice" and invalid password "invalidpassword" using the webUI
     And the blocked user "Alice" tries to login using the password "%regular%" from the webUI
     Then the user should be redirected to a webUI page with the title "ownCloud"
 
 
-  Scenario: login is not blocked with invalid password
-    When the user logs in with username "Alice" and invalid password "invalidpassword" using the webUI
-    And the user logs in with username "Alice" and invalid password "invalidpassword" using the webUI
-    And the user logs in with username "Alice" and invalid password "invalidpassword" using the webUI
-    Then the user should be redirected to the login page
+  Scenario: login is blocked with invalid password
+    When the user logs in with username "Brian" and invalid password "invalidpassword" using the webUI
+    And the user logs in with username "Brian" and invalid password "invalidpassword" using the webUI
+    And the blocked user "Brian" tries to login using the password "invalidpassword" from the webUI
+    Then the user should be redirected to a webUI page with the title "ownCloud"
