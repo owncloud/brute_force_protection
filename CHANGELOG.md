@@ -4,9 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased] - XXXX-XX-XX
+## [1.2.0] - 2023-03-13
 
---
+### Added
+
+- Apply brute login policy on failed login - [#193](https://github.com/owncloud/brute_force_protection/pull/193)
+
 
 ## [1.1.0] - 2020-09-17
 
@@ -29,5 +32,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 - Initial release
 
-[Unreleased]: https://github.com/owncloud/brute_force_protection/compare/v1.1.0...master
+[Unreleased]: https://github.com/owncloud/brute_force_protection/compare/v1.2.0...master
+[1.2.0]: https://github.com/owncloud/brute_force_protection/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/owncloud/brute_force_protection/compare/v1.0.1...v1.1.0
