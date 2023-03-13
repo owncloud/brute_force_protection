@@ -100,6 +100,10 @@ class Hooks {
 	 */
 	public function failedLoginCallback($event) {
 		$uid = $event->getArgument('user');
+		// apply policy to throw the login exception if needed.
+		// The failed login attempt won't be stored if the exception is thrown (same behavior with OC 10.11 and earlier)
+		$this->throttle->applyBruteForcePolicyForLogin($uid, $this->request->getRemoteAddress());
+
 		$attempt = new FailedLoginAttempt();
 		$attempt->setUid($uid);
 		$attempt->setIp($this->request->getRemoteAddress());
