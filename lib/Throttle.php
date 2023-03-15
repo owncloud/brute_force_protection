@@ -111,7 +111,7 @@ class Throttle {
 		}
 		$thresholdTime = $lastAttempt - $this->config->getBruteForceProtectionTimeThreshold();
 		if ($this->linkAccessMapper->getFailedAccessCountForTokenIpCombination($token, $ip, $thresholdTime) >=
-			$this->config->getBruteForceProtectionFailTolerance() -1 ) {
+			$this->config->getBruteForceProtectionFailTolerance() - 1) {
 			throw new LinkAuthException(
 				$this->l->t(
 					"Too many failed attempts. Try again in %s.",
