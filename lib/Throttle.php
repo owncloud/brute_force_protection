@@ -87,7 +87,7 @@ class Throttle {
 		}
 		$thresholdTime = $lastAttempt - $this->config->getBruteForceProtectionTimeThreshold();
 		if ($this->loginAttemptMapper->getFailedLoginCountForUidIpCombination($uid, $ip, $thresholdTime) >=
-			$this->config->getBruteForceProtectionFailTolerance() -1 ) {
+			$this->config->getBruteForceProtectionFailTolerance() - 1) {
 			throw new LoginException(
 				$this->l->t(
 					"Too many failed login attempts. Try again in %s.",
