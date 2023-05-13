@@ -61,6 +61,7 @@ class Throttle {
 	 * @param FailedLinkAccessMapper $linkAccessMapper
 	 * @param BruteForceProtectionConfig $config
 	 * @param IL10N $l
+	 * @param ILogger $logger
 	 * @param ITimeFactory $timeFactory
 	 */
 	public function __construct(
