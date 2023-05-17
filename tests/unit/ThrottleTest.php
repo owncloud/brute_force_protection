@@ -30,6 +30,7 @@ use OCA\BruteForceProtection\Throttle;
 use OCA\BruteForceProtection\BruteForceProtectionConfig;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IL10N;
+use OCP\ILogger;
 use PHPUnit\Framework\MockObject\MockObject;
 use Test\TestCase;
 
@@ -49,6 +50,9 @@ class ThrottleTest extends TestCase {
 
 	/** @var MockObject | IL10N */
 	private $lMock;
+	
+	/** @var MockObject | ILogger */
+	private $loggerMock;
 
 	/** @var MockObject | ITimeFactory */
 	private $timeFactoryMock;
@@ -59,6 +63,7 @@ class ThrottleTest extends TestCase {
 		$this->loginAttemptMapper = $this->createMock(FailedLoginAttemptMapper::class);
 		$this->linkAccessMapper = $this->createMock(FailedLinkAccessMapper::class);
 		$this->lMock = $this->createMock(IL10N::class);
+		$this->loggerMock = $this->createMock(ILogger::class);
 		$this->timeFactoryMock = $this->createMock(ITimeFactory::class);
 		$this->configMock = $this->createMock(BruteForceProtectionConfig::class);
 
@@ -67,6 +72,7 @@ class ThrottleTest extends TestCase {
 			$this->linkAccessMapper,
 			$this->configMock,
 			$this->lMock,
+			$this->loggerMock,
 			$this->timeFactoryMock
 		);
 	}

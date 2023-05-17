@@ -30,6 +30,7 @@ use OCA\BruteForceProtection\Db\FailedLoginAttemptMapper;
 use OCA\BruteForceProtection\Exceptions\LinkAuthException;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IL10N;
+use OCP\ILogger;
 
 /**
  * Class Throttle
@@ -49,6 +50,9 @@ class Throttle {
 	/** @var IL10N $l */
 	protected $l;
 
+	/** @var ILogger $logger */
+	private $logger;
+	
 	/** @var ITimeFactory $timeFactory */
 	protected $timeFactory;
 
@@ -57,6 +61,7 @@ class Throttle {
 	 * @param FailedLinkAccessMapper $linkAccessMapper
 	 * @param BruteForceProtectionConfig $config
 	 * @param IL10N $l
+	 * @param ILogger $logger
 	 * @param ITimeFactory $timeFactory
 	 */
 	public function __construct(
@@ -64,12 +69,14 @@ class Throttle {
 		FailedLinkAccessMapper $linkAccessMapper,
 		BruteForceProtectionConfig $config,
 		IL10N $l,
+		ILogger $logger,
 		ITimeFactory $timeFactory
 	) {
 		$this->loginAttemptMapper = $loginAttemptMapper;
 		$this->linkAccessMapper = $linkAccessMapper;
 		$this->config = $config;
 		$this->l = $l;
+		$this->logger = $logger;
 		$this->timeFactory = $timeFactory;
 	}
 
@@ -88,6 +95,11 @@ class Throttle {
 		$thresholdTime = $lastAttempt - $this->config->getBruteForceProtectionTimeThreshold();
 		if ($this->loginAttemptMapper->getFailedLoginCountForUidIpCombination($uid, $ip, $thresholdTime) >=
 			$this->config->getBruteForceProtectionFailTolerance()) {
+			$humanBanPeriod = $this->parseBanPeriodForHumans($banPeriod);
+			$this->logger->warning(
+				"User '{$uid}' is blocked for{$humanBanPeriod}. Too many failed login attempts",
+				['app' => 'brute_force_protection']
+			);
 			throw new LoginException(
 				$this->l->t(
 					"Too many failed login attempts. Try again in %s.",
