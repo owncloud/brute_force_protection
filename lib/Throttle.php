@@ -95,7 +95,11 @@ class Throttle {
 		$thresholdTime = $lastAttempt - $this->config->getBruteForceProtectionTimeThreshold();
 		if ($this->loginAttemptMapper->getFailedLoginCountForUidIpCombination($uid, $ip, $thresholdTime) >=
 			$this->config->getBruteForceProtectionFailTolerance()) {
-			$this->logger->warning('User \''. $uid .'\' is blocked for'. $this->parseBanPeriodForHumans($banPeriod) .'. Too many failed login attempts', ['app' => 'brute_force_protection']);
+			$humanBanPeriod = $this->parseBanPeriodForHumans($banPeriod);
+			$this->logger->warning(
+				"User '{$uid}' is blocked for{$humanBanPeriod}. Too many failed login attempts",
+				['app' => 'brute_force_protection']
+			);
 			throw new LoginException(
 				$this->l->t(
 					"Too many failed login attempts. Try again in %s.",
