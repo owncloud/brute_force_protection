@@ -35,7 +35,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Test\TestCase;
 
 class ThrottleTest extends TestCase {
-
 	/** @var Throttle */
 	private $throttle;
 

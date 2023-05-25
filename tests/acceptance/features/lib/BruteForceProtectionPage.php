@@ -31,7 +31,6 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
  *
  */
 class BruteForceProtectionPage extends OwncloudPage {
-
 	/**
 	 *
 	 * @var string $path

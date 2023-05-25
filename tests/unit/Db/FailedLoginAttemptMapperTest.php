@@ -35,7 +35,6 @@ use Test\TestCase;
  * @group DB
  */
 class FailedLoginAttemptMapperTest extends TestCase {
-
 	/** @var  FailedLoginAttemptMapper $mapper*/
 	private $mapper;
 

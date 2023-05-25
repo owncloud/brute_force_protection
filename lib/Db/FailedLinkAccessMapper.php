@@ -32,7 +32,6 @@ use OCP\IDBConnection;
  * @package OCA\BruteForceProtection\Db
  */
 class FailedLinkAccessMapper extends Mapper {
-
 	/**
 	 * @var ITimeFactory $timeFactory
 	 */

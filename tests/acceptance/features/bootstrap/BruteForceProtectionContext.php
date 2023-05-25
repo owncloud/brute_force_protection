@@ -31,7 +31,6 @@ require_once 'bootstrap.php';
  * Context for brute force protection specific steps
  */
 class BruteForceProtectionContext implements Context {
-
 	/**
 	 * @var FeatureContext
 	 */

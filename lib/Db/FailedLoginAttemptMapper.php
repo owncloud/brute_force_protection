@@ -33,7 +33,6 @@ use OCP\IDBConnection;
  * @package OCA\BruteForceProtection\Db
  */
 class FailedLoginAttemptMapper extends Mapper {
-
 	/**
 	 * @var ITimeFactory $timeFactory
 	 */
