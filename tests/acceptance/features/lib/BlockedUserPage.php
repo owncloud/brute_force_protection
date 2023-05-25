@@ -30,7 +30,6 @@ use Behat\Mink\Session;
  * TODO think about how to join both
  */
 class BlockedUserPage extends OwncloudPage {
-
 	/**
 	 * @var string $path
 	 */

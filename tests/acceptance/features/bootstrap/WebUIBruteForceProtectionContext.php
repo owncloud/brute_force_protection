@@ -35,7 +35,6 @@ require_once 'bootstrap.php';
  * Context for brute force protection specific webUI steps
  */
 class WebUIBruteForceProtectionContext extends RawMinkContext implements Context {
-
 	/**
 	 * @var FeatureContext
 	 */

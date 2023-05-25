@@ -36,7 +36,6 @@ use OCP\AppFramework\Db\Entity;
  * @method void setAttemptedAt(int $attemptedAt)
  */
 class FailedLoginAttempt extends Entity {
-
 	/** @var string $ip */
 	protected $ip;
 

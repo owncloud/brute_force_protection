@@ -37,7 +37,6 @@ use OCP\ILogger;
  * @package OCA\BruteForceProtection\Lib
  */
 class Throttle {
-
 	/** @var FailedLoginAttemptMapper $loginAttemptMapper */
 	protected $loginAttemptMapper;
 

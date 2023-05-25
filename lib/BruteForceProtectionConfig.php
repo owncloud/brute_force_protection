@@ -34,7 +34,6 @@ use OCP\IConfig;
  * @package OCA\BruteForceProtection
  */
 class BruteForceProtectionConfig {
-
 	/** @var IConfig */
 	private $config;
 

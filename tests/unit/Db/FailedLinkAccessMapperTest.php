@@ -33,7 +33,6 @@ use Test\TestCase;
  * @group DB
  */
 class FailedLinkAccessMapperTest extends TestCase {
-
 	/** @var  FailedLinkAccess $mapper*/
 	private $mapper;
 

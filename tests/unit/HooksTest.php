@@ -38,7 +38,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Test\TestCase;
 
 class HooksTest extends TestCase {
-
 	/** @var  Hooks */
 	private $hooks;
 

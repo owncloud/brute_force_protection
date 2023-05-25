@@ -40,7 +40,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @package OCA\BruteForceProtection\Lib
  */
 class Hooks {
-
 	/** @var Throttle */
 	private $throttle;
 
