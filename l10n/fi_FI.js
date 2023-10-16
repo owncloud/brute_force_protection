@@ -3,10 +3,13 @@ OC.L10N.register(
     {
     "Preferences are saved" : "Asetukset on tallennettu",
     "Inputs must be positive integers" : "Syötteen tulee olla positiivisia kokonaislukuja",
-    "Too many failed login attempts. Try again in %s minutes." : "Liian monta kirjautumisyritystä. Yritä uudelleen %s minuutin jälkeen.",
+    "Too many failed login attempts. Try again in %s." : "Liian monta kirjautumisyritystä. Yritä uudelleen %s minuutin jälkeen.",
+    "Too many failed attempts. Try again in %s." : "Liian monta epäonnistunutta yritystä. Yritä uudestaan %s kuluttua.",
+    "_ %n minute_::_ %n minutes_" : ["%n minuutti","%n minuuttia"],
+    "_ %n hour_::_ %n hours_" : ["%n tuntia","%n tuntia"],
     "Brute Force Protection" : "Brute Force -suojaus",
-    "Count failed login attempts over how many seconds?" : "Laske epäonnistuneet kirjautumiset seuraavan sekuntien sisällä?",
-    "Ban after how many failed login attempts?" : "Estä kun seuraava määrä epäonnistuneita kirjautumisia?",
+    "Count failed attempts over how many seconds?" : "Laske epäonnistuneet kirjautumiset seuraavan sekuntien sisällä?",
+    "Ban after how many failed attempts?" : "Estä kun seuraava määrä epäonnistuneita kirjautumisia?",
     "Ban for how many seconds?" : "Esto kestää sekunneissa?",
     "Save settings" : "Tallenna asetukset"
 },
