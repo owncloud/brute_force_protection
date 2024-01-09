@@ -4,7 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased] - xxxx-xx-xx
+## [1.3.0] - 2024-01-09
+
+- [#204](https://github.com/owncloud/brute_force_protection/pull/204) - Log of blocking a user
+
 
 ## [1.2.0] - 2023-03-13
 
@@ -34,6 +37,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 - Initial release
 
-[Unreleased]: https://github.com/owncloud/brute_force_protection/compare/v1.2.0...master
+[Unreleased]: https://github.com/owncloud/brute_force_protection/compare/v1.3.0...master
+[1.3.0]: https://github.com/owncloud/brute_force_protection/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/owncloud/brute_force_protection/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/owncloud/brute_force_protection/compare/v1.0.1...v1.1.0
