@@ -6,9 +6,9 @@
     "_ %n minute_::_ %n minutes_" : [" %n minute"," %n minutash"],
     "_ %n hour_::_ %n hours_" : [" %n ore"," %n orësh"],
     "Brute Force Protection" : "Mbrojtje Nga Hyrjet Me Zor",
-    "Count failed attempts over how many seconds?" : "Të numërohen përpjekje të dështuara për hyrje tej sa sekondash? ",
-    "Ban after how many failed attempts?" : "Të dëbohet pas sa përpjekjesh të dështuara për hyrje?",
-    "Ban for how many seconds?" : "Të dëbohet pas sa sekondash?",
+    "Count failed attempts over how many seconds?" : "Tej sa sekondash të numërohen përpjekje të dështuara për hyrje?",
+    "Ban after how many failed attempts?" : "Pas sa përpjekjesh të dështuara për hyrje të dëbohet?",
+    "Ban for how many seconds?" : "Pas sa sekondash të dëbohet?",
     "Save settings" : "Ruaji rregullimet"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
