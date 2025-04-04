@@ -7,6 +7,7 @@ OC.L10N.register(
     "_ %n minute_::_ %n minutes_" : ["%nminuto","%nminutos","%nminutos"],
     "_ %n hour_::_ %n hours_" : ["%nhora","%nhoras","%nhoras"],
     "Brute Force Protection" : "Brute Force Protection",
+    "Count failed attempts over how many seconds?" : "Contar tentativas falhadas após quantos segundos?",
     "Ban after how many failed attempts?" : "Banir após quantas tentativas falhadas?",
     "Ban for how many seconds?" : "Banir durante quantos segundos?",
     "Save settings" : "Guardar configurações"
