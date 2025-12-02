@@ -1,0 +1,14 @@
+{ "translations": {
+    "Preferences are saved" : "首選項已儲存的",
+    "Inputs must be positive integers" : "輸入必須為正整數",
+    "Too many failed login attempts. Try again in %s." : "登录尝试失败次数过多。 再试一次%s。",
+    "Too many failed attempts. Try again in %s." : "太多次失败的尝试。 再试一次%s。",
+    "_ %n minute_::_ %n minutes_" : ["%n分钟"],
+    "_ %n hour_::_ %n hours_" : ["%n小时"],
+    "Brute Force Protection" : "蠻力保護",
+    "Count failed attempts over how many seconds?" : "数秒内失败的尝试次数？",
+    "Ban after how many failed attempts?" : "尝试失败多少次后禁止？",
+    "Ban for how many seconds?" : "禁止多少秒？",
+    "Save settings" : "儲存設定"
+},"pluralForm" :"nplurals=1; plural=0;"
+}

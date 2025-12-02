@@ -2,6 +2,7 @@ OC.L10N.register(
     "brute_force_protection",
     {
     "Preferences are saved" : "As preferências foram guardadas",
+    "Inputs must be positive integers" : "As entradas devem ser números inteiros positivos",
     "Too many failed login attempts. Try again in %s." : "Demasiadas tentativas de inicio de sessão falhadas. Tente outra vez em %s.",
     "Too many failed attempts. Try again in %s." : "Demasiadas tentativas falhadas. Tenta outra vez em %s.",
     "_ %n minute_::_ %n minutes_" : ["%nminuto","%nminutos","%nminutos"],
