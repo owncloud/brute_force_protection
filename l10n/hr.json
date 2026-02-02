@@ -1,0 +1,12 @@
+{ "translations": {
+    "Inputs must be positive integers" : "Vnešene vrednosti morajo biti pozitivna cela števila.",
+    "Too many failed login attempts. Try again in %s." : "Preveč neuspelih poskusov prijave. Poskusite znova čez %s.",
+    "Too many failed attempts. Try again in %s." : "Preveč neuspelih poskusov. Poskusite znova čez %s.",
+    "_ %n minute_::_ %n minutes_" : ["%n minuta","%n minut","%n minut"],
+    "_ %n hour_::_ %n hours_" : ["%n ura","%n ur","%n ur"],
+    "Brute Force Protection" : "Zaščita pred siloslednim napadom",
+    "Count failed attempts over how many seconds?" : "Štej nesupele poskuse v zadnjih X sekundah?",
+    "Ban after how many failed attempts?" : "Blokiraj po X neuspelih poskusih?",
+    "Ban for how many seconds?" : "Blokiraj za X sekund?"
+},"pluralForm" :"nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;"
+}
