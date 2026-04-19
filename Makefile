@@ -60,6 +60,12 @@ ifneq (,$(wildcard $(CURDIR)/js/package.json))
 	make npm
 endif
 
+# Installs dependencies and does any build actions needed for the app to run in CI
+.PHONY: ci
+ci: vendor
+	./tests/acceptance/setup_trusted_proxies.sh
+	@echo dependencies and build actions for CI are completed
+
 # Installs and updates the composer dependencies. If composer is not installed
 # a copy is fetched from the web
 .PHONY: composer
