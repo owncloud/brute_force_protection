@@ -17,7 +17,7 @@ This file provides context for AI coding agents (Claude Code, GitHub Copilot, Cu
 - `l10n/` - Translations
 - `img/` - App icons
 - `screenshots/` - App screenshots
-- `tests/` - PHPUnit test suite
+- `tests/` - PHPUnit and acceptance test suite
 - `Makefile` - Build and test automation
 - `composer.json` - PHP dependencies
 - `phpcs.xml` - PHP_CodeSniffer configuration
@@ -35,8 +35,15 @@ This file provides context for AI coding agents (Claude Code, GitHub Copilot, Cu
 # Build
 make
 
-# Test
+# Test (PHPunit)
 make test-php-unit
+
+# Test (API acceptance)
+make test-acceptance-api
+
+# Test (WebUI acceptance)
+make test-acceptance-webui
+
 
 # Lint
 make test-php-style
